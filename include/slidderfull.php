@@ -24,12 +24,13 @@ if (isset($con) && $con) {
 
 <style>
 /* ══════════════════════════════════════════════════════════
-   COMPACT HERO TECH SECTION (REDUCED HEIGHT)
+   HERO TECH BANNER SECTION (INCREASED HEIGHT & PREMIUM DESIGN)
 ══════════════════════════════════════════════════════════ */
 .kc-hero-tech-section {
     position: relative;
     background: radial-gradient(circle at 50% 30%, #1a365d 0%, #0b192c 60%, #060d17 100%);
-    padding: 42px 0 38px 0 !important;
+    padding: 75px 0 70px 0 !important;
+    min-height: 480px !important;
     overflow: hidden;
     color: #ffffff;
     border-bottom: 1px solid rgba(0, 188, 212, 0.2);
@@ -49,13 +50,13 @@ if (isset($con) && $con) {
 
 .kc-hero-glow-blob {
     position: absolute;
-    width: 450px;
-    height: 450px;
-    top: -90px;
+    width: 550px;
+    height: 550px;
+    top: -120px;
     left: 50%;
     transform: translateX(-50%);
-    background: radial-gradient(circle, rgba(0, 188, 212, 0.18) 0%, rgba(0, 112, 243, 0.08) 50%, transparent 70%);
-    filter: blur(60px);
+    background: radial-gradient(circle, rgba(0, 188, 212, 0.22) 0%, rgba(0, 112, 243, 0.1) 50%, transparent 70%);
+    filter: blur(70px);
     pointer-events: none;
     z-index: 1;
 }
@@ -65,26 +66,26 @@ if (isset($con) && $con) {
     align-items: center;
     gap: 8px;
     color: #00BCD4;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }
 .kc-hero-badge-sub::before {
     content: '';
     display: inline-block;
-    width: 20px;
+    width: 24px;
     height: 2px;
     background: #00BCD4;
     border-radius: 2px;
 }
 
 .kc-hero-headline {
-    font-size: 38px;
+    font-size: 44px;
     font-weight: 900;
     line-height: 1.15;
-    letter-spacing: -0.4px;
+    letter-spacing: -0.5px;
     margin-bottom: 0;
     text-transform: uppercase;
 }
@@ -99,18 +100,18 @@ if (isset($con) && $con) {
 
 .kc-hero-description {
     color: #94A3B8;
-    font-size: 14px;
+    font-size: 15.5px;
     font-weight: 400;
-    line-height: 1.6;
-    max-width: 500px;
-    margin-top: 14px;
-    margin-bottom: 24px;
+    line-height: 1.7;
+    max-width: 520px;
+    margin-top: 18px;
+    margin-bottom: 30px;
 }
 
 .kc-hero-btn-group {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
     flex-wrap: wrap;
 }
 
@@ -118,9 +119,9 @@ if (isset($con) && $con) {
     background: linear-gradient(135deg, #0070F3 0%, #0056B3 100%);
     color: #ffffff !important;
     border: none;
-    border-radius: 9px;
-    padding: 11px 25px;
-    font-size: 13.5px;
+    border-radius: 10px;
+    padding: 13px 30px;
+    font-size: 14px;
     font-weight: 800;
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -128,12 +129,12 @@ if (isset($con) && $con) {
     display: inline-flex;
     align-items: center;
     gap: 9px;
-    box-shadow: 0 5px 18px rgba(0, 112, 243, 0.4);
-    transition: all 0.2s ease;
+    box-shadow: 0 6px 20px rgba(0, 112, 243, 0.45);
+    transition: all 0.25s ease;
 }
 .kc-btn-hero-blue:hover {
     transform: translateY(-2px);
-    box-shadow: 0 9px 25px rgba(0, 188, 212, 0.5);
+    box-shadow: 0 10px 28px rgba(0, 188, 212, 0.55);
     background: linear-gradient(135deg, #0080FF 0%, #0070F3 100%);
 }
 
@@ -141,9 +142,9 @@ if (isset($con) && $con) {
     background: rgba(15, 23, 42, 0.6);
     border: 1.5px solid rgba(0, 188, 212, 0.4);
     color: #ffffff !important;
-    border-radius: 9px;
-    padding: 11px 22px;
-    font-size: 13.5px;
+    border-radius: 10px;
+    padding: 13px 26px;
+    font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -152,7 +153,7 @@ if (isset($con) && $con) {
     align-items: center;
     gap: 9px;
     backdrop-filter: blur(8px);
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
 }
 .kc-btn-hero-outline:hover {
     border-color: #00BCD4;
@@ -165,20 +166,20 @@ if (isset($con) && $con) {
 .kc-hero-showcase-card {
     position: relative;
     z-index: 10;
-    border-radius: 18px;
-    padding: 7px;
-    background: rgba(15, 23, 42, 0.4);
-    border: 1.5px solid rgba(0, 188, 212, 0.3);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding: 8px;
+    background: rgba(15, 23, 42, 0.5);
+    border: 1.5px solid rgba(0, 188, 212, 0.35);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px);
     overflow: hidden;
 }
 
 .kc-hero-showcase-img {
     width: 100%;
-    max-height: 290px;
+    max-height: 390px;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: 14px;
     display: block;
 }
 

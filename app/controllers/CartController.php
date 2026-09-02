@@ -8,6 +8,17 @@ use App\Core\Database;
 
 class CartController extends Controller {
     public function index() {
+        if (isset($_GET['action']) || isset($_POST['action'])) {
+            $act = $_GET['action'] ?? ($_POST['action'] ?? '');
+            if ($act === 'add') {
+                $this->add();
+                return;
+            } elseif ($act === 'remove') {
+                $this->remove();
+                return;
+            }
+        }
+
         $userId = UserModel::getOrCreateSessionUser();
         $cartModel = $this->model('CartModel');
         $items = $cartModel->getCartItems($userId);
@@ -24,7 +35,7 @@ class CartController extends Controller {
         $userId = UserModel::getOrCreateSessionUser();
         $cartModel = $this->model('CartModel');
 
-        $productId = isset($_POST['prdid']) ? $_POST['prdid'] : (isset($_GET['prdid']) ? $_GET['prdid'] : (isset($_POST['productId']) ? $_POST['productId'] : null));
+        $productId = isset($_POST['prdid']) ? $_POST['prdid'] : (isset($_GET['prdid']) ? $_GET['prdid'] : (isset($_POST['productId']) ? $_POST['productId'] : (isset($_GET['id']) ? $_GET['id'] : null)));
         $priceId = isset($_POST['pid']) ? $_POST['pid'] : (isset($_GET['pid']) ? $_GET['pid'] : (isset($_POST['price']) ? $_POST['price'] : null));
         $qty = isset($_POST['qty']) ? (int)$_POST['qty'] : 1;
         if ($qty < 1) $qty = 1;
@@ -34,9 +45,10 @@ class CartController extends Controller {
         $uEsc = mysqli_real_escape_string($con, (string)$userId);
         $pEsc = mysqli_real_escape_string($con, (string)$productId);
         $prEsc = mysqli_real_escape_string($con, (string)$priceId);
-        $isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || isset($_POST['prdid']) || isset($_POST['productId']);
+        $isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || isset($_POST['prdid']) || isset($_POST['productId']) || isset($_GET['prdid']) || isset($_GET['action']);
 
         if ($productId) {
+            // Find price ID / price details if missing
             if (!$priceId || $priceId == '0') {
                 $pFind = mysqli_query($con, "SELECT id, pp, gst FROM price WHERE pcode='$pEsc' LIMIT 1");
                 if ($pFind && ($pRow = mysqli_fetch_assoc($pFind))) {
@@ -44,65 +56,76 @@ class CartController extends Controller {
                     $prEsc = mysqli_real_escape_string($con, (string)$priceId);
                 }
             }
-            if ($priceId) {
-                $check = mysqli_query($con, "SELECT id, qty FROM card WHERE userid='$uEsc' AND p_id='$pEsc' AND pric_id='$prEsc' AND status='0'");
-                if ($check && mysqli_num_rows($check) > 0) {
-                    // Product already in cart — increment quantity
-                    $existingRow = mysqli_fetch_assoc($check);
-                    $existingCartId  = (int)$existingRow['id'];
-                    $existingQty     = (int)$existingRow['qty'];
-                    $newQty          = $existingQty + $qty;
 
-                    // Cap at available stock
-                    $stockQ = mysqli_query($con, "SELECT COALESCE(SUM(total_stock),0) AS stock FROM price WHERE pcode='$pEsc'");
-                    $stockRow = $stockQ ? mysqli_fetch_assoc($stockQ) : null;
-                    $maxStock = $stockRow ? (int)$stockRow['stock'] : 9999;
-                    if ($newQty > $maxStock && $maxStock > 0) {
-                        $newQty = $maxStock;
-                    }
+            // Check if product is ALREADY in cart
+            $check = mysqli_query($con, "SELECT id, qty FROM card WHERE userid='$uEsc' AND (p_id='$pEsc' OR (pric_id='$prEsc' AND pric_id!='0')) AND status='0'");
+            if ($check && mysqli_num_rows($check) > 0) {
+                // Product ALREADY in cart — increment quantity!
+                $existingRow = mysqli_fetch_assoc($check);
+                $existingCartId  = (int)$existingRow['id'];
+                $existingQty     = (int)$existingRow['qty'];
+                $newQty          = $existingQty + $qty;
 
-                    // Recalculate amount
-                    $sel = mysqli_query($con, "SELECT pp, gst FROM price WHERE id='$prEsc'");
-                    $unitPrice = 0;
-                    if ($sel && ($ro = mysqli_fetch_array($sel))) {
-                        $unitPrice = (float)$ro['pp'];
-                    }
-                    $newAmt = $unitPrice * $newQty;
-                    mysqli_query($con, "UPDATE card SET qty='$newQty', amt='$newAmt', tot='$newAmt' WHERE id='$existingCartId' AND userid='$uEsc'");
+                // Cap at available stock
+                $stockQ = mysqli_query($con, "SELECT COALESCE(SUM(total_stock),0) AS stock FROM price WHERE pcode='$pEsc'");
+                $stockRow = $stockQ ? mysqli_fetch_assoc($stockQ) : null;
+                $maxStock = $stockRow ? (int)$stockRow['stock'] : 9999;
+                if ($newQty > $maxStock && $maxStock > 0) {
+                    $newQty = $maxStock;
+                }
 
-                    $cntQ = mysqli_query($con, "SELECT COUNT(*) as cnt FROM card WHERE userid='$uEsc' AND status='0'");
-                    $cntRow = mysqli_fetch_assoc($cntQ);
-                    $numCart = $cntRow ? (int)$cntRow['cnt'] : 0;
+                // Recalculate amount
+                $sel = mysqli_query($con, "SELECT pp, gst FROM price WHERE pcode='$pEsc' OR id='$prEsc' LIMIT 1");
+                $unitPrice = 0;
+                if ($sel && ($ro = mysqli_fetch_array($sel))) {
+                    $unitPrice = (float)$ro['pp'];
+                }
+                $newAmt = $unitPrice * $newQty;
+                mysqli_query($con, "UPDATE card SET qty='$newQty', amt='$newAmt', tot='$newAmt' WHERE id='$existingCartId' AND userid='$uEsc'");
 
-                    if ($isAjax) {
-                        $this->json(['status' => 3, 'message' => "Quantity updated to $newQty!", 'number_of_cart' => $numCart, 'new_qty' => $newQty]);
-                        return;
-                    }
-                } else {
-                    $sel = mysqli_query($con, "SELECT * FROM price WHERE id='$prEsc'");
-                    $amt = 0;
-                    $gst = 0;
-                    if ($sel && ($ro = mysqli_fetch_array($sel))) {
-                        $amt = (float)$ro['pp'];
-                        $gst = (float)$ro['gst'];
-                    }
-                    $date = date('d/m/Y');
-                    $sta = 0;
-                    mysqli_query($con, "INSERT INTO card VALUES(null, '$uEsc', '$pEsc', '$prEsc', '$qty', '$amt', '$gst', '$amt', '$date', '$sta')");
-                    
-                    $cntQ = mysqli_query($con, "SELECT COUNT(*) as cnt FROM card WHERE userid='$uEsc' AND status='0'");
-                    $cntRow = mysqli_fetch_assoc($cntQ);
-                    $numCart = $cntRow ? (int)$cntRow['cnt'] : 0;
+                $cntQ = mysqli_query($con, "SELECT COUNT(*) as cnt FROM card WHERE userid='$uEsc' AND status='0'");
+                $cntRow = mysqli_fetch_assoc($cntQ);
+                $numCart = $cntRow ? (int)$cntRow['cnt'] : 0;
 
-                    if ($isAjax) {
-                        $this->json(['status' => 2, 'message' => 'Hooray! Item added to the cart!', 'number_of_cart' => $numCart]);
-                        return;
-                    }
+                if ($isAjax) {
+                    $this->json([
+                        'status' => 3, 
+                        'message' => "Item is already in your cart! Quantity updated to $newQty.", 
+                        'number_of_cart' => $numCart, 
+                        'new_qty' => $newQty
+                    ]);
+                    return;
+                }
+            } else {
+                // NEW Product insertion
+                $sel = mysqli_query($con, "SELECT * FROM price WHERE pcode='$pEsc' OR id='$prEsc' LIMIT 1");
+                $amt = 0;
+                $gst = 0;
+                if ($sel && ($ro = mysqli_fetch_array($sel))) {
+                    $amt = (float)$ro['pp'];
+                    $gst = (float)$ro['gst'];
+                }
+                $date = date('d/m/Y');
+                $sta = 0;
+                $tot = $amt * $qty;
+                mysqli_query($con, "INSERT INTO card VALUES(null, '$uEsc', '$pEsc', '$prEsc', '$qty', '$amt', '$gst', '$tot', '$date', '$sta')");
+                
+                $cntQ = mysqli_query($con, "SELECT COUNT(*) as cnt FROM card WHERE userid='$uEsc' AND status='0'");
+                $cntRow = mysqli_fetch_assoc($cntQ);
+                $numCart = $cntRow ? (int)$cntRow['cnt'] : 0;
+
+                if ($isAjax) {
+                    $this->json([
+                        'status' => 2, 
+                        'message' => 'Hooray! Item added to your cart!', 
+                        'number_of_cart' => $numCart
+                    ]);
+                    return;
                 }
             }
         }
 
-        $this->redirect(BASE_URL . 'shopping_cart.php');
+        $this->redirect(BASE_URL . 'cart.php');
     }
 
     public function remove($id = null) {

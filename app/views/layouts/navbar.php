@@ -41,7 +41,11 @@ $cart_count = addCard();
 $wish_count = getWishlistCount();
 $is_logged_in = !empty($_SESSION['uname']) || (!empty($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true);
 $user_display_name = $is_logged_in ? $_SESSION['uname'] : 'Login / Register';
-
+?>
+<script>
+window.IS_USER_LOGGED_IN = <?php echo $is_logged_in ? 'true' : 'false'; ?>;
+</script>
+<?php
 $current_page = basename($_SERVER['SCRIPT_NAME']);
 $current_uri = $_SERVER['REQUEST_URI'] ?? '';
 $is_shop = ($current_page == 'allproducts.php' || strpos($current_uri, 'allproducts') !== false);
@@ -103,42 +107,48 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
 
 /* Brand Logo */
 .uls-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0px !important;
     text-decoration: none !important;
-    flex-shrink: 0;
+    flex-shrink: 0 !important;
 }
 .uls-brand img, .uls-brand-logo-img {
-    height: 48px;
-    max-height: 48px;
-    width: auto;
-    object-fit: contain;
+    height: 48px !important;
+    max-height: 48px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    margin: 0 -12px 0 0 !important;
+    padding: 0 !important;
     filter: drop-shadow(0 2px 6px rgba(0, 112, 243, 0.25));
 }
 .uls-brand-text-wrap {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    line-height: 0.95;
-    margin-left: 2px;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    line-height: 0.95 !important;
+    margin: 0 !important;
+    padding-left: 0px !important;
 }
 .uls-brand-title-main {
     font-family: 'Poppins', sans-serif !important;
-    font-size: 20px;
-    font-weight: 900;
-    color: #0B192C;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+    font-size: 20px !important;
+    font-weight: 900 !important;
+    color: #0B192C !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 .uls-brand-title-sub {
     font-family: 'Poppins', sans-serif !important;
-    font-size: 10px;
-    font-weight: 800;
-    color: #0070F3;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-top: 1px;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    color: #0070F3 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    margin-top: 1px !important;
+    padding: 0 !important;
 }
 
 /* Center Search Bar (Wide, Light Gray Fill, Rounded) */

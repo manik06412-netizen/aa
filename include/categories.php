@@ -344,10 +344,37 @@
     </style>
 </div>
 
-<!-- AJAX Add to Cart Function -->
+<!-- AJAX Add to Cart Function with Toastr Notifications -->
 <script>
 function quickAddToCart(productId, btn) {
     if (!productId) return;
+
+    // Toastr default options
+    if (typeof toastr !== 'undefined') {
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+    }
+
+    // Check if user is logged in
+    if (typeof window.IS_USER_LOGGED_IN !== 'undefined' && !window.IS_USER_LOGGED_IN) {
+        if (typeof toastr !== 'undefined') {
+            toastr.warning('Please log in to add products to your cart!', 'Login Required');
+        } else {
+            alert('Please log in to add products to your cart!');
+        }
+        setTimeout(function() {
+            window.location.href = 'login.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+        }, 1200);
+        return;
+    }
+
     var $btn = $(btn);
     var origHtml = $btn.html();
     $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
@@ -361,7 +388,7 @@ function quickAddToCart(productId, btn) {
             $btn.prop('disabled', false).html(origHtml);
             if (resp && resp.status == 3) {
                 if (typeof toastr !== 'undefined') {
-                    toastr.info('🛒 Item is already in your cart! Quantity updated to ' + (resp.new_qty || 2), 'Already in Cart');
+                    toastr.info('🛒 Item is already in your cart! Quantity updated.', 'Cart Updated');
                 } else {
                     alert('🛒 Item is already in your cart! Quantity updated.');
                 }
@@ -371,15 +398,23 @@ function quickAddToCart(productId, btn) {
                 } else {
                     alert('✅ Item added to your cart!');
                 }
+            } else {
+                if (typeof toastr !== 'undefined') {
+                    toastr.success('✅ Item added to your cart!', 'Success');
+                } else {
+                    alert('✅ Item added to your cart!');
+                }
             }
             if (resp && typeof resp.number_of_cart !== 'undefined') {
-                $('.uls-badge-count, #ulsCartBadge, .kc-cart-badge').text(resp.number_of_cart);
+                $('.uls-badge, #cartCountBadge, #ulsCartBadge, .kc-cart-badge').text(resp.number_of_cart).show();
             }
         },
         error: function() {
             $btn.prop('disabled', false).html(origHtml);
             if (typeof toastr !== 'undefined') {
-                toastr.error('Failed to update cart. Please try again.');
+                toastr.error('Failed to update cart. Please try again.', 'Error');
+            } else {
+                alert('Failed to update cart. Please try again.');
             }
         }
     });

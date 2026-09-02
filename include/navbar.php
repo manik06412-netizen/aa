@@ -41,7 +41,11 @@ $cart_count = addCard();
 $wish_count = getWishlistCount();
 $is_logged_in = !empty($_SESSION['uname']) || (!empty($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true);
 $user_display_name = $is_logged_in ? $_SESSION['uname'] : 'Login / Register';
-
+?>
+<script>
+window.IS_USER_LOGGED_IN = <?php echo $is_logged_in ? 'true' : 'false'; ?>;
+</script>
+<?php
 $current_page = basename($_SERVER['SCRIPT_NAME']);
 $current_uri = $_SERVER['REQUEST_URI'] ?? '';
 $is_shop = (strpos($current_uri, 'category_list') !== false || strpos($current_uri, 'allproducts') !== false || $current_page == 'category_list.php' || $current_page == 'allproducts.php');
@@ -121,12 +125,16 @@ $is_contact = ($current_page == 'contact.php' || strpos($current_uri, 'contact')
 .kc-nav-brand {
     display: inline-flex !important;
     align-items: center !important;
+    gap: 0px !important;
     text-decoration: none !important;
+    flex-shrink: 0 !important;
 }
 .kc-nav-brand img {
-    max-height: 44px !important;
+    max-height: 48px !important;
     width: auto !important;
     object-fit: contain !important;
+    margin: 0 -12px 0 0 !important;
+    padding: 0 !important;
 }
 
 /* Center: Navigation Menu */

@@ -1,4 +1,4 @@
-﻿<?php 
+<?php 
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
    error_reporting(0);
    require('include/header.php');
@@ -202,17 +202,23 @@ unset($_SESSION['shopping_remove']);
                                       $stock_color= '';
                                     //   $psel=mysqli_query($con,"SELECT * FROM dishes inner join price on dishes.rs_id=price.pcode where dishes.rs_id='$product_id' and price.id='$cpr_id' and dishes.status='1'");
 
-                                    $psel = mysqli_query($con, " SELECT  dishes.*,  prd_stock.*, 
-                                      price.*  FROM dishes INNER JOIN  prd_stock ON dishes.rs_id = prd_stock.pd_code 
-                                     INNER JOIN  price ON prd_stock.price_id = price.id INNER JOIN ( SELECT  price_id, 
-                                     MAX(id) AS max_id FROM  prd_stock GROUP BY price_id) latest_price ON prd_stock.id = latest_price.max_id  where price.pcode='$product_id' AND price.id='$cpr_id' AND  dishes.status='1'");
-
-
-
+                                      $psel = mysqli_query($con, "SELECT d.*, 
+                                            COALESCE(p.pp, '$camt', 0) as pp, 
+                                            COALESCE(p.oprice, 0) as oprice, 
+                                            COALESCE(p.qn, '1 Unit') as qn, 
+                                            COALESCE(p.wg, '2.5 kg') as wg, 
+                                            COALESCE(p.discount, 0) as discount, 
+                                            COALESCE(p.total_stock, 50) as total, 
+                                            COALESCE(p.s_status, '1') as s_status,
+                                            COALESCE(p.id, '$cpr_id') as price_id
+                                        FROM dishes d
+                                        LEFT JOIN price p ON (d.rs_id = p.pcode OR d.d_id = p.pcode OR p.id = '$cpr_id')
+                                        WHERE (d.rs_id = '$product_id' OR d.d_id = '$product_id') AND d.status = '1'
+                                        LIMIT 1");
 
                                       if($prow=mysqli_fetch_array($psel)){ 
                                           $img=$prow['img'];
-                                          $id=$prow['id'];
+                                          $id=$prow['price_id'];
                                           $cprice=$prow['pp'];
                                           $oprice=$prow['oprice'];
                                           $cprqn=$prow['qn'];
@@ -220,20 +226,19 @@ unset($_SESSION['shopping_remove']);
                                           $title=$prow['dish_name'];
                                           $s_stock = $prow['s_status'];
                                           $cprid=$prow['rs_id'];
-                                          $img=$prow['img'];
                                           $category = $prow['category'];
                                           $brand_name = $prow['brand_name'];
                                           $refund=$prow['refund'];
                                           $del_opt = $prow['deliv_opt'];
-                                           $discount_per=$prow['discount'];
-                                        $total_stock=  $prow['total'];
+                                          $discount_per=$prow['discount'];
+                                          $total_stock= $prow['total'];
                                           $discount_per_1=$prow['discount'] ? $prow['discount'] : 0;
                                           $discount_amount = $camt - ($camt * $discount_per_1 / 100);
-                                           $product_dis_amt = $camt - $discount_amount;
+                                          $product_dis_amt = $camt - $discount_amount;
                                           $total_discount += $discount_amount;
-                                        $get_amount = $discount_amount * ($cgst / 100);
-                                        $total_of_get =  $discount_amount +  $get_amount;
-                                        $final_price += $total_of_get;
+                                          $get_amount = $discount_amount * ($cgst / 100);
+                                          $total_of_get =  $discount_amount +  $get_amount;
+                                          $final_price += $total_of_get;
 
                                            $total_price_of = $subTotal - $total_discount;
                                           if ($refund == 'Refundable') {
@@ -271,9 +276,10 @@ unset($_SESSION['shopping_remove']);
                                     <div class="card-body pt-3 pb-3 ml-2 mr-2 mt-2 mb-2">
                                         <div class="row">
 
-                                            <div class="col-lg-3  col-12">
-                                                <img class="w-100 img-thumbnail" style="height:150px;"
-                                                    src="./avadmin/<?php echo $img; ?>" alt="shipping cart">
+                                            <div class="col-lg-3 col-12 text-center">
+                                                <img class="w-100 img-thumbnail" style="height:140px; object-fit:contain; background:#f8fafc;"
+                                                    src="<?php echo resolve_image_url($img); ?>" alt="<?php echo htmlspecialchars($title); ?>"
+                                                    onerror="this.src='img/products/hp_laptop.jpg'">
                                             </div>
                                             <div class="col-lg-6 col-12 ">
                                                 <div class="pb-2">

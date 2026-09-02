@@ -1,4 +1,4 @@
-﻿<?php 
+<?php 
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 error_reporting(0);
 include('include/header.php');
@@ -175,14 +175,14 @@ body {
                             <div class="col-6">
                                 <div class="kc-form-group">
                                     <label>First Name</label>
-                                    <i class="ti-user kc-form-icon"></i>
+                                    <i class="fa-solid fa-user kc-form-icon"></i>
                                     <input class="kc-form-control" name="fname" required type="text" placeholder="First Name">
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="kc-form-group">
                                     <label>Last Name</label>
-                                    <i class="ti-user kc-form-icon"></i>
+                                    <i class="fa-solid fa-user kc-form-icon"></i>
                                     <input class="kc-form-control" name="lname" type="text" required placeholder="Last Name">
                                 </div>
                             </div>
@@ -190,19 +190,19 @@ body {
 
                         <div class="kc-form-group">
                             <label>Email Address</label>
-                            <i class="icon_mail_alt kc-form-icon"></i>
+                            <i class="fa-solid fa-envelope kc-form-icon"></i>
                             <input class="kc-form-control" id="fid-name" name="email" type="email" required placeholder="Enter your email">
                         </div>
 
                         <div class="kc-form-group">
                             <label>Mobile Number</label>
-                            <i class="ti-mobile kc-form-icon"></i>
+                            <i class="fa-solid fa-mobile-screen kc-form-icon"></i>
                             <input class="kc-form-control" id="phoneNumber" name="mobile" minlength="10" maxlength="10" onkeypress="return phoneNumberValidation(event)" required placeholder="10-digit mobile number">
                         </div>
 
                         <div class="kc-form-group">
                             <label>Password</label>
-                            <i class="icon_lock_alt kc-form-icon"></i>
+                            <i class="fa-solid fa-lock kc-form-icon"></i>
                             <input class="kc-form-control" type="password" id="fid-pass" name="pwd" required placeholder="Create a strong password">
                         </div>
                         

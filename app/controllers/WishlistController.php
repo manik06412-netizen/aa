@@ -15,14 +15,13 @@ class WishlistController extends Controller {
         $uEsc = mysqli_real_escape_string($con, (string)$userId);
         $res = mysqli_query($con, "SELECT w.id as wish_id, w.pr_id, w.date as wish_date,
                                            d.d_id, d.rs_id, d.dish_name, d.img as d_img, d.category, d.cateid, d.ratings,
-                                           COALESCE(MIN(p.pp), 0) as pp, 
-                                           COALESCE(MAX(p.oprice), 0) as oprice,
-                                           COALESCE(MIN(p.id), 0) as price_id
+                                           COALESCE(p.pp, 0) as pp, 
+                                           COALESCE(p.oprice, 0) as oprice,
+                                           COALESCE(p.id, 0) as price_id
                                     FROM watch_list w 
                                     LEFT JOIN dishes d ON (w.pr_id = d.rs_id OR w.pr_id = d.d_id)
                                     LEFT JOIN price p ON (d.rs_id = p.pcode OR d.d_id = p.pcode) 
                                     WHERE w.userid = '$uEsc'
-                                    GROUP BY w.id, d.d_id
                                     ORDER BY w.id DESC");
         $items = [];
         if ($res && mysqli_num_rows($res) > 0) {

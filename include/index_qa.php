@@ -2,11 +2,37 @@
      KARUDA COMPUTERS — ULTRA MODERN FAQ SECTION
 ══════════════════════════════════════════════════════════ -->
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
 /* Scoped FAQ Accordion Styling */
 .kc-faq-section {
     background: #F8FAFC !important;
     padding: 60px 0 75px !important;
     position: relative;
+    font-family: 'Outfit', 'Poppins', sans-serif !important;
+}
+.kc-modern-heading {
+    font-family: 'Outfit', 'Poppins', sans-serif !important;
+    font-size: 34px !important;
+    font-weight: 800 !important;
+    color: #0B192C !important;
+    letter-spacing: -0.5px !important;
+    margin-top: 10px !important;
+    margin-bottom: 12px !important;
+}
+.kc-heading-gradient {
+    background: linear-gradient(135deg, #0070F3 0%, #00BCD4 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    font-weight: 900 !important;
+}
+.kc-section-sub {
+    font-family: 'Outfit', 'Poppins', sans-serif !important;
+    font-size: 15px !important;
+    color: #64748B !important;
+    max-width: 680px !important;
+    margin: 0 auto !important;
+    line-height: 1.6 !important;
 }
 .kc-faq-accordion {
     display: flex !important;
@@ -171,6 +197,70 @@ button.kc-faq-header:hover .kc-faq-question {
     box-shadow: 0 10px 30px rgba(11, 25, 44, 0.15) !important;
     color: #ffffff !important;
 }
+
+/* Full Width Promo Ad Banner Card (Fetched from Admin) */
+.kc-faq-ad-card {
+    background: linear-gradient(135deg, #0B192C 0%, #1E3E62 100%) !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    box-shadow: 0 15px 35px rgba(11, 25, 44, 0.25) !important;
+    border: 1px solid rgba(0, 188, 212, 0.3) !important;
+    position: relative !important;
+}
+.kc-ad-badge {
+    display: inline-block !important;
+    background: rgba(0, 112, 243, 0.25) !important;
+    color: #38BDF8 !important;
+    border: 1px solid #0070F3 !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    padding: 4px 12px !important;
+    border-radius: 20px !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    margin-bottom: 12px !important;
+}
+.kc-ad-title {
+    font-family: 'Outfit', 'Poppins', sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    line-height: 1.3 !important;
+    margin-bottom: 10px !important;
+    text-transform: uppercase !important;
+}
+.kc-ad-sub {
+    font-family: 'Outfit', 'Poppins', sans-serif !important;
+    font-size: 14.5px !important;
+    color: #94A3B8 !important;
+    margin: 0 !important;
+    line-height: 1.6 !important;
+}
+.kc-ad-btn {
+    background: linear-gradient(135deg, #0070F3, #00BCD4) !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    padding: 12px 28px !important;
+    border-radius: 10px !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    box-shadow: 0 6px 20px rgba(0, 188, 212, 0.35) !important;
+    transition: all 0.25s ease !important;
+}
+.kc-ad-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 25px rgba(0, 188, 212, 0.5) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+.kc-ad-img {
+    max-height: 200px !important;
+    border-radius: 12px !important;
+    object-fit: cover !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3) !important;
+}
 .kc-support-icon {
     width: 48px;
     height: 48px;
@@ -322,6 +412,72 @@ button.kc-faq-header:hover .kc-faq-question {
                         </div>
                     </div>
                     <?php endforeach; ?>
+                </div>
+
+                <!-- Dynamic Admin Advertisement Card Section -->
+                <?php
+                // Fetch dynamic advertisement banner set from Admin Panel
+                $ad_data = null;
+                if (isset($con) && $con) {
+                    // Check adds table first
+                    $ad_q = mysqli_query($con, "SELECT * FROM adds ORDER BY id DESC LIMIT 1");
+                    if ($ad_q && mysqli_num_rows($ad_q) > 0) {
+                        $ad_row = mysqli_fetch_assoc($ad_q);
+                        if (!empty($ad_row['fpath'])) {
+                            $ad_data = [
+                                'title' => 'SPECIAL TECH PROMO',
+                                'subtitle' => 'Exclusive Deals on Laptops, Custom PCs & Computer Hardware',
+                                'img' => resolve_image_url($ad_row['fpath']),
+                                'link' => 'allproducts.php',
+                                'badge' => 'ADMIN FEATURED AD'
+                            ];
+                        }
+                    }
+                    // Fallback to banner table if no adds table row
+                    if (!$ad_data) {
+                        $ban_q = mysqli_query($con, "SELECT * FROM banner ORDER BY id DESC LIMIT 1");
+                        if ($ban_q && mysqli_num_rows($ban_q) > 0) {
+                            $b_row = mysqli_fetch_assoc($ban_q);
+                            $ad_data = [
+                                'title' => !empty($b_row['k1']) ? strip_tags($b_row['k1']) : 'KARUDA COMPUTERS SPECIAL OFFER',
+                                'subtitle' => !empty($b_row['k3']) ? $b_row['k3'] : 'Upgrade your setup with genuine high-performance computer hardware.',
+                                'img' => !empty($b_row['fpath']) ? resolve_image_url($b_row['fpath']) : 'img/karuda_hero_gaming_pc.jpg',
+                                'link' => !empty($b_row['link']) ? $b_row['link'] : 'allproducts.php',
+                                'badge' => !empty($b_row['k2']) ? $b_row['k2'] : 'EXCLUSIVE PROMO'
+                            ];
+                        }
+                    }
+                }
+
+                // Default Fallback Card if DB returns empty
+                if (!$ad_data) {
+                    $ad_data = [
+                        'title' => 'BUILD YOUR CUSTOM GAMING PC TODAY',
+                        'subtitle' => 'Get up to 25% OFF on RTX GPUs, Intel i9 Processors & DDR5 RAM + Free Nationwide Express Delivery!',
+                        'img' => 'img/karuda_hero_gaming_pc.jpg',
+                        'link' => 'allproducts.php',
+                        'badge' => 'EXCLUSIVE TECH PROMO'
+                    ];
+                }
+                ?>
+                <div class="kc-faq-ad-card mt-5 mb-4">
+                    <div class="kc-ad-card-inner">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7 col-md-6 p-4 p-lg-5">
+                                <span class="kc-ad-badge"><i class="fa fa-fire text-warning mr-1"></i> <?php echo htmlspecialchars($ad_data['badge']); ?></span>
+                                <h3 class="kc-ad-title"><?php echo htmlspecialchars($ad_data['title']); ?></h3>
+                                <p class="kc-ad-sub"><?php echo htmlspecialchars($ad_data['subtitle']); ?></p>
+                                <div class="mt-4">
+                                    <a href="<?php echo htmlspecialchars($ad_data['link']); ?>" class="kc-ad-btn">
+                                        <span>EXPLORE DEALS</span> <i class="fa fa-arrow-right ml-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-6 text-center p-3">
+                                <img src="<?php echo htmlspecialchars($ad_data['img']); ?>" alt="Advertisement Promo" class="kc-ad-img img-fluid" onerror="this.src='img/karuda_hero_gaming_pc.jpg'">
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Bottom Support Banner -->

@@ -57,10 +57,10 @@ if (!defined('BASE_URL')) {
     define('BASE_URL', '');
 }
 if (!defined('ADMIN_URL')) {
-    define('ADMIN_URL', BASE_URL . 'admin/');
+    define('ADMIN_URL', BASE_URL . 'admin1/');
 }
 if (!defined('AVADMIN_URL')) {
-    define('AVADMIN_URL', BASE_URL . 'avadmin/');
+    define('AVADMIN_URL', BASE_URL . 'admin1/');
 }
 if (!defined('ADMIN1_URL')) {
     define('ADMIN1_URL', BASE_URL . 'admin1/');

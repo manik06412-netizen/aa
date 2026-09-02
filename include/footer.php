@@ -39,25 +39,54 @@
     z-index: 1;
 }
 .kc-footer-brand-logo {
-    display: inline-flex;
-    align-items: center;
-    background: #02070F;
-    border: 1.5px solid #1E293B;
-    border-radius: 12px;
-    padding: 8px 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0px !important;
+    background: #02070F !important;
+    border: 1.5px solid #0070F3 !important;
+    border-radius: 12px !important;
+    padding: 8px 16px !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 8px 24px rgba(0, 112, 243, 0.3) !important;
+    transition: all 0.3s ease !important;
 }
 .kc-footer-brand-logo:hover {
-    border-color: #00BCD4;
-    box-shadow: 0 0 20px rgba(0, 188, 212, 0.35);
-    transform: translateY(-2px);
+    border-color: #00BCD4 !important;
+    box-shadow: 0 0 25px rgba(0, 188, 212, 0.5) !important;
+    transform: translateY(-2px) !important;
 }
-.kc-footer-brand-logo img {
-    height: 46px !important;
+.kc-footer-logo-img {
+    height: 48px !important;
+    max-height: 48px !important;
     width: auto !important;
-    object-fit: contain;
+    object-fit: contain !important;
+    margin: 0 -4px 0 0 !important;
+    filter: drop-shadow(0 2px 8px rgba(0, 188, 212, 0.6)) !important;
+}
+.kc-footer-text-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    line-height: 0.95 !important;
+    margin: 0 !important;
+}
+.kc-footer-title-main {
+    font-family: 'Poppins', 'Outfit', sans-serif !important;
+    font-size: 20px !important;
+    font-weight: 900 !important;
+    color: #FFFFFF !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.4) !important;
+}
+.kc-footer-title-sub {
+    font-family: 'Poppins', 'Outfit', sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    color: #00BCD4 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    margin-top: 1px !important;
 }
 .kc-footer-brand-bio {
     font-size: 13.5px;
@@ -278,9 +307,13 @@
                 
                 <!-- Col 1: Brand & Contact Info (3.5 cols) -->
                 <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0 pr-lg-4">
-                    <a href="index.php" class="d-inline-block">
+                    <a href="index.php" class="d-inline-block text-decoration-none">
                         <div class="kc-footer-brand-logo">
-                            <img src="img/karuda_logo.png" alt="Karuda Computers" onerror="this.src='img/logo.png'">
+                            <img src="img/karuda_eagle_logo.png" alt="Karuda Computers" class="kc-footer-logo-img" onerror="this.src='img/logo.png'">
+                            <div class="kc-footer-text-wrap">
+                                <span class="kc-footer-title-main">KARUDA</span>
+                                <span class="kc-footer-title-sub">COMPUTERS</span>
+                            </div>
                         </div>
                     </a>
                     <p class="kc-footer-brand-bio">
@@ -401,6 +434,71 @@
             </div>
         </div>
     </div>
+<script>
+if (typeof window.quickAddToCart !== 'function') {
+    window.quickAddToCart = function(productId, btn) {
+        if (!productId) return;
+        if (typeof toastr !== 'undefined') {
+            toastr.options = { "closeButton": true, "progressBar": true, "positionClass": "toast-top-right", "timeOut": "3000" };
+        }
+        if (typeof window.IS_USER_LOGGED_IN !== 'undefined' && !window.IS_USER_LOGGED_IN) {
+            if (typeof toastr !== 'undefined') {
+                toastr.warning('Please log in to add products to your cart!', 'Login Required');
+            } else {
+                alert('Please log in to add products to your cart!');
+            }
+            setTimeout(function() {
+                window.location.href = 'login.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+            }, 1200);
+            return;
+        }
+
+        var $btn = $(btn);
+        var origHtml = $btn.html();
+        $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
+
+        $.ajax({
+            url: 'cart.php?action=add',
+            type: 'POST',
+            data: { prdid: productId, pid: 0, qty: 1 },
+            dataType: 'json',
+            success: function(resp) {
+                $btn.prop('disabled', false).html(origHtml);
+                if (resp && resp.status == 3) {
+                    if (typeof toastr !== 'undefined') {
+                        toastr.info('🛒 Item is already in your cart! Quantity updated.', 'Cart Updated');
+                    } else {
+                        alert('🛒 Item is already in your cart! Quantity updated.');
+                    }
+                } else if (resp && resp.status == 2) {
+                    if (typeof toastr !== 'undefined') {
+                        toastr.success('✅ Item added to your cart!', 'Success');
+                    } else {
+                        alert('✅ Item added to your cart!');
+                    }
+                } else {
+                    if (typeof toastr !== 'undefined') {
+                        toastr.success('✅ Item added to your cart!', 'Success');
+                    } else {
+                        alert('✅ Item added to your cart!');
+                    }
+                }
+                if (resp && typeof resp.number_of_cart !== 'undefined') {
+                    $('.uls-badge, #cartCountBadge, #ulsCartBadge, .kc-cart-badge').text(resp.number_of_cart).show();
+                }
+            },
+            error: function() {
+                $btn.prop('disabled', false).html(origHtml);
+                if (typeof toastr !== 'undefined') {
+                    toastr.error('Failed to update cart. Please try again.', 'Error');
+                } else {
+                    alert('Failed to update cart. Please try again.');
+                }
+            }
+        });
+    };
+}
+</script>
 </footer>
 
 <script>

@@ -1,4 +1,4 @@
-﻿<?php 
+<?php 
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 error_reporting(0);
 include('include/header.php');
@@ -188,13 +188,13 @@ body {
                         
                         <div class="kc-form-group">
                             <label>Email Address</label>
-                            <i class="icon_mail_alt kc-form-icon"></i>
+                            <i class="fa-solid fa-envelope kc-form-icon"></i>
                             <input type="email" class="kc-form-control" name="uemail" id="email" required placeholder="Enter your email">
                         </div>
 
                         <div class="kc-form-group">
                             <label>Password</label>
-                            <i class="icon_lock_alt kc-form-icon"></i>
+                            <i class="fa-solid fa-lock kc-form-icon"></i>
                             <input type="password" class="kc-form-control" name="upwd" id="password" required placeholder="Enter your password">
                         </div>
                         
