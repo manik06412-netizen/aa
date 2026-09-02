@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://avherbals.in/index.php?sitemap.xml
+Sitemap: https://avherbals.in/savep.php?sitemap.xml

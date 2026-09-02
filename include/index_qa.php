@@ -1,0 +1,374 @@
+<!-- ══════════════════════════════════════════════════════════
+     KARUDA COMPUTERS — ULTRA MODERN FAQ SECTION
+══════════════════════════════════════════════════════════ -->
+<style>
+/* Scoped FAQ Accordion Styling */
+.kc-faq-section {
+    background: #F8FAFC !important;
+    padding: 60px 0 75px !important;
+    position: relative;
+}
+.kc-faq-accordion {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    width: 100% !important;
+}
+.kc-faq-card {
+    background: #ffffff !important;
+    border: 1.5px solid #E2E8F0 !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    box-shadow: 0 4px 18px rgba(11, 25, 44, 0.04) !important;
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+}
+.kc-faq-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 5px !important;
+    background: linear-gradient(180deg, #0070F3, #00BCD4) !important;
+    opacity: 0;
+    transition: opacity 0.3s ease !important;
+}
+.kc-faq-card:hover {
+    border-color: #93C5FD !important;
+    box-shadow: 0 10px 28px rgba(0, 112, 243, 0.1) !important;
+    transform: translateY(-2px);
+}
+.kc-faq-card.active-faq {
+    border-color: #60A5FA !important;
+    box-shadow: 0 12px 32px rgba(0, 112, 243, 0.12) !important;
+}
+.kc-faq-card.active-faq::before {
+    opacity: 1 !important;
+}
+
+/* Header Button */
+button.kc-faq-header {
+    width: 100% !important;
+    background: #ffffff !important;
+    border: none !important;
+    border-radius: 16px !important;
+    padding: 20px 24px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    cursor: pointer !important;
+    text-align: left !important;
+    outline: none !important;
+    box-shadow: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    transition: all 0.25s ease !important;
+}
+button.kc-faq-header:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+.kc-faq-question-wrap {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 16px !important;
+    flex: 1 !important;
+}
+.kc-faq-q-num {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    color: #0B192C !important;
+    background: #EFF6FF !important;
+    border: 1px solid #DBEAFE !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    transition: all 0.25s ease !important;
+}
+.kc-faq-card.active-faq .kc-faq-q-num {
+    background: linear-gradient(135deg, #0D47A1, #0070F3) !important;
+    color: #ffffff !important;
+    border-color: #0070F3 !important;
+    box-shadow: 0 4px 12px rgba(0, 112, 243, 0.35) !important;
+}
+.kc-faq-question {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #0B192C !important;
+    margin: 0 !important;
+    letter-spacing: -0.2px !important;
+    transition: color 0.25s ease !important;
+    line-height: 1.4 !important;
+}
+.kc-faq-card.active-faq .kc-faq-question,
+button.kc-faq-header:hover .kc-faq-question {
+    color: #0070F3 !important;
+}
+
+/* Toggle Icon */
+.kc-faq-toggle-icon {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    background: #F8FAFC !important;
+    border: 1px solid #E2E8F0 !important;
+    color: #64748B !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 13px !important;
+    flex-shrink: 0 !important;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+.kc-faq-card.active-faq .kc-faq-toggle-icon {
+    background: #0B192C !important;
+    border-color: #0B192C !important;
+    color: #ffffff !important;
+    transform: rotate(45deg) !important;
+    box-shadow: 0 4px 12px rgba(11, 25, 44, 0.35) !important;
+}
+
+/* Answer Body */
+.kc-faq-body {
+    padding: 0 24px 22px 76px !important;
+}
+@media (max-width: 767px) {
+    .kc-faq-body {
+        padding: 0 18px 18px !important;
+    }
+}
+.kc-faq-answer-inner {
+    background: #F8FAFC !important;
+    border-radius: 12px !important;
+    padding: 18px 22px !important;
+    border: 1px solid #F1F5F9 !important;
+}
+.kc-faq-answer-inner p {
+    font-size: 14.5px !important;
+    color: #475569 !important;
+    line-height: 1.75 !important;
+    margin: 0 !important;
+}
+
+/* Support Prompt Bar */
+.kc-faq-support-bar {
+    background: linear-gradient(135deg, #0B192C 0%, #1A365D 100%) !important;
+    border-radius: 18px !important;
+    padding: 24px 30px !important;
+    border: 1px solid rgba(0, 188, 212, 0.25) !important;
+    box-shadow: 0 10px 30px rgba(11, 25, 44, 0.15) !important;
+    color: #ffffff !important;
+}
+.kc-support-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(0, 188, 212, 0.15);
+    border: 1px solid rgba(0, 188, 212, 0.35);
+    color: #00BCD4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+.kc-support-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    margin: 0 0 3px !important;
+}
+.kc-support-sub {
+    font-size: 13px !important;
+    color: #94A3B8 !important;
+    margin: 0 !important;
+}
+.kc-support-btn {
+    background: linear-gradient(135deg, #0070F3, #00BCD4) !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    padding: 12px 24px !important;
+    border-radius: 10px !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 16px rgba(0, 188, 212, 0.4) !important;
+    transition: all 0.25s ease !important;
+    white-space: nowrap !important;
+}
+.kc-support-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0, 188, 212, 0.6) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+</style>
+
+<section class="kc-faq-section py-5">
+    <div class="container">
+        
+        <!-- Section Header -->
+        <div class="kc-section-header text-center mb-5">
+            <span class="kc-badge-pill">
+                <i class="fa fa-circle-question"></i> Help & Clarifications
+            </span>
+            <h2 class="kc-modern-heading">
+                Frequently Asked <span class="kc-heading-gradient">Questions</span>
+            </h2>
+            <p class="kc-section-sub">
+                Quick answers to common queries regarding genuine hardware, custom PC builds, warranty coverage, and nationwide delivery.
+            </p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-12">
+                <div class="kc-faq-accordion" id="kc_faq_accordion">
+                    <?php
+                    $faqs_list = [];
+                    if (isset($faqs) && is_array($faqs) && !empty($faqs)) {
+                        $faqs_list = $faqs;
+                    } else {
+                        $sql = "SELECT * FROM tbl_faq ORDER BY faq_id ASC LIMIT 6";
+                        $query = mysqli_query($con, $sql);
+                        if ($query && mysqli_num_rows($query) > 0) {
+                            while ($r = mysqli_fetch_assoc($query)) {
+                                $faqs_list[] = $r;
+                            }
+                        }
+                    }
+
+                    // Fallback if no database records
+                    if (empty($faqs_list)) {
+                        $faqs_list = [
+                            [
+                                'faq_id' => 1,
+                                'faq_title' => 'What payment methods do you accept?',
+                                'faq_content' => 'We accept all major Credit/Debit cards (Visa, Mastercard, RuPay), UPI (Google Pay, PhonePe, Paytm, BHIM), Net Banking, and secure EMI options.'
+                            ],
+                            [
+                                'faq_id' => 2,
+                                'faq_title' => 'Can I upgrade my RAM, SSD, or graphics card after purchase?',
+                                'faq_content' => 'Yes! We design all our prebuilt desktop systems with upgradeability in mind. Our support team can advise you on compatible future upgrades at any time.'
+                            ],
+                            [
+                                'faq_id' => 3,
+                                'faq_title' => 'What is the standard delivery timeline for orders across India?',
+                                'faq_content' => 'Orders are securely packed with multi-layer protective packaging and dispatched within 24–48 hours. Standard courier delivery takes 3–5 business days with real-time tracking.'
+                            ],
+                            [
+                                'faq_id' => 4,
+                                'faq_title' => 'What warranty support is provided on laptops, GPUs, and processors?',
+                                'faq_content' => 'All products come with 100% official manufacturer warranty (typically 1 to 3 years depending on the brand and part). You can claim warranty at any authorized service center or via Karuda Computers support.'
+                            ],
+                            [
+                                'faq_id' => 5,
+                                'faq_title' => 'Do you provide Custom PC Building services for gaming and workstations?',
+                                'faq_content' => 'Absolutely. Our technical experts assist in part selection, compatibility verification, high-airflow assembly, cable management, BIOS configuration, stress-testing, and OS installation.'
+                            ],
+                            [
+                                'faq_id' => 6,
+                                'faq_title' => 'Are all computers, laptops and parts sold by Karuda Computers 100% genuine?',
+                                'faq_content' => 'Yes! We only source brand-new, 100% genuine products directly from authorized global manufacturers including HP, ASUS, Lenovo, Intel, AMD, NVIDIA, and Dell, backed by official brand warranties.'
+                            ]
+                        ];
+                    }
+
+                    $idx = 0;
+                    foreach ($faqs_list as $faq):
+                        $idx++;
+                        $fid = !empty($faq['faq_id']) ? $faq['faq_id'] : $idx;
+                        $title = !empty($faq['faq_title']) ? $faq['faq_title'] : ($faq['q'] ?? '');
+                        $content = !empty($faq['faq_content']) ? $faq['faq_content'] : ($faq['a'] ?? '');
+                        $isOpen = ($idx === 1);
+                    ?>
+                    <div class="kc-faq-card <?php echo $isOpen ? 'active-faq' : ''; ?>" id="faq_wrap_<?php echo $fid; ?>">
+                        <button class="kc-faq-header <?php echo $isOpen ? '' : 'collapsed'; ?>" 
+                                type="button" 
+                                onclick="toggleFaq('<?php echo $fid; ?>')">
+                            <div class="kc-faq-question-wrap">
+                                <span class="kc-faq-q-num"><?php echo str_pad($idx, 2, '0', STR_PAD_LEFT); ?></span>
+                                <span class="kc-faq-question"><?php echo htmlspecialchars($title); ?></span>
+                            </div>
+                            <span class="kc-faq-toggle-icon">
+                                <i class="fa fa-plus"></i>
+                            </span>
+                        </button>
+                        
+                        <div id="faq_body_<?php echo $fid; ?>" 
+                             class="kc-faq-collapse-body"
+                             style="<?php echo $isOpen ? 'display:block;' : 'display:none;'; ?>">
+                            <div class="kc-faq-body">
+                                <div class="kc-faq-answer-inner">
+                                    <p><?php echo nl2br(htmlspecialchars($content)); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <!-- Bottom Support Banner -->
+                <div class="kc-faq-support-bar mt-4">
+                    <div class="d-flex align-items-center flex-wrap justify-content-between" style="gap:15px;">
+                        <div class="d-flex align-items-center" style="gap:14px;">
+                            <div class="kc-support-icon">
+                                <i class="fa fa-headset"></i>
+                            </div>
+                            <div>
+                                <h4 class="kc-support-title">Still have questions or need custom hardware guidance?</h4>
+                                <p class="kc-support-sub">Our PC specialists are available 7 days a week to help you choose the right specs.</p>
+                            </div>
+                        </div>
+                        <a href="contact.php" class="kc-support-btn">
+                            <span>Get Tech Consultation</span>
+                            <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+function toggleFaq(fid) {
+    var body = document.getElementById('faq_body_' + fid);
+    var wrap = document.getElementById('faq_wrap_' + fid);
+    if (!body || !wrap) return;
+
+    var isCurrentlyOpen = wrap.classList.contains('active-faq');
+
+    // Close all other FAQs
+    document.querySelectorAll('.kc-faq-card').forEach(function(card) {
+        card.classList.remove('active-faq');
+    });
+    document.querySelectorAll('.kc-faq-collapse-body').forEach(function(b) {
+        b.style.display = 'none';
+    });
+
+    // If it was closed, open it now
+    if (!isCurrentlyOpen) {
+        wrap.classList.add('active-faq');
+        body.style.display = 'block';
+    }
+}
+</script>
