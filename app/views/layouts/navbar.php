@@ -67,12 +67,15 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
 
 .kc-unified-header.uls-header {
     background: #ffffff !important;
-    position: relative;
+    position: sticky !important;
+    top: 0 !important;
     width: 100% !important;
+    z-index: 1000 !important;
     border-bottom: 1px solid #E5E7EB !important;
     padding: 0 !important;
     margin: 0 !important;
     transition: all 0.25s ease;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
 
 .kc-unified-header.uls-header.kc-is-sticky {
@@ -105,20 +108,21 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     gap: 20px;
 }
 
-/* Brand Logo */
+/* Brand Logo (Matching User Uploaded Image) */
 .uls-brand {
     display: inline-flex !important;
     align-items: center !important;
-    gap: 0px !important;
+    gap: 10px !important;
     text-decoration: none !important;
     flex-shrink: 0 !important;
+    white-space: nowrap !important;
 }
 .uls-brand img, .uls-brand-logo-img {
     height: 48px !important;
     max-height: 48px !important;
     width: auto !important;
     object-fit: contain !important;
-    margin: 0 -12px 0 0 !important;
+    margin: 0 !important;
     padding: 0 !important;
     filter: drop-shadow(0 2px 6px rgba(0, 112, 243, 0.25));
 }
@@ -126,35 +130,51 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
-    line-height: 0.95 !important;
+    line-height: 0.9 !important;
     margin: 0 !important;
     padding-left: 0px !important;
 }
 .uls-brand-title-main {
-    font-family: 'Poppins', sans-serif !important;
-    font-size: 20px !important;
+    font-family: 'Poppins', 'Montserrat', 'Inter', sans-serif !important;
+    font-size: 26px !important;
     font-weight: 900 !important;
-    color: #0B192C !important;
+    color: #000000 !important;
     letter-spacing: 0.5px !important;
     text-transform: uppercase !important;
     margin: 0 !important;
     padding: 0 !important;
+    line-height: 1 !important;
 }
 .uls-brand-title-sub {
-    font-family: 'Poppins', sans-serif !important;
-    font-size: 10px !important;
-    font-weight: 800 !important;
+    font-family: 'Poppins', 'Montserrat', 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
     color: #0070F3 !important;
-    letter-spacing: 2px !important;
+    letter-spacing: 5.2px !important;
     text-transform: uppercase !important;
-    margin-top: 1px !important;
+    margin-top: 2px !important;
     padding: 0 !important;
+    line-height: 1 !important;
 }
 
 /* Center Search Bar (Wide, Light Gray Fill, Rounded) */
 .uls-search-col {
     flex: 1;
     max-width: 580px;
+}
+/* On Homepage: Hide top search by default, show smoothly on scroll past hero search */
+.uls-search-col.kc-home-nav-search {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.uls-search-col.kc-home-nav-search.kc-show-top-search {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 .uls-search-wrap {
     position: relative;
@@ -163,16 +183,37 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
 .uls-search-form {
     display: flex;
     align-items: center;
-    background: #F3F4F6;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    padding: 9px 16px;
+    background: #FFFFFF;
+    border: 1.5px solid #38BDF8 !important; /* Light Cyan Border */
+    border-radius: 25px;
+    padding: 6px 14px;
+    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.12);
     transition: all 0.2s ease;
 }
 .uls-search-form:focus-within {
     background: #ffffff;
-    border-color: #CBD5E1;
-    box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.12);
+    border-color: #00BCD4 !important;
+    box-shadow: 0 0 0 3.5px rgba(0, 188, 212, 0.20) !important;
+}
+.uls-mobile-submit-btn {
+    background: linear-gradient(135deg, #00BCD4, #0070F3) !important;
+    color: #ffffff !important;
+    border: none !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    margin-left: 6px !important;
+    flex-shrink: 0 !important;
+    box-shadow: 0 3px 10px rgba(0, 188, 212, 0.35) !important;
+    transition: transform 0.2s ease !important;
+}
+.uls-mobile-submit-btn:hover {
+    transform: scale(1.08) !important;
 }
 .uls-search-icon {
     font-size: 14px;
@@ -221,7 +262,7 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     padding: 4px 0;
 }
 .uls-action-link:hover {
-    color: #0070F3 !important;
+    color: #003B95 !important;
 }
 .uls-action-icon {
     font-size: 17px;
@@ -229,7 +270,7 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     transition: color 0.15s ease;
 }
 .uls-action-link:hover .uls-action-icon {
-    color: #0070F3;
+    color: #003B95;
 }
 .uls-badge-wrap {
     position: relative;
@@ -240,7 +281,7 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     position: absolute;
     top: -8px;
     right: -10px;
-    background: #0070F3;
+    background: #003B95;
     color: #ffffff;
     font-size: 10px;
     font-weight: 800;
@@ -257,18 +298,69 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     background: #EF4444;
 }
 
-/* Mobile Search Bar (under logo on small screens) */
-.uls-mobile-search-wrap {
-    display: none;
-    margin-top: 10px;
-    position: relative;
+/* Mobile Search Bar Trigger & Expandable Box */
+.kc-mobile-search-trigger {
+    display: none !important;
 }
 
-/* ── Row 2: Centered Dark Navy Nav Links (Matching User Screenshot) ── */
+@media (max-width: 991px) {
+    .kc-mobile-search-trigger {
+        display: none !important;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #F1F5F9;
+        color: #0070F3 !important;
+        border: 1px solid #E2E8F0;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity: 0;
+        transform: scale(0.85);
+        pointer-events: none;
+        margin-right: 2px;
+    }
+    
+    .kc-show-mobile-search-icon .kc-mobile-search-trigger {
+        display: inline-flex !important;
+        opacity: 1;
+        transform: scale(1);
+        pointer-events: auto;
+    }
+    
+    .kc-mobile-search-trigger:hover, .kc-mobile-search-trigger.active {
+        background: #0070F3 !important;
+        color: #ffffff !important;
+        border-color: #0070F3 !important;
+        box-shadow: 0 4px 12px rgba(0, 112, 243, 0.35);
+    }
+    
+    .uls-mobile-search-wrap {
+        display: none;
+        margin-top: 10px;
+        position: relative;
+        padding-bottom: 4px;
+    }
+    
+    .uls-mobile-search-wrap.active {
+        display: block !important;
+        animation: kcSlideDownSearch 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+}
+
+@keyframes kcSlideDownSearch {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Row 2: Nav Strip ── */
 .uls-header-nav {
-    background: #0B192C !important;
+    background: linear-gradient(90deg, #002566 0%, #003B95 50%, #002566 100%) !important;
     padding: 0 !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 2px solid #002566;
+    box-shadow: 0 4px 14px rgba(0, 37, 102, 0.35);
 }
 .uls-nav-row {
     display: flex;
@@ -280,13 +372,22 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 28px;
+    gap: 16px;
     list-style: none;
     margin: 0;
     padding: 0;
 }
 .uls-nav-item {
     position: relative;
+    display: flex;
+    align-items: center;
+}
+.uls-nav-item:not(:last-child)::after {
+    content: '/';
+    margin-left: 16px;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 15px;
+    font-weight: 300;
 }
 .uls-nav-item > a {
     color: #FFFFFF !important;
@@ -295,7 +396,7 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     font-weight: 700;
     letter-spacing: 0.6px;
     text-transform: uppercase;
-    padding: 14px 12px;
+    padding: 14px 14px;
     position: relative;
     transition: all 0.2s ease;
     display: inline-flex;
@@ -304,24 +405,25 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     white-space: nowrap;
 }
 .uls-nav-item > a:hover {
-    color: #00BCD4 !important;
-    background: rgba(255, 255, 255, 0.04);
+    color: #93C5FD !important;
+    background: rgba(255, 255, 255, 0.08);
 }
 .uls-nav-item.active > a {
-    color: #00BCD4 !important;
+    color: #FFFFFF !important;
     font-weight: 800;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
 }
 .uls-nav-item.active > a::after {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
+    left: 8px;
+    right: 8px;
     height: 3px;
-    background: #00BCD4;
+    background: #60A5FA;
     border-radius: 2px 2px 0 0;
-    box-shadow: 0 0 10px rgba(0, 188, 212, 0.8);
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.9);
 }
 
 /* Dropdown on Categories */
@@ -513,13 +615,13 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
 /* Tablet (768px - 991px) */
 @media (max-width: 991px) {
     .uls-search-col { display: none !important; }
-    .uls-mobile-search-wrap { display: block !important; margin-top: 10px; }
+    .uls-mobile-search-wrap { display: none !important; } /* Hero section has full search already */
     .uls-header-nav { display: none !important; }
     .uls-actions-group { gap: 14px; }
     .uls-header-top { padding: 10px 0; }
     .uls-brand img, .uls-brand-logo-img { height: 42px !important; max-height: 42px !important; }
-    .uls-brand-title-main { font-size: 18px !important; }
-    .uls-brand-title-sub { font-size: 9.5px !important; }
+    .uls-brand-title-main { font-size: 22px !important; }
+    .uls-brand-title-sub { font-size: 11px !important; letter-spacing: 4.2px !important; }
     .uls-action-link span { font-size: 12.5px; }
 }
 
@@ -527,25 +629,27 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
 @media (max-width: 767px) {
     .uls-top-row { flex-wrap: nowrap; gap: 8px; justify-content: space-between; }
     .uls-brand-col { flex: 1; min-width: 0; }
-    .uls-brand { gap: 3px !important; }
+    .uls-brand { gap: 6px !important; }
     .uls-brand img, .uls-brand-logo-img { height: 36px !important; max-height: 36px !important; }
-    .uls-brand-title-main { font-size: 16px !important; letter-spacing: 0.3px !important; }
-    .uls-brand-title-sub { font-size: 8.5px !important; letter-spacing: 1.5px !important; }
+    .uls-brand-title-main { font-size: 19px !important; letter-spacing: 0.3px !important; }
+    .uls-brand-title-sub { font-size: 9.5px !important; letter-spacing: 3.5px !important; }
     .uls-actions-col { flex-shrink: 0; }
     .uls-actions-group { gap: 10px; }
     .uls-action-link span { display: none; }           /* Hide text labels, show only icons */
     .uls-action-icon { font-size: 20px; }              /* Touch friendly icons */
-    .uls-mobile-search-wrap { margin-top: 8px; }
-    .uls-search-form { padding: 8px 14px; }
+    .uls-mobile-search-wrap { display: none !important; } /* Hero section has search already */
     .kc-suggest-dropdown { border-radius: 0 0 12px 12px !important; }
+    /* Hide search submit button icon on mobile */
+    .kc-hero-search-btn { width: 42px; padding: 10px; border-radius: 50%; }
+    .kc-hero-search-btn span { display: none !important; }
 }
 
 /* Small Mobile (< 480px) */
 @media (max-width: 480px) {
     .uls-header-top { padding: 8px 0; }
-    .uls-brand img, .uls-brand-logo-img { height: 32px !important; max-height: 32px !important; }
-    .uls-brand-title-main { font-size: 14.5px !important; }
-    .uls-brand-title-sub { font-size: 8px !important; }
+    .uls-brand img, .uls-brand-logo-img { height: 35px !important; max-height: 35px !important; }
+    .uls-brand-title-main { font-size: 16px !important; }
+    .uls-brand-title-sub { font-size: 8.5px !important; }
     .uls-actions-group { gap: 8px; }
     .uls-action-icon { font-size: 18px; }
     .uls-badge { min-width: 15px; height: 15px; font-size: 9px; top: -6px; right: -8px; padding: 0 3px; }
@@ -553,7 +657,7 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
 
 /* Very Small Mobile (< 360px) */
 @media (max-width: 360px) {
-    .uls-brand img { max-height: 30px; }
+    .uls-brand img { max-height: 32px; }
     .uls-actions-group { gap: 6px; }
     .uls-action-icon { font-size: 17px; }
 }
@@ -600,12 +704,12 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
 
 /* Drawer Header */
 .kc-drawer-header {
-    background: linear-gradient(135deg, #0B192C 0%, #1A365D 100%);
+    background: linear-gradient(135deg, #002566 0%, #003B95 100%);
     padding: 18px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 2px solid #00BCD4;
+    border-bottom: 2px solid #003B95;
 }
 .kc-drawer-header img {
     max-height: 34px;
@@ -642,7 +746,7 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #0070F3, #00BCD4);
+    background: linear-gradient(135deg, #003B95, #002566);
     color: #ffffff;
     font-size: 18px;
     font-weight: 800;
@@ -663,7 +767,7 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     margin: 0;
 }
 .kc-drawer-login-btn {
-    background: linear-gradient(135deg, #0D47A1, #0070F3);
+    background: linear-gradient(135deg, #003B95, #002566);
     color: #ffffff !important;
     border-radius: 8px;
     padding: 7px 14px;
@@ -855,7 +959,7 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
                 </div>
 
                 <!-- Center: Wide Search Bar with Live Auto-Suggest -->
-                <div class="uls-search-col d-none d-lg-block">
+                <div class="uls-search-col d-none d-lg-block <?php echo $is_home ? 'kc-home-nav-search' : ''; ?>">
                     <div class="uls-search-wrap">
                         <form action="category_list.php" method="GET" class="uls-search-form" id="ulsSearchForm" autocomplete="off">
                             <i class="fa fa-search uls-search-icon"></i>
@@ -909,6 +1013,11 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
                             <span><?php echo $is_logged_in ? htmlspecialchars($user_display_name) : 'Account'; ?></span>
                         </a>
 
+                        <!-- Mobile Scroll Search Icon Button -->
+                        <button type="button" class="kc-mobile-search-trigger d-lg-none" id="kcMobileSearchToggleBtn" title="Search Store" aria-label="Search Store">
+                            <i class="fa fa-search"></i>
+                        </button>
+
                         <!-- Mobile Hamburger Button -->
                         <button type="button" class="uls-hamburger-btn d-lg-none" id="kcMobileNavToggle" aria-label="Open Menu">
                             <i class="fa fa-bars"></i>
@@ -923,6 +1032,9 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
                 <form action="category_list.php" method="GET" class="uls-search-form" id="ulsMobileSearchForm" autocomplete="off">
                     <i class="fa fa-search uls-search-icon"></i>
                     <input type="text" name="search" id="ulsMobileSearchInput" class="uls-search-input" placeholder="Search for products..." autocomplete="off">
+                    <button type="submit" class="uls-mobile-submit-btn" aria-label="Search">
+                        <i class="fa fa-search"></i>
+                    </button>
                 </form>
                 <!-- Mobile Live Auto-Suggest Floating Dropdown -->
                 <div class="kc-suggest-dropdown" id="ulsMobileSuggestBox">
@@ -985,16 +1097,13 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
                     </li>
 
                     <li class="uls-nav-item <?php echo $is_about ? 'active' : ''; ?>">
-                        <a href="about.php">About Us</a>
+                        <a href="about.php">About</a>
                     </li>
                     <li class="uls-nav-item <?php echo $is_contact ? 'active' : ''; ?>">
-                        <a href="contact.php">Contact Us</a>
+                        <a href="contact.php">Contact</a>
                     </li>
                     <li class="uls-nav-item <?php echo (strpos($current_uri, 'track_order') !== false) ? 'active' : ''; ?>">
                         <a href="track_order.php">Track Order</a>
-                    </li>
-                    <li class="uls-nav-item <?php echo (strpos($current_uri, 'faq') !== false) ? 'active' : ''; ?>">
-                        <a href="faq.php">FAQ</a>
                     </li>
                 </ul>
             </div>
@@ -1018,28 +1127,6 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
             </div>
         </a>
         <button type="button" class="kc-drawer-close" id="kcDrawerCloseBtn" aria-label="Close Menu">&times;</button>
-    </div>
-
-    <!-- Drawer Quick Search with Live Suggest -->
-    <div class="p-3 border-bottom" style="background:#f8fafc; position:relative;">
-        <form action="category_list.php" method="GET" class="kc-search-wrapper" id="kcDrawerNavSearchForm" style="max-width:100%;">
-            <i class="fa fa-search kc-search-lead-icon" style="margin-left:12px;"></i>
-            <input type="text" name="search" id="kcDrawerNavSearchInput" class="kc-search-input" placeholder="Search products..." required autocomplete="off">
-            <button type="submit" class="kc-search-btn"><i class="fa fa-search"></i></button>
-        </form>
-        <!-- Live Auto-Suggest Floating Dropdown (Drawer) -->
-        <div class="kc-suggest-dropdown" id="kcDrawerNavSuggestBox">
-            <div class="kc-suggest-header">
-                <span><i class="fa fa-bolt text-warning"></i> Matching Products</span>
-                <span id="kcDrawerNavSuggestCount" class="text-muted">0 items</span>
-            </div>
-            <div class="kc-suggest-list" id="kcDrawerNavSuggestList"></div>
-            <div class="kc-suggest-footer" id="kcDrawerNavSuggestFooter">
-                <a href="allproducts.php" class="kc-suggest-view-all" id="kcDrawerNavSuggestViewAllBtn">
-                    View All Products <i class="fa fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
     </div>
 
     <!-- User Account Status -->
@@ -1069,21 +1156,21 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
         <?php endif; ?>
     </div>
 
-    <!-- Drawer Navigation Links -->
+    <!-- Drawer Navigation Links (Matching Desktop Navbar) -->
     <div class="kc-drawer-body">
         <a href="index.php" class="kc-drawer-nav-item <?php echo $is_home ? 'active' : ''; ?>">
-            <span><i class="fa fa-house kc-nav-ico"></i> Home</span>
+            <span><i class="fa fa-house kc-nav-ico text-primary"></i> Home</span>
             <i class="fa fa-chevron-right text-muted" style="font-size:11px;"></i>
         </a>
         
         <a href="allproducts.php" class="kc-drawer-nav-item <?php echo ($current_page == 'allproducts.php') ? 'active' : ''; ?>">
-            <span><i class="fa fa-store kc-nav-ico"></i> Shop Products</span>
+            <span><i class="fa fa-store kc-nav-ico text-info"></i> Shop</span>
             <i class="fa fa-chevron-right text-muted" style="font-size:11px;"></i>
         </a>
 
         <!-- Expandable Categories Accordion -->
-        <a href="javascript:void(0);" class="kc-drawer-nav-item" id="kcDrawerCatToggle">
-            <span><i class="fa fa-layer-group kc-nav-ico"></i> All Categories</span>
+        <a href="javascript:void(0);" class="kc-drawer-nav-item <?php echo ($current_page == 'category_list.php') ? 'active' : ''; ?>" id="kcDrawerCatToggle">
+            <span><i class="fa fa-layer-group kc-nav-ico text-success"></i> Categories</span>
             <i class="fa fa-chevron-down text-muted" id="kcDrawerCatArrow" style="font-size:11px; transition:transform 0.2s;"></i>
         </a>
         <div class="kc-drawer-cat-accordion" id="kcDrawerCatAccordion">
@@ -1095,61 +1182,39 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
             } else {
             ?>
             <a href="category_list.php?search=Laptops" class="kc-drawer-sub-link">
-                <i class="fa fa-laptop text-info"></i> Laptops & Notebooks
+                <i class="fa fa-laptop text-info mr-2"></i> Laptops & Notebooks
             </a>
-            <a href="category_list.php?search=Accessories" class="kc-drawer-sub-link">
-                <i class="fa fa-keyboard text-warning"></i> Keyboards & Mice
+            <a href="category_list.php?search=Desktops" class="kc-drawer-sub-link">
+                <i class="fa fa-desktop text-success mr-2"></i> Desktops & Workstations
+            </a>
+            <a href="category_list.php?search=Components" class="kc-drawer-sub-link">
+                <i class="fa fa-microchip text-danger mr-2"></i> Components & GPUs
             </a>
             <a href="category_list.php?search=Monitors" class="kc-drawer-sub-link">
-                <i class="fa fa-tv text-success"></i> Monitors & Displays
+                <i class="fa fa-tv text-warning mr-2"></i> Gaming Monitors
+            </a>
+            <a href="category_list.php?search=Accessories" class="kc-drawer-sub-link">
+                <i class="fa fa-keyboard text-primary mr-2"></i> Keyboards & Accessories
+            </a>
+            <a href="category_list.php" class="kc-drawer-sub-link font-weight-bold text-primary">
+                View All Categories <i class="fa fa-arrow-right ml-1"></i>
             </a>
             <?php } ?>
         </div>
 
-        <a href="category_list.php?search=Deals" class="kc-drawer-nav-item">
-            <span><i class="fa fa-tags kc-nav-ico text-warning"></i> Deals & Offers</span>
+        <a href="about.php" class="kc-drawer-nav-item <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">
+            <span><i class="fa fa-circle-info kc-nav-ico text-purple"></i> About Us</span>
             <i class="fa fa-chevron-right text-muted" style="font-size:11px;"></i>
         </a>
 
-        <a href="myorders.php" class="kc-drawer-nav-item">
-            <span><i class="fa fa-clipboard-list kc-nav-ico"></i> My Orders</span>
+        <a href="contact.php" class="kc-drawer-nav-item <?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>">
+            <span><i class="fa fa-envelope kc-nav-ico text-warning"></i> Contact Us</span>
             <i class="fa fa-chevron-right text-muted" style="font-size:11px;"></i>
-        </a>
-
-        <a href="wishlist.php" class="kc-drawer-nav-item">
-            <span><i class="fa fa-heart kc-nav-ico text-danger"></i> Wishlist</span>
-            <span class="kc-drawer-badge kc-drawer-badge-red"><?php echo $wish_count; ?></span>
-        </a>
-
-        <a href="cart.php" class="kc-drawer-nav-item">
-            <span><i class="fa fa-cart-shopping kc-nav-ico text-primary"></i> Shopping Cart</span>
-            <span class="kc-drawer-badge"><?php echo $cart_count; ?></span>
         </a>
 
         <a href="order_track.php" class="kc-drawer-nav-item">
-            <span><i class="fa fa-truck-fast kc-nav-ico"></i> Track Order</span>
+            <span><i class="fa fa-truck-fast kc-nav-ico text-primary"></i> Track Order</span>
             <i class="fa fa-chevron-right text-muted" style="font-size:11px;"></i>
-        </a>
-
-        <a href="about.php" class="kc-drawer-nav-item <?php echo $is_about ? 'active' : ''; ?>">
-            <span><i class="fa fa-circle-info kc-nav-ico"></i> About Us</span>
-            <i class="fa fa-chevron-right text-muted" style="font-size:11px;"></i>
-        </a>
-
-        <a href="contact.php" class="kc-drawer-nav-item <?php echo $is_contact ? 'active' : ''; ?>">
-            <span><i class="fa fa-envelope kc-nav-ico"></i> Contact Support</span>
-            <i class="fa fa-chevron-right text-muted" style="font-size:11px;"></i>
-        </a>
-    </div>
-
-    <!-- Drawer Footer -->
-    <div class="kc-drawer-footer">
-        <a href="https://wa.me/919876543210" target="_blank" class="kc-drawer-contact-strip">
-            <i class="fa-brands fa-whatsapp" style="color:#25D366; font-size:20px;"></i>
-            <div>
-                <small style="color:rgba(255,255,255,0.6); display:block; font-size:10.5px;">24/7 Customer Support</small>
-                <strong>Chat on WhatsApp</strong>
-            </div>
         </a>
     </div>
 </div>
@@ -1205,6 +1270,31 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     if (desktopToggle) desktopToggle.addEventListener('click', openMobileDrawer);
     if (closeBtn) closeBtn.addEventListener('click', closeMobileDrawer);
     if (backdrop) backdrop.addEventListener('click', closeMobileDrawer);
+
+    // Auto-close drawer when clicking any nav item link
+    if (mobileDrawer) {
+        const drawerNavLinks = mobileDrawer.querySelectorAll('.kc-drawer-body a:not(#kcDrawerCatToggle)');
+        drawerNavLinks.forEach(link => {
+            link.addEventListener('click', closeMobileDrawer);
+        });
+    }
+
+    // Categories Accordion Toggle Inside Mobile Drawer
+    const catToggle = document.getElementById('kcDrawerCatToggle');
+    const catAccordion = document.getElementById('kcDrawerCatAccordion');
+    const catArrow = document.getElementById('kcDrawerCatArrow');
+    if (catToggle && catAccordion) {
+        catToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (catAccordion.style.display === 'block') {
+                catAccordion.style.display = 'none';
+                if (catArrow) catArrow.style.transform = 'rotate(0deg)';
+            } else {
+                catAccordion.style.display = 'block';
+                if (catArrow) catArrow.style.transform = 'rotate(180deg)';
+            }
+        });
+    }
 
     // ══════════════════════════════════════════════════════════════
     //  SMART STICKY NAVBAR
@@ -1335,6 +1425,12 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
 
         let debounceTimer = null;
         let selectedIndex = -1;
+
+        input.addEventListener('focus', function() {
+            if (this.value.trim().length >= 1 && list.children.length > 0) {
+                dropdown.style.display = 'block';
+            }
+        });
 
         input.addEventListener('input', function() {
             const query = this.value.trim();
@@ -1475,5 +1571,52 @@ $is_home = ($current_page == 'index.php' && !$is_shop && !$is_categories && !$is
     setupLiveSearch('#ulsSearchInput', '#ulsSuggestBox', '#ulsSuggestList', '#ulsSuggestCount', '#ulsSuggestViewAllBtn');
     setupLiveSearch('#ulsMobileSearchInput', '#ulsMobileSuggestBox', '#ulsMobileSuggestList', '#ulsMobileSuggestCount', '#ulsMobileSuggestViewAllBtn');
     setupLiveSearch('#kcDrawerNavSearchInput', '#kcDrawerNavSuggestBox', '#kcDrawerNavSuggestList', '#kcDrawerNavSuggestCount', '#kcDrawerNavSuggestViewAllBtn');
+
+    // ── Mobile Scroll Search Toggle Handler ──
+    (function() {
+        const toggleBtn = document.getElementById('kcMobileSearchToggleBtn');
+        const mobileWrap = document.querySelector('.uls-mobile-search-wrap');
+        const mobileInput = document.getElementById('ulsMobileSearchInput');
+        const heroForm = document.getElementById('kcHeroSearchForm') || document.querySelector('.kc-hero-search-section');
+
+        function updateMobileSearchVisibility() {
+            if (window.innerWidth > 991) return;
+            if (heroForm) {
+                const rect = heroForm.getBoundingClientRect();
+                if (rect.bottom < 60) {
+                    document.body.classList.add('kc-show-mobile-search-icon');
+                } else {
+                    document.body.classList.remove('kc-show-mobile-search-icon');
+                    if (mobileWrap && mobileWrap.classList.contains('active')) {
+                        mobileWrap.classList.remove('active');
+                        if (toggleBtn) toggleBtn.classList.remove('active');
+                    }
+                }
+            } else {
+                if (window.scrollY > 80) {
+                    document.body.classList.add('kc-show-mobile-search-icon');
+                } else {
+                    document.body.classList.remove('kc-show-mobile-search-icon');
+                }
+            }
+        }
+
+        window.addEventListener('scroll', updateMobileSearchVisibility, { passive: true });
+        window.addEventListener('resize', updateMobileSearchVisibility);
+        updateMobileSearchVisibility();
+
+        if (toggleBtn && mobileWrap) {
+            toggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpening = !mobileWrap.classList.contains('active');
+                mobileWrap.classList.toggle('active', isOpening);
+                toggleBtn.classList.toggle('active', isOpening);
+                if (isOpening && mobileInput) {
+                    setTimeout(() => mobileInput.focus(), 150);
+                }
+            });
+        }
+    })();
 })();
 </script>

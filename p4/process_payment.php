@@ -3,7 +3,9 @@ $merchant_id = 'M12K7SQGWIS6';
 $salt_key = '7d21378a-e1f5-4873-b2d5-4eefaab99e6b';
 $amount = $_POST['amount'];
 $transaction_id = uniqid();
-$return_url = 'https://avherbals.in/p4/return.php';
+$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$return_url = $protocol . '://' . $host . '/karudacom/p4/return.php';
 
 // Prepare data to send to PhonePe
 $data = [

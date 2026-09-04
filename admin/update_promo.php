@@ -1,200 +1,158 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+require_once __DIR__ . '/inc/config.php';
+if (!isset($_SESSION["admin1_user"])) {
+    header("Location: login.php");
+    exit;
+}
+if (!isset($_SESSION["user"])) {
+    $_SESSION["user"] = [
+        "id"        => $_SESSION["admin1_user"]["id"] ?? 1,
+        "full_name" => $_SESSION["admin1_user"]["full_name"] ?? "Admin",
+        "email"     => $_SESSION["admin1_user"]["email"] ?? "",
+        "photo"     => $_SESSION["admin1_user"]["photo"] ?? "no_image.png",
+    ];
+}
+if (!isset($_SESSION["adm_id"])) {
+    $_SESSION["adm_id"] = $_SESSION["admin1_user"]["id"] ?? 1;
+}
+?>
 <?php
 include("../config.php");
-error_reporting(0);
+
 session_start();
+error_reporting(0);
 
+require_once('header.php');
 
-if(isset($_POST['submit'] ))
-{
-    if(empty($_POST['c_name']))
-		{
-			$error = '<div class="alert alert-danger alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>field Required!</strong>
-															</div>';
-		}
-	else
-	{
+// Initialize error and success variables
+$error = '';
+$success = '';
+
+if (isset($_POST['submit'])) {
+    if (empty($_POST['c_name'])) {
+        $error = 'field Required!';
+    } else {
         $date = date("D M d Y");
-	
-	$mql = "update promo set code ='$_POST[c_name]',discount='$_POST[k1]',sdat='$_POST[k2]',edat='$_POST[k3]',purpose='$_POST[pur]',
-    dat='$date' where id='$_GET[cat_upd]'";
-	mysqli_query($con, $mql);
-			
 
-// Redirect to addcategory.php using JavaScript
-echo '<script>alert("updated successfully");window.location.href = "coupon.php";</script>';
-    
-	}
+        $mql = "UPDATE promo SET code ='$_POST[c_name]', discount='$_POST[k1]', purpose='$_POST[pur]', dat='$date' WHERE id='$_GET[cat_upd]'";
+        mysqli_query($con, $mql);
 
+        // Store success message in a session to display it after redirect
+        $_SESSION['success'] = "Updated successfully";
+        
+        // Redirect to the same page to avoid form resubmission
+        header("Location: update_promo.php?cat_upd=" . $_GET['cat_upd']);
+        exit;
+    }
 }
 
-
 ?>
-<?php include "head.php"; ?>
 
-<body class="fix-header">
-    <!-- Preloader - style you can find in spinners.css -->
+<!-- Include jQuery and Toastr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <!-- Main wrapper  -->
-    <div id="main-wrapper">
-        <!-- header header  -->
+<script>
+    // Toastr configuration
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+</script>
 
-        <?php include "navbar.php"; ?>
+<?php
+// Show success message using Toastr
+if (isset($_SESSION['success'])) {
+    echo '<script>toastr.success("' . $_SESSION['success'] . '");</script>';
+    // Unset the success session variable after displaying the message
+    unset($_SESSION['success']);
+}
 
-        <?php include "sidebar1.php"; ?>
+// Display errors if any
+if (!empty($error)) {
+    echo '<script>toastr.error("' . $error . '");</script>';
+}
+?>
 
-        <!-- End Left Sidebar  -->
-        <!-- Page wrapper  -->
-        <div class="page-wrapper" style="height:1200px;">
+<!-- Your HTML Form Here -->
+<section class="content-header">
+    <div class="content-header-left">
+        <h1>Update Coupon Code</h1>
+    </div>
+</section>
 
-            <div class="container-fluid">
-
-                <div class="row">
-
-
-                    <div class="container-fluid">
-                        <!-- Start Page Content -->
-
-
-                        <?php  
-									        echo $error;
-									        echo $success; ?>
-
-                        <div class="col-lg-12">
-                            <div class="card card-outline-primary">
-                                <div class="card-header">
-                                    <h4 class="m-b-0 text-white">Update Coupon code</h4>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info" style="padding:25px">
+                <div class="card-body">
+                    <form action='' method='post' enctype='multipart/form-data'>
+                        <div class="form-body">
+                            <div class="row p-t-20">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <?php
+                                        $ssql = "SELECT * FROM promo WHERE id='$_GET[cat_upd]'";
+                                        $res = mysqli_query($con, $ssql);
+                                        $row = mysqli_fetch_array($res);
+                                        ?>
+                                        <label class="control-label">Coupon Code *</label>
+                                        <input type="text" name="c_name" id="promoCode" class="form-control" maxlength="8" value="<?php echo $row['code']; ?>" placeholder="Click To Generate PromoCode"><br>
+                                        <button type="button" class="btn btn-info" onclick="generatePromoCode()">Generate</button>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <form action='' method='post' enctype='multipart/form-data'>
-                                        <div class="form-body">
-                                            <?php $ssql ="select * from promo where id='$_GET[cat_upd]'";
-													$res=mysqli_query($con, $ssql); 
-													$row=mysqli_fetch_array($res);
-                                                    //$_SESSION['f']=$row['fpath'];?>
-                                            <hr>
-                                            <div class="row p-t-20">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label">Coupon Code</label>
-                                                        <input type="text" name="c_name" id="promoCode"
-                                                            class="form-control" maxlength="8" value="<?php echo $row['code'];  ?>" 
-                                                            placeholder="Click To Generate PromoCode">
 
-                                                        <button type="button" class="btn btn-info"
-                                                            onclick="generatePromoCode()">Generate</button>
-                                                        
-                                                    </div>
-                                                    <script>
-                                                function generatePromoCode() {
-                                                    // Length of the generated code
-                                                    var codeLength = 8;
-
-                                                    // Characters to be used in the code
-                                                    var characters =
-                                                        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-                                                    var generatedCode = '';
-
-                                                    for (var i = 0; i < codeLength; i++) {
-                                                        var randomIndex = Math.floor(Math.random() * characters.length);
-                                                        generatedCode += characters.charAt(randomIndex);
-                                                    }
-
-                                                    // Set the generated code to the input field
-                                                    document.getElementById('promoCode').value = generatedCode;
-                                                }
-                                                </script>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label">Discount</label>
-                                                        <input type="text"  name="k1" class="form-control" value="<?php echo $row['discount'];  ?>" maxlength="8" min="1" placeholder="Enter Discount Amount" required>
-                                                       
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row p-t-20">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="control-label">Purpose</label>
-                                                        <textarea name="pur" class="form-control" placeholder="Purpose"><?php echo $row['purpose']; ?></textarea>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="control-label">start date</label>
-                                                        <input type="date" name="k2" value="<?php echo $row['sdat']; ?>"
-                                                            class="form-control" placeholder="Update ValidityDate"
-                                                            >
-                                                    </div>
-
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="control-label">End date</label>
-                                                        <input type="date" name="k3" value="<?php echo $row['edat']; ?>"
-                                                            min="<?php echo date('Y-m-d'); ?>" class="form-control"
-                                                            placeholder="Update Validity Date">
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12">
-
-
-
-                                            </div>
-
-                                        </div>
-                                        <!--/span-->
-
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Discount(%) *</label>
+                                        <input type="text" name="k1" class="form-control" value="<?php echo $row['discount']; ?>" maxlength="8" min="1" placeholder="Enter Discount Amount" required>
+                                    </div>
                                 </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Purpose</label>
+                                        <textarea name="pur" class="form-control" placeholder="Purpose"><?php echo $row['purpose']; ?></textarea>
+                                    </div>
+                                </div>
+
                                 <div class="form-actions">
-                                    <input type="submit" name="submit" class="btn btn-success" value="save">
-                                    <a href="dashboard.php" class="btn btn-inverse">Back</a>
+                                    <input type="submit" name="submit" class="btn btn-success" value="Save">
+                                    <a href="add_coupon.php" class="btn btn-warning">Back</a>
                                 </div>
-                                </form>
                             </div>
                         </div>
-                    </div>
-
+                    </form>
                 </div>
-
-
             </div>
-            <!-- End PAge Content -->
         </div>
-        <!-- End Container fluid  -->
-        <!-- footer -->
-
-        <!-- End footer -->
     </div>
-    <footer class="footer"> © All rights reserved. </footer>
-    <!-- End Page wrapper  -->
-    </div>
-    <!-- End Wrapper -->
-    <!-- All Jquery -->
-    <script src="js/lib/jquery/jquery.min.js"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="js/lib/bootstrap/js/popper.min.js"></script>
-    <script src="js/lib/bootstrap/js/bootstrap.min.js"></script>
-    <!-- slimscrollbar scrollbar JavaScript -->
-    <script src="js/jquery.slimscroll.js"></script>
-    <!--Menu sidebar -->
-    <script src="js/sidebarmenu.js"></script>
-    <!--stickey kit -->
-    <script src="js/lib/sticky-kit-master/dist/sticky-kit.min.js"></script>
-    <!--Custom JavaScript -->
-    <script src="js/custom.min.js"></script>
+</section>
 
-</body>
+<script>
+    function generatePromoCode() {
+        var codeLength = 8;
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var generatedCode = '';
 
-</html>
+        for (var i = 0; i < codeLength; i++) {
+            var randomIndex = Math.floor(Math.random() * characters.length);
+            generatedCode += characters.charAt(randomIndex);
+        }
+
+        document.getElementById('promoCode').value = generatedCode;
+    }
+</script>
+
+<?php require_once('footer.php'); ?>

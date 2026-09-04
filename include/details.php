@@ -820,7 +820,7 @@ if (!empty($img5)) { ?>
                                     <!-- Clean Price Box -->
                                     <div class="col-12 mb-3">
                                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                                            <h6 class="text-muted mb-0" style="font-size:12px; font-weight:800; letter-spacing:0.8px; text-transform:uppercase;">PRICE:</h6>
+
                                             <span id="current_status_of" style="color: <?= $status_color ?>; font-size: 13px; font-weight: 800; background: #EFF6FF; padding: 4px 12px; border-radius: 20px; border: 1px solid #DBEAFE; display: inline-flex; align-items: center;">
                                                 <i class="fa fa-circle-check mr-1" style="font-size:11px;"></i> <?= $current_status; ?>
                                             </span>
@@ -1079,9 +1079,6 @@ if (!empty($img5)) { ?>
                                     </div>
 
                                 </div>
-
-
-
 
                                 <hr>
                                 <div class="col-12 mt-3 " id='write_rev'>

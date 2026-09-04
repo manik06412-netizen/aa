@@ -1,4 +1,4 @@
-﻿<?php 
+<?php 
 require('include/header.php');
 ?>
 <style>
@@ -12,21 +12,22 @@ require('include/header.php');
 
 /* Subheader Banner */
 .kc-wish-banner {
-    background: linear-gradient(135deg, #0B192C 0%, #1A365D 100%) !important;
-    padding: 35px 0 40px 0 !important;
-    border-bottom: 3px solid #00BCD4 !important;
+    background: linear-gradient(135deg, #001A47 0%, #002566 50%, #003B95 100%) !important;
+    padding: 36px 0 32px 0 !important;
+    border-bottom: 3px solid #003B95 !important;
     position: relative;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 37, 102, 0.35);
 }
 .kc-wish-title {
     font-size: 28px !important;
     font-weight: 800 !important;
     color: #ffffff !important;
     margin: 0 !important;
-    letter-spacing: -0.5px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 .kc-wish-title span {
-    color: #00BCD4;
+    color: #60A5FA;
 }
 
 /* Breadcrumb */
@@ -274,7 +275,7 @@ require('include/header.php');
                 <?php if (!empty($items)): ?>
                 <div class="row g-4" id="wishlist_grid">
                     <?php foreach ($items as $item): 
-                        $p_id = !empty($item['rs_id']) ? (int)$item['rs_id'] : (int)$item['pr_id'];
+                        $p_id = !empty($item['rs_id']) ? (int)$item['rs_id'] : (!empty($item['d_id']) ? (int)$item['d_id'] : (int)$item['pr_id']);
                         $p_name = htmlspecialchars($item['dish_name'] ?? 'Hardware Component');
                         $p_img = htmlspecialchars($item['resolved_img'] ?? 'img/products/hp_laptop.jpg');
                         $cat_name = htmlspecialchars($item['category'] ?? 'Hardware');
@@ -313,10 +314,12 @@ require('include/header.php');
                                 <?php endif; ?>
                             </div>
 
-                            <!-- Action Button -->
-                            <a href="<?= $detailUrl; ?>" class="kc-wish-cart-btn">
-                                <i class="fa fa-shopping-cart"></i> View Details & Buy
-                            </a>
+                            <!-- Action Buttons: View Details & Buy -->
+                            <div class="d-flex gap-2 mt-3">
+                                <a href="<?= $detailUrl; ?>" class="kc-wish-cart-btn w-100 text-center" style="text-decoration:none;">
+                                    <i class="fa fa-eye mr-1"></i> View Details & Buy
+                                </a>
+                            </div>
 
                         </div>
                     </div>

@@ -156,6 +156,55 @@ header:not(.kc-unified-header):not(.uls-header) {
     transform: scale(1.03);
 }
 
+/* Brand Text Styling matching screenshot */
+.kc-nav-brand, .uls-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-decoration: none !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+}
+.kc-nav-brand img, .uls-brand img, .uls-brand-logo-img {
+    height: 48px !important;
+    max-height: 48px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    filter: drop-shadow(0 2px 6px rgba(0, 112, 243, 0.25)) !important;
+}
+.uls-brand-text-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    line-height: 0.9 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.uls-brand-title-main {
+    font-family: 'Poppins', 'Montserrat', 'Inter', sans-serif !important;
+    font-size: 26px !important;
+    font-weight: 900 !important;
+    color: #000000 !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+}
+.uls-brand-title-sub {
+    font-family: 'Poppins', 'Montserrat', 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    color: #0070F3 !important;
+    letter-spacing: 5.2px !important;
+    text-transform: uppercase !important;
+    margin-top: 2px !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+}
+
 /* Center Search Container */
 .kc-header-search-wrap {
     flex: 1 1 520px !important;
@@ -1439,32 +1488,34 @@ header:not(.kc-unified-header):not(.uls-header) {
 .kc-sub-header,
 .kc-category-header,
 .kc-track-banner,
+.kc-wish-banner,
 .sub_header_in.sticky_header,
 div.sub_header_in {
-    background: radial-gradient(circle at 50% 30%, #1a365d 0%, #0b192c 60%, #060d17 100%) !important;
-    background-color: #0b192c !important;
-    padding: 38px 0 35px 0 !important;
+    background: linear-gradient(135deg, #001A47 0%, #002566 50%, #003B95 100%) !important;
+    background-color: #002566 !important;
+    padding: 36px 0 32px 0 !important;
     color: #ffffff !important;
-    border-bottom: 2px solid rgba(0, 188, 212, 0.35) !important;
+    border-bottom: 3px solid #003B95 !important;
     margin-top: 0 !important;
     margin-bottom: 30px !important;
     text-align: center !important;
     position: relative !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 4px 20px rgba(0, 37, 102, 0.35) !important;
 }
 
-/* Background Cyber Grid Accent Overlay */
+/* Background Soft Grid Accent Overlay */
 .sub_header_in::before,
 .kc-sub-header::before,
 .kc-category-header::before,
-.kc-track-banner::before {
+.kc-track-banner::before,
+.kc-wish-banner::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     background-image: 
-        linear-gradient(rgba(0, 188, 212, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 188, 212, 0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 36px 36px;
     pointer-events: none;
 }
 
@@ -1472,6 +1523,7 @@ div.sub_header_in {
 .kc-sub-header h1, 
 .kc-category-header h1, 
 .kc-track-title,
+.kc-wish-title,
 .sub_header_in h5,
 .kc-sub-title {
     color: #ffffff !important;
@@ -1488,8 +1540,8 @@ div.sub_header_in {
 .kc-category-header p,
 .sub_header_in p.text-white-50 {
     font-family: 'Poppins', sans-serif !important;
-    font-size: 14.5px !important;
-    color: #94A3B8 !important;
+    font-size: 14px !important;
+    color: #DBEAFE !important;
     max-width: 650px !important;
     margin: 0 auto !important;
     line-height: 1.5 !important;

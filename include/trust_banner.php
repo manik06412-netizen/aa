@@ -5,7 +5,10 @@
 .kc-standalone-trust-section {
     background: transparent !important;
     padding: 15px 0 !important;
-    margin: 30px 0 55px 0 !important;
+    margin-top: 30px !important;
+    margin-bottom: 55px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     border: none !important;
     position: relative !important;
     z-index: 5 !important;
@@ -25,9 +28,9 @@
 }
 .kc-trust-col-box:hover {
     background: #FFFFFF !important;
-    border-color: #0070F3 !important;
+    border-color: #003B95 !important;
     transform: translateY(-3px) !important;
-    box-shadow: 0 10px 24px rgba(0, 112, 243, 0.12) !important;
+    box-shadow: 0 10px 24px rgba(0, 37, 102, 0.15) !important;
 }
 .kc-trust-col-icon {
     width: 48px !important;
@@ -35,7 +38,7 @@
     border-radius: 12px !important;
     background: #EFF6FF !important;
     border: 1.5px solid #DBEAFE !important;
-    color: #0070F3 !important;
+    color: #003B95 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -44,11 +47,11 @@
     transition: all 0.3s ease !important;
 }
 .kc-trust-col-box:hover .kc-trust-col-icon {
-    background: linear-gradient(135deg, #0D47A1, #0070F3) !important;
-    border-color: #0070F3 !important;
+    background: linear-gradient(135deg, #002566, #003B95) !important;
+    border-color: #003B95 !important;
     color: #ffffff !important;
     transform: scale(1.08) !important;
-    box-shadow: 0 4px 14px rgba(0, 112, 243, 0.3) !important;
+    box-shadow: 0 4px 14px rgba(0, 37, 102, 0.35) !important;
 }
 .kc-trust-col-title {
     font-size: 14.5px !important;
@@ -91,57 +94,57 @@
 </style>
 
 <section class="kc-standalone-trust-section">
-    <div class="container-fluid px-lg-5 px-3">
+    <div class="container">
         <div class="row g-2 g-md-3">
             
-            <!-- Card 1: Express Delivery -->
-            <div class="col-6 col-md-6 col-xl-3 mb-2 mb-xl-0">
+            <!-- Card 1: Free Shipping -->
+            <div class="col-12 col-sm-6 col-xl-3 mb-2 mb-xl-0">
                 <div class="kc-trust-col-box">
                     <div class="kc-trust-col-icon">
                         <i class="fa fa-truck-fast"></i>
                     </div>
                     <div>
-                        <h4 class="kc-trust-col-title">Express Delivery</h4>
-                        <p class="kc-trust-col-desc">Safe delivery across India</p>
+                        <h4 class="kc-trust-col-title">Free Shipping</h4>
+                        <p class="kc-trust-col-desc">On orders over ₹999</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 2: 100% Genuine Hardware -->
-            <div class="col-6 col-md-6 col-xl-3 mb-2 mb-xl-0">
+            <!-- Card 2: Easy Returns -->
+            <div class="col-12 col-sm-6 col-xl-3 mb-2 mb-xl-0">
                 <div class="kc-trust-col-box">
                     <div class="kc-trust-col-icon">
-                        <i class="fa fa-shield-halved"></i>
+                        <i class="fa fa-rotate-left"></i>
                     </div>
                     <div>
-                        <h4 class="kc-trust-col-title">100% Genuine</h4>
-                        <p class="kc-trust-col-desc">Authorized brands</p>
+                        <h4 class="kc-trust-col-title">Easy Returns</h4>
+                        <p class="kc-trust-col-desc">30 days return policy</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 3: Dedicated Tech Support -->
-            <div class="col-6 col-md-6 col-xl-3 mb-2 mb-xl-0">
+            <!-- Card 3: Secure Payment -->
+            <div class="col-12 col-sm-6 col-xl-3 mb-2 mb-xl-0">
+                <div class="kc-trust-col-box">
+                    <div class="kc-trust-col-icon">
+                        <i class="fa fa-credit-card"></i>
+                    </div>
+                    <div>
+                        <h4 class="kc-trust-col-title">Secure Payment</h4>
+                        <p class="kc-trust-col-desc">100% secure checkout</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: 24/7 Support -->
+            <div class="col-12 col-sm-6 col-xl-3 mb-2 mb-xl-0">
                 <div class="kc-trust-col-box">
                     <div class="kc-trust-col-icon">
                         <i class="fa fa-headset"></i>
                     </div>
                     <div>
-                        <h4 class="kc-trust-col-title">Tech Support</h4>
-                        <p class="kc-trust-col-desc">Expert consultation</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 4: Secure Payments -->
-            <div class="col-6 col-md-6 col-xl-3 mb-2 mb-xl-0">
-                <div class="kc-trust-col-box">
-                    <div class="kc-trust-col-icon">
-                        <i class="fa fa-lock"></i>
-                    </div>
-                    <div>
-                        <h4 class="kc-trust-col-title">Secure Payments</h4>
-                        <p class="kc-trust-col-desc">256-bit SSL encrypted</p>
+                        <h4 class="kc-trust-col-title">24/7 Support</h4>
+                        <p class="kc-trust-col-desc">Dedicated support</p>
                     </div>
                 </div>
             </div>

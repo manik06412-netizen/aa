@@ -1,14 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
-require_once __DIR__ . '/inc/config.php';
-if (!isset($_SESSION["admin1_user"])) {
-    header("Location: login.php");
-    exit;
-}
-error_reporting(0);
-?>
-<?php
-// session_start();
+session_start();
 include("../dbconnect.php");
 //error_reporting(0);
 if (isset($_POST['submit'])) {

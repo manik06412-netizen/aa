@@ -93,7 +93,7 @@ document.getElementById('print_modal_table').addEventListener('click', function(
     printWindow.document.write('</head><body>');
     
   
-    printWindow.document.write('<div class="print-title"><strong>AV HERBALS</strong></div>');
+    printWindow.document.write('<div class="print-title"><strong>KARUDA COMPUTERS</strong></div>');
 
     
     const options = { timeZone: 'Asia/Kolkata', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
@@ -128,7 +128,7 @@ document.getElementById('download_pdf_table').addEventListener('click', function
 
         // Add the title to the PDF
         pdf.setFontSize(24);
-        const title = "AV HERBALS";
+        const title = "KARUDA COMPUTERS";
         const titleWidth = pdf.getTextWidth(title);
         const x = (pdf.internal.pageSize.width - titleWidth) / 2; // Center the title
         pdf.text(title, x, 20); // Position (x, y)

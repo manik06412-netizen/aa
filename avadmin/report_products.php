@@ -651,7 +651,7 @@ document.getElementById('print_table_1').addEventListener('click', function() {
         '<style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 4px; text-align: left; font-size: 10px; } th { background-color: #f2f2f2; }</style>'
     );
     printWindow.document.write('</head><body>');
-    printWindow.document.write('<h1 style="text-align: center;">AV Herbals - ' + dynamicTitle +
+    printWindow.document.write('<h1 style="text-align: center;">Karuda Computers - ' + dynamicTitle +
         '</h1>'); // Use dynamic title
     printWindow.document.write(tableHTML);
     printWindow.document.write('</body></html>');
@@ -702,7 +702,7 @@ document.getElementById('download_pdf_of').addEventListener('click', function() 
         pdf.text(currentDate + ' - ' + currentTime, pdf.internal.pageSize.width / 2, 10, null, null,
             'center');
         pdf.setFontSize(18);
-        pdf.text('AV Herbals - ' + dynamicTitle, pdf.internal.pageSize.width / 2, 20, null, null,
+        pdf.text('Karuda Computers - ' + dynamicTitle, pdf.internal.pageSize.width / 2, 20, null, null,
             'center');
         pdf.setFontSize(14);
         pdf.text('Order Reports', pdf.internal.pageSize.width / 2, 25, null, null, 'center');

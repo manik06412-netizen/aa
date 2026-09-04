@@ -650,7 +650,7 @@ calculateTotal1();
             const headers = table.querySelectorAll('thead th');
             const headerIndices = [];
             csvContent += `Date: ${formattedDate} ${formattedTime}\n`; // Add date and time
-            csvContent += 'AV Herbals\n';
+            csvContent += 'Karuda Computers\n';
             csvContent += 'Order Reports\n';
             const filterTitle = currentFilter ?
                 `${currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1)} Orders` : '';
@@ -766,7 +766,7 @@ calculateTotal1();
                 '</style>'
             );
             printWindow.document.write(`Date: ${formattedDate} ${formattedTime}<br>`);
-            printWindow.document.write('<h1 style="text-align: center;">AV Herbals</h1>');
+            printWindow.document.write('<h1 style="text-align: center;">Karuda Computers</h1>');
             printWindow.document.write('<h1 style="text-align: center;">Order Reports</h1>');
             printWindow.document.write('</head><body>');
             printWindow.document.write(tableHTML);
@@ -847,7 +847,7 @@ calculateTotal1();
                     null, null, 'center');
                 pdf.setFontSize(18);
                 const marginTop = 7;
-                pdf.text('AV Herbals', pdf.internal.pageSize.width / 2, 20 + marginTop, null, null,
+                pdf.text('Karuda Computers', pdf.internal.pageSize.width / 2, 20 + marginTop, null, null,
                     'center');
                 pdf.setFontSize(14);
                 pdf.text('Order Reports', pdf.internal.pageSize.width / 2, 25 + marginTop, null, null,

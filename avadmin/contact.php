@@ -130,7 +130,7 @@ document.getElementById('download_pdf').addEventListener('click', function() {
 
         pdf.setTextColor(0, 0, 0);
         pdf.setFontSize(18);
-        pdf.text('AV Herbals', pdf.internal.pageSize.width / 2, 20, null, null, 'center');
+        pdf.text('Karuda Computers', pdf.internal.pageSize.width / 2, 20, null, null, 'center');
         
         const currentDateTime = new Date().toLocaleString();
         pdf.setFontSize(12);

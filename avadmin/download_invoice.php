@@ -84,7 +84,7 @@ $CON_CONTACT_EMAIL =  $address_details['contact_email'];
                                         </div>
                                         <div class="col-4 col-lg-4"></div>
                                         <div class="col-4 col-lg-4 text-right">
-                                            <h5>AV HERBALS</h5>
+                                            <h5>KARUDA COMPUTERS</h5>
                                             <span class="d-block" >
                                                 <?php echo $CON_CONTACT_ADDRESS; ?>,
                                             </span>

@@ -1,25 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
 <?php
-/**
- * admin1/newsletter.php - Wrapper for admin/newsletter.php
- */
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
-require_once __DIR__ . '/inc/config.php';
+include("../config.php");
+error_reporting(0);
+session_start();
 
-if (!isset($_SESSION["admin1_user"])) {
-    header("Location: login.php");
-    exit;
-}
+?>
+<?php include "head.php"; ?>
 
-if (!isset($_SESSION["adm_id"])) {
-    $_SESSION["adm_id"] = $_SESSION["admin1_user"]["id"] ?? 1;
-}
-if (!isset($_SESSION["user"])) {
-    $_SESSION["user"] = [
-        "id"        => $_SESSION["admin1_user"]["id"] ?? 1,
-        "full_name" => $_SESSION["admin1_user"]["full_name"] ?? "Admin",
-        "email"     => $_SESSION["admin1_user"]["email"] ?? "",
-        "photo"     => $_SESSION["admin1_user"]["photo"] ?? "no_image.png",
-    ];
-}
+<body class="fix-header fix-sidebar">
+    <div id="main-wrapper">
+        <?php include "navbar.php"; ?>
+        <?php include "sidebar1.php"; ?>
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Subscriber's List</h4>
+                                <div class="table-responsive m-t-40">
+                                    <table id="myTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">Id</th>
+                                                <th style="text-align:center">Email</th>
+                                              
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $sno=0;
+												$sql="SELECT * FROM newsletter  order by id desc";
+												$query=mysqli_query($con,$sql);
+												if(!mysqli_num_rows($query) > 0 ){
+													echo '<td colspan="7"><center>No User-Data!</center></td>';
+												}else{				
+													while($rows=mysqli_fetch_array($query)){
+                                                        $sno++;
+													echo ' <tr><td style="text-align:center">'.$sno .'</td>
+												      	<td style="text-align:center">'.$rows['emailid'].'</td>	
+														
+														</tr>';
+													}	
+												} ?>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-include __DIR__ . "/../admin/newsletter.php";
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End PAge Content -->
+    </div>
+    <!-- End Container fluid  -->
+
+
+
+
+    <!-- footer -->
+    <footer class="footer"> © All rights reserved. </footer>
+    <!-- End footer -->
+    </div>
+    <!-- End Page wrapper  -->
+    </div>
+    <!-- End Wrapper -->
+    <!-- All Jquery -->
+    <script src="js/lib/jquery/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="js/lib/bootstrap/js/popper.min.js"></script>
+    <script src="js/lib/bootstrap/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="js/jquery.slimscroll.js"></script>
+    <!--Menu sidebar -->
+    <script src="js/sidebarmenu.js"></script>
+    <!--stickey kit -->
+    <script src="js/lib/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <!--Custom JavaScript -->
+    <script src="js/custom.min.js"></script>
+
+
+    <script src="js/lib/datatables/datatables.min.js"></script>
+    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="js/lib/datatables/cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+    <script src="js/lib/datatables/datatables-init.js"></script>
+</body>
+
+</html>

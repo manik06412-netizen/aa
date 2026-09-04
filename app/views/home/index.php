@@ -9,20 +9,29 @@ require_once APP_ROOT . '/views/layouts/header.php';
         </header>
 
         <main>
-            <!-- Hero Search & Live Auto-Suggest Discovery Section -->
-            <?php include(__DIR__ . '/../../../include/slidderfull.php'); ?>
-
-            <!-- Shop by Category Carousel -->
+            <!-- 1. CATEGORY SECTION (Circular Badges) -->
             <?php include(__DIR__ . '/../../../include/cat.php'); ?>
 
-            <!-- Latest Products Grid -->
+            <!-- 2. PROMINENT HERO SEARCH SECTION -->
+            <?php include(__DIR__ . '/../../../include/search_section.php'); ?>
+
+            <!-- 3. FEATURED PRODUCTS SECTION -->
             <?php include(__DIR__ . '/../../../include/categories.php'); ?>
 
-            <!-- FAQ Section -->
-            <?php include(__DIR__ . '/../../../include/index_qa.php'); ?>
+            <!-- 6. PROMO BANNER -->
+            <?php include(__DIR__ . '/../../../include/promo_banner.php'); ?>
 
-            <!-- Standalone Trust & Value Propositions Banner -->
+            <!-- 7. NEW ARRIVALS -->
+            <?php include(__DIR__ . '/../../../include/new_arrivals.php'); ?>
+
+            <!-- 8. TRUST / FEATURES -->
             <?php include(__DIR__ . '/../../../include/trust_banner.php'); ?>
+
+            <!-- 9. TESTIMONIALS -->
+            <?php include(__DIR__ . '/../../../include/testimonial_section.php'); ?>
+
+            <!-- 10. FAQ SECTION -->
+            <?php include(__DIR__ . '/../../../include/index_qa.php'); ?>
         </main>
 
         <?php require APP_ROOT . '/views/layouts/footer.php'; ?>

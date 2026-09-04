@@ -2,37 +2,27 @@
      KARUDA COMPUTERS — ULTRA MODERN FAQ SECTION
 ══════════════════════════════════════════════════════════ -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
 
 /* Scoped FAQ Accordion Styling */
 .kc-faq-section {
     background: #F8FAFC !important;
-    padding: 60px 0 75px !important;
+    padding: 40px 0 60px !important;
     position: relative;
-    font-family: 'Outfit', 'Poppins', sans-serif !important;
+    font-family: 'Poppins', sans-serif !important;
 }
 .kc-modern-heading {
-    font-family: 'Outfit', 'Poppins', sans-serif !important;
-    font-size: 34px !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 20px !important;
     font-weight: 800 !important;
-    color: #0B192C !important;
-    letter-spacing: -0.5px !important;
-    margin-top: 10px !important;
-    margin-bottom: 12px !important;
+    color: #0F172A !important;
+    letter-spacing: 0.5px !important;
+    margin: 0 !important;
+    text-transform: uppercase !important;
 }
 .kc-heading-gradient {
-    background: linear-gradient(135deg, #0070F3 0%, #00BCD4 100%) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    font-weight: 900 !important;
-}
-.kc-section-sub {
-    font-family: 'Outfit', 'Poppins', sans-serif !important;
-    font-size: 15px !important;
-    color: #64748B !important;
-    max-width: 680px !important;
-    margin: 0 auto !important;
-    line-height: 1.6 !important;
+    color: #0F172A !important;
+    font-weight: 800 !important;
 }
 .kc-faq-accordion {
     display: flex !important;
@@ -107,7 +97,7 @@ button.kc-faq-header:focus {
     flex: 1 !important;
 }
 .kc-faq-q-num {
-    font-family: 'Outfit', sans-serif !important;
+    font-family: 'Poppins', sans-serif !important;
     font-size: 13px !important;
     font-weight: 800 !important;
     color: #0B192C !important;
@@ -129,9 +119,9 @@ button.kc-faq-header:focus {
     box-shadow: 0 4px 12px rgba(0, 112, 243, 0.35) !important;
 }
 .kc-faq-question {
-    font-family: 'Outfit', sans-serif !important;
-    font-size: 16px !important;
-    font-weight: 700 !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 15.5px !important;
+    font-weight: 600 !important;
     color: #0B192C !important;
     margin: 0 !important;
     letter-spacing: -0.2px !important;
@@ -221,16 +211,16 @@ button.kc-faq-header:hover .kc-faq-question {
     margin-bottom: 12px !important;
 }
 .kc-ad-title {
-    font-family: 'Outfit', 'Poppins', sans-serif !important;
+    font-family: 'Poppins', sans-serif !important;
     font-size: 24px !important;
-    font-weight: 900 !important;
+    font-weight: 800 !important;
     color: #ffffff !important;
     line-height: 1.3 !important;
     margin-bottom: 10px !important;
     text-transform: uppercase !important;
 }
 .kc-ad-sub {
-    font-family: 'Outfit', 'Poppins', sans-serif !important;
+    font-family: 'Poppins', sans-serif !important;
     font-size: 14.5px !important;
     color: #94A3B8 !important;
     margin: 0 !important;
@@ -275,7 +265,7 @@ button.kc-faq-header:hover .kc-faq-question {
     flex-shrink: 0;
 }
 .kc-support-title {
-    font-family: 'Outfit', sans-serif !important;
+    font-family: 'Poppins', sans-serif !important;
     font-size: 16px !important;
     font-weight: 700 !important;
     color: #ffffff !important;
@@ -311,20 +301,14 @@ button.kc-faq-header:hover .kc-faq-question {
 }
 </style>
 
-<section class="kc-faq-section py-5">
+<section class="kc-faq-section py-4">
     <div class="container">
         
-        <!-- Section Header -->
-        <div class="kc-section-header text-center mb-5">
-            <span class="kc-badge-pill">
-                <i class="fa fa-circle-question"></i> Help & Clarifications
-            </span>
-            <h2 class="kc-modern-heading">
-                Frequently Asked <span class="kc-heading-gradient">Questions</span>
+        <!-- Section Header (Centered like WHAT OUR CUSTOMERS SAY) -->
+        <div class="kc-sec-heading-block">
+            <h2 class="kc-sec-heading-title">
+                FREQUENTLY ASKED QUESTIONS
             </h2>
-            <p class="kc-section-sub">
-                Quick answers to common queries regarding genuine hardware, custom PC builds, warranty coverage, and nationwide delivery.
-            </p>
         </div>
 
         <div class="row justify-content-center">
@@ -334,12 +318,26 @@ button.kc-faq-header:hover .kc-faq-question {
                     $faqs_list = [];
                     if (isset($faqs) && is_array($faqs) && !empty($faqs)) {
                         $faqs_list = $faqs;
-                    } else {
-                        $sql = "SELECT * FROM tbl_faq ORDER BY faq_id ASC LIMIT 6";
-                        $query = mysqli_query($con, $sql);
+                    } elseif (isset($con) && $con) {
+                        $query = mysqli_query($con, "SELECT * FROM tbl_faq ORDER BY faq_id ASC");
                         if ($query && mysqli_num_rows($query) > 0) {
                             while ($r = mysqli_fetch_assoc($query)) {
-                                $faqs_list[] = $r;
+                                $faqs_list[] = [
+                                    'faq_id' => $r['faq_id'] ?? $r['id'] ?? null,
+                                    'faq_title' => $r['faq_title'] ?? $r['qns'] ?? $r['title'] ?? '',
+                                    'faq_content' => $r['faq_content'] ?? $r['ans'] ?? $r['content'] ?? ''
+                                ];
+                            }
+                        } else {
+                            $query2 = mysqli_query($con, "SELECT * FROM faq ORDER BY id ASC");
+                            if ($query2 && mysqli_num_rows($query2) > 0) {
+                                while ($r2 = mysqli_fetch_assoc($query2)) {
+                                    $faqs_list[] = [
+                                        'faq_id' => $r2['id'] ?? null,
+                                        'faq_title' => $r2['qns'] ?? $r2['title'] ?? '',
+                                        'faq_content' => $r2['ans'] ?? $r2['content'] ?? ''
+                                    ];
+                                }
                             }
                         }
                     }
@@ -477,25 +475,6 @@ button.kc-faq-header:hover .kc-faq-question {
                                 <img src="<?php echo htmlspecialchars($ad_data['img']); ?>" alt="Advertisement Promo" class="kc-ad-img img-fluid" onerror="this.src='img/karuda_hero_gaming_pc.jpg'">
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Bottom Support Banner -->
-                <div class="kc-faq-support-bar mt-4">
-                    <div class="d-flex align-items-center flex-wrap justify-content-between" style="gap:15px;">
-                        <div class="d-flex align-items-center" style="gap:14px;">
-                            <div class="kc-support-icon">
-                                <i class="fa fa-headset"></i>
-                            </div>
-                            <div>
-                                <h4 class="kc-support-title">Still have questions or need custom hardware guidance?</h4>
-                                <p class="kc-support-sub">Our PC specialists are available 7 days a week to help you choose the right specs.</p>
-                            </div>
-                        </div>
-                        <a href="contact.php" class="kc-support-btn">
-                            <span>Get Tech Consultation</span>
-                            <i class="fa fa-arrow-right"></i>
-                        </a>
                     </div>
                 </div>
 

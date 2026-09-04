@@ -13,25 +13,25 @@ include ('dbconnect.php');
 
 /* Subheader Banner */
 .kc-sub-header {
-    background: linear-gradient(135deg, #0B192C 0%, #1A365D 100%) !important;
-    padding: 24px 0 !important;
-    border-bottom: 3px solid #00BCD4 !important;
+    background: linear-gradient(135deg, #001A47 0%, #002566 50%, #003B95 100%) !important;
+    padding: 36px 0 32px 0 !important;
+    border-bottom: 3px solid #003B95 !important;
     color: #ffffff !important;
 }
 .kc-sub-title {
     font-family: 'Outfit', sans-serif !important;
     font-weight: 800 !important;
-    font-size: 24px !important;
+    font-size: 26px !important;
     margin: 0 !important;
     letter-spacing: 0.5px !important;
     text-transform: uppercase !important;
     color: #ffffff !important;
 }
 .kc-sub-desc {
-    color: #00BCD4 !important;
-    font-size: 13px !important;
+    color: #DBEAFE !important;
+    font-size: 14px !important;
     margin: 4px 0 0 0 !important;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
 }
 
 /* Sidebar Filters */
@@ -98,6 +98,199 @@ include ('dbconnect.php');
     border-color: #0070F3 !important;
 }
 
+    /* ══════════════════════════════════════════════════════════
+       COMPACT PRODUCT CARDS STYLING (FEATURED PRODUCTS MATCH)
+    ══════════════════════════════════════════════════════════ */
+    .uls-compact-card {
+        background: #ffffff !important;
+        border: 1.5px solid #E2E8F0 !important;
+        border-radius: 14px !important;
+        padding: 12px !important;
+        position: relative !important;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03) !important;
+        box-sizing: border-box !important;
+    }
+    .uls-compact-card:hover {
+        border-color: #0070F3 !important;
+        transform: translateY(-4px) !important;
+        box-shadow: 0 10px 24px rgba(0, 112, 243, 0.12) !important;
+    }
+
+    /* 1. Image Box & Hover Slide Animation */
+    .uls-img-slide-wrap {
+        width: 100% !important;
+        height: 170px !important;
+        border-radius: 10px !important;
+        background: #FFFFFF !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin-bottom: 10px !important;
+        overflow: hidden !important;
+        position: relative !important;
+        padding: 6px !important;
+    }
+    .uls-img-link {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .uls-slide-img {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: contain !important;
+        transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+    .uls-compact-card:hover .uls-slide-img {
+        transform: scale(1.08) !important;
+    }
+
+    /* Bright Red Discount Badge */
+    .uls-bright-discount-badge {
+        position: absolute !important;
+        top: 8px !important;
+        left: 8px !important;
+        background: #EF4444 !important;
+        color: #ffffff !important;
+        font-size: 10.5px !important;
+        font-weight: 800 !important;
+        padding: 3px 7px !important;
+        border-radius: 6px !important;
+        z-index: 5 !important;
+        letter-spacing: 0.3px !important;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35) !important;
+    }
+
+    /* Wishlist Button */
+    .kc-prod-wish-btn {
+        position: absolute !important;
+        top: 8px !important;
+        right: 8px !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 50% !important;
+        background: #ffffff !important;
+        border: 1.5px solid #CBD5E1 !important;
+        color: #64748B !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 20 !important;
+        cursor: pointer !important;
+        transition: all 0.25s ease !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+        outline: none !important;
+    }
+    .kc-prod-wish-btn:hover, .kc-prod-wish-btn.active {
+        background: #FFF1F2 !important;
+        border-color: #FECDD3 !important;
+        color: #E11D48 !important;
+        transform: scale(1.1) !important;
+        box-shadow: 0 4px 14px rgba(225, 29, 72, 0.25) !important;
+    }
+    .kc-prod-wish-btn i {
+        font-size: 14px !important;
+        display: inline-block !important;
+        line-height: 1 !important;
+    }
+
+    /* 2. Product Title */
+    .uls-compact-title {
+        font-size: 13.5px !important;
+        font-weight: 700 !important;
+        color: #0F172A !important;
+        margin: 0 0 8px 0 !important;
+        line-height: 1.35 !important;
+        height: 36px !important;
+        overflow: hidden !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+    }
+    .uls-compact-title a {
+        color: #0F172A !important;
+        text-decoration: none !important;
+        transition: color 0.2s ease !important;
+    }
+    .uls-compact-title a:hover {
+        color: #0070F3 !important;
+    }
+
+    /* 3. Price Row */
+    .uls-compact-price-row {
+        display: flex !important;
+        align-items: baseline !important;
+        gap: 6px !important;
+        margin-bottom: 10px !important;
+        flex-wrap: wrap !important;
+    }
+    .uls-price-main {
+        font-size: 16px !important;
+        font-weight: 900 !important;
+        color: #0F172A !important;
+        font-family: 'Outfit', sans-serif !important;
+    }
+    .uls-price-strikethrough {
+        font-size: 12px !important;
+        color: #94A3B8 !important;
+        text-decoration: line-through !important;
+    }
+
+    /* 4. Bottom Rating & Cart Icon Row */
+    .uls-compact-bottom-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 6px !important;
+        padding-top: 4px !important;
+    }
+    .uls-rating-box {
+        display: flex !important;
+        align-items: center !important;
+    }
+    .uls-green-rating-badge {
+        background: #388E3C !important;
+        color: #ffffff !important;
+        font-size: 11px !important;
+        font-weight: 800 !important;
+        padding: 3px 7px !important;
+        border-radius: 5px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 3px !important;
+    }
+
+    /* Add to Cart Icon Button */
+    .uls-white-cart-btn {
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 8px !important;
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        color: #0070F3 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 15px !important;
+        cursor: pointer !important;
+        flex-shrink: 0 !important;
+        transition: all 0.22s ease !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    }
+    .uls-white-cart-btn:hover {
+        background: #0070F3 !important;
+        border-color: #0070F3 !important;
+        color: #FFFFFF !important;
+        transform: scale(1.08) !important;
+        box-shadow: 0 4px 12px rgba(0, 112, 243, 0.35) !important;
+    }
+
 /* Product Cards Grid */
 .kc-prod-grid-item {
     margin-bottom: 24px !important;
@@ -155,24 +348,32 @@ include ('dbconnect.php');
     position: absolute !important;
     top: 10px !important;
     right: 10px !important;
-    width: 32px !important;
-    height: 32px !important;
+    width: 34px !important;
+    height: 34px !important;
     border-radius: 50% !important;
     background: #ffffff !important;
-    border: 1px solid #E2E8F0 !important;
-    color: #94A3B8 !important;
+    border: 1.5px solid #CBD5E1 !important;
+    color: #64748B !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    z-index: 2 !important;
+    z-index: 20 !important;
     cursor: pointer !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.25s ease !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    outline: none !important;
 }
 .kc-prod-wish-btn:hover, .kc-prod-wish-btn.active {
     background: #FFF1F2 !important;
     border-color: #FECDD3 !important;
     color: #E11D48 !important;
     transform: scale(1.1) !important;
+    box-shadow: 0 4px 14px rgba(225, 29, 72, 0.25) !important;
+}
+.kc-prod-wish-btn i {
+    font-size: 15px !important;
+    display: inline-block !important;
+    line-height: 1 !important;
 }
 
 /* Card Body */
@@ -428,7 +629,10 @@ $num_of = $fetcate ? mysqli_num_rows($fetcate) : 0;
                                         while ($row1 = $result1->fetch_assoc()) { ?>
                                     <li>
                                         <label class="container_check"><?= htmlspecialchars($row1['c_name']); ?>
-                                            <?php $isChecked = (isset($selectedCat) && $selectedCat == $row1['c_id']) ? 'checked' : ''; ?>
+                                            <?php 
+                                            $reqCat = $_GET['cat'] ?? ($_GET['category'] ?? ($_GET['cateid'] ?? ''));
+                                            $isChecked = (!empty($reqCat) && ($reqCat == $row1['c_id'] || strtolower($reqCat) == strtolower($row1['c_name']))) ? 'checked' : ''; 
+                                            ?>
                                             <input onclick="Category()" name="category" value="<?= htmlspecialchars($row1['c_id']); ?>" type="checkbox" <?= $isChecked; ?>>
                                             <span class="checkmark"></span>
                                         </label>
@@ -536,59 +740,48 @@ $num_of = $fetcate ? mysqli_num_rows($fetcate) : 0;
                                     if ($zqswl && mysqli_num_rows($zqswl) > 0) $syl = 1;
                                 }
                         ?>
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-6 kc-prod-grid-item">
-                            <div class="kc-product-card">
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-6 mb-3 px-2">
+                            <div class="uls-compact-card">
                                 
                                 <!-- Image & Badges -->
-                                <div class="kc-prod-img-wrap">
+                                <div class="uls-img-slide-wrap">
                                     <?php if ($discount_per > 0) { ?>
-                                    <span class="kc-discount-badge"><?= $discount_per; ?>% OFF</span>
+                                    <span class="uls-bright-discount-badge">-<?= $discount_per; ?>%</span>
                                     <?php } ?>
                                     
                                     <button type="button" class="kc-prod-wish-btn <?= ($syl == 1) ? 'active' : ''; ?>" 
                                             onclick="toggle_Wishlist(<?= $ct_nid; ?>, '<?= htmlspecialchars($ct_img); ?>', '<?= htmlspecialchars($ct_name); ?>')" 
                                             id="heart-icon1-<?= $ct_nid; ?>" title="Add to Wishlist">
-                                        <i class="fa <?= ($syl == 1) ? 'fa-heart' : 'fa-heart-o'; ?>"></i>
+                                        <i class="<?= ($syl == 1) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'; ?>"></i>
                                     </button>
 
-                                    <a href="details.php?id=<?= htmlspecialchars($ct_nid); ?>" class="w-100 h-100 d-flex align-items-center justify-content-center">
-                                        <img src="<?= htmlspecialchars($img_src); ?>" alt="<?= htmlspecialchars($ct_name); ?>" onerror="this.src='img/karuda_logo.png'">
+                                    <a href="details.php?id=<?= htmlspecialchars($ct_nid); ?>" class="uls-img-link">
+                                        <img src="<?= htmlspecialchars($img_src); ?>" alt="<?= htmlspecialchars($ct_name); ?>" class="uls-slide-img" onerror="this.src='img/products/hp_laptop.jpg'">
                                     </a>
                                 </div>
 
-                                <!-- Body -->
-                                <div class="kc-prod-body">
-                                    <span class="kc-prod-cat"><?= htmlspecialchars($cat_name); ?></span>
-                                    <h4 class="kc-prod-title">
-                                        <a href="details.php?id=<?= htmlspecialchars($ct_nid); ?>"><?= htmlspecialchars($ct_name); ?></a>
-                                    </h4>
+                                <!-- Title -->
+                                <h3 class="uls-compact-title">
+                                    <a href="details.php?id=<?= htmlspecialchars($ct_nid); ?>" title="<?= htmlspecialchars($ct_name); ?>"><?= htmlspecialchars($ct_name); ?></a>
+                                </h3>
 
-                                    <!-- Rating -->
-                                    <div class="kc-prod-stars">
-                                        <?php
-                                        for ($st = 1; $st <= 5; $st++) {
-                                            if ($st <= $defaultRating) {
-                                                echo '<i class="fa fa-star"></i>';
-                                            } else {
-                                                echo '<i class="fa fa-star-o" style="color:#CBD5E1;"></i>';
-                                            }
-                                        }
-                                        ?>
-                                        <span>(<?= $defaultRating; ?>.0)</span>
+                                <!-- Price Row -->
+                                <div class="uls-compact-price-row">
+                                    <span class="uls-price-main">₹<?= number_format($currentp, 2); ?></span>
+                                    <?php if ($oldp > $currentp && $oldp > 0) { ?>
+                                    <span class="uls-price-strikethrough">₹<?= number_format($oldp, 2); ?></span>
+                                    <?php } ?>
+                                </div>
+
+                                <!-- Bottom Rating & Cart Icon Row -->
+                                <div class="uls-compact-bottom-row mt-auto">
+                                    <div class="uls-rating-box">
+                                        <span class="uls-green-rating-badge"><?= number_format($defaultRating, 1); ?> <i class="fa fa-star" style="font-size:8.5px;"></i></span>
                                     </div>
 
-                                    <!-- Pricing -->
-                                    <div class="kc-prod-price-box">
-                                        <span class="kc-curr-price">₹ <?= number_format($currentp); ?></span>
-                                        <?php if ($oldp > $currentp) { ?>
-                                        <span class="kc-old-price">₹ <?= number_format($oldp); ?></span>
-                                        <?php } ?>
-                                    </div>
-
-                                    <!-- CTA -->
-                                    <a href="details.php?id=<?= htmlspecialchars($ct_nid); ?>" class="kc-prod-btn">
-                                        View Details
-                                    </a>
+                                    <button type="button" class="uls-white-cart-btn" onclick="quickAddToCart(<?= $ct_nid; ?>, this)" title="Add to Cart">
+                                        <i class="fa fa-cart-plus"></i>
+                                    </button>
                                 </div>
 
                             </div>
@@ -674,6 +867,54 @@ function Category() {
         loading_spinner.style.display = "none";
     };
     xhr.send();
+}
+
+// Auto-run Category() filter on page load if URL parameters or checked boxes exist
+document.addEventListener('DOMContentLoaded', function() {
+    const checkedCats = document.querySelectorAll('[name="category"]:checked');
+    const checkedRatings = document.querySelectorAll('[name="starRatings"]:checked');
+    const urlParams = new URLSearchParams(window.location.search);
+    if (checkedCats.length > 0 || checkedRatings.length > 0 || urlParams.has('cat') || urlParams.has('search') || urlParams.has('category')) {
+        Category();
+    }
+});
+
+async function toggle_Wishlist(p_id, img, title) {
+    let btn = document.getElementById('heart-icon1-' + p_id);
+    if (!btn) return;
+    let icon = btn.querySelector('i');
+
+    try {
+        let res = await fetch('watc.php?p_id=' + p_id);
+        let data = await res.json();
+        
+        if (data.status === 'added' || data.list === 3) {
+            btn.classList.add('active');
+            if (icon) {
+                icon.className = 'fa-solid fa-heart';
+            }
+            if (typeof toastr !== 'undefined') {
+                toastr.success((title || 'Product') + ' added to your Wishlist!');
+            }
+        } else {
+            btn.classList.remove('active');
+            if (icon) {
+                icon.className = 'fa-regular fa-heart';
+            }
+            if (typeof toastr !== 'undefined') {
+                toastr.info((title || 'Product') + ' removed from Wishlist');
+            }
+        }
+    } catch(e) {
+        if (btn.classList.contains('active')) {
+            btn.classList.remove('active');
+            if (icon) icon.className = 'fa-regular fa-heart';
+        } else {
+            btn.classList.add('active');
+            if (icon) icon.className = 'fa-solid fa-heart';
+            if (typeof toastr !== 'undefined') toastr.success((title || 'Product') + ' added to Wishlist!');
+        }
+    }
 }
 </script>
 

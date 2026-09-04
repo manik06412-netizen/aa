@@ -1,218 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
 <?php
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
-require_once __DIR__ . '/inc/config.php';
-if (!isset($_SESSION["admin1_user"])) {
-    header("Location: login.php");
-    exit;
-}
-error_reporting(0);
+include ("../dbconnect.php");
+ error_reporting(0);
+session_start();
 
-$message = '';
-$error = '';
 
-if (isset($_POST['submit'])) {
-    $k1 = mysqli_real_escape_string($con, trim($_POST['k1'] ?? ''));
-    $k2 = mysqli_real_escape_string($con, trim($_POST['k2'] ?? ''));
-    $k3 = mysqli_real_escape_string($con, trim($_POST['k3'] ?? ''));
-    $link = mysqli_real_escape_string($con, trim($_POST['link'] ?? ''));
+if(isset($_POST['submit'] ))
+{
+    if(empty($_POST['c_name']))
+		{
+			$error = '<div class="alert alert-danger alert-dismissible fade show">
+																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+																<strong>field Required!</strong>
+															</div>';
+		}
+	else
+	{
+		
+	$check_cat= mysqli_query($con, "SELECT k1 FROM banner where k1 = '".$_POST['c_name']."' ");
 
-    if (empty($k1)) {
-        $error = 'Banner Title (Header) is required!';
-    } else {
-        $fname = $_FILES['images']['name'] ?? '';
-        $temp = $_FILES['images']['tmp_name'] ?? '';
-        $fsize = $_FILES['images']['size'] ?? 0;
+	
+	
+	if(mysqli_num_rows($check_cat) > 0)
+     {
+    	$error = '<div class="alert alert-danger alert-dismissible fade show">
+																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+																<strong>Category already exist!</strong>
+															</div>';
+     }
+	else{
+       
         
-        $store = 'Res_img/no_image.png';
-        if (!empty($fname)) {
-            $ext = strtolower(pathinfo($fname, PATHINFO_EXTENSION));
-            if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
-                if ($fsize <= 4194304) { // 4MB
-                    $fnew = uniqid() . '.' . $ext;
-                    // Ensure banners directory exists
-                    if (!is_dir(__DIR__ . '/Res_img/banners')) {
-                        mkdir(__DIR__ . '/Res_img/banners', 0777, true);
-                    }
-                    if (!is_dir(__DIR__ . '/../Res_img/banners')) {
-                        mkdir(__DIR__ . '/../Res_img/banners', 0777, true);
-                    }
-                    $store = "Res_img/banners/" . $fnew;
-                    move_uploaded_file($temp, __DIR__ . "/../" . $store);
-                    if (file_exists(__DIR__ . "/../" . $store)) {
-                        @copy(__DIR__ . "/../" . $store, __DIR__ . "/" . $store);
-                    }
-                } else {
-                    $error = 'Image size should be less than 4MB!';
-                }
+        $fname = $_FILES['images']['name'];
+        $temp = $_FILES['images']['tmp_name'];
+        $fsize = $_FILES['images']['size'];
+        $extension = pathinfo($fname, PATHINFO_EXTENSION);  // Get the file extension
+        $fnew = uniqid() . '.' . $extension;
+        
+        
+        
+        $store = "Res_img/dishes/" . basename($fnew);
+        
+        
+            if (move_uploaded_file($temp, $store)) {
+                // File uploaded successfully
+                //echo "File uploaded successfully.";
             } else {
-                $error = 'Invalid image format. Allowed formats: JPG, PNG, GIF, WEBP.';
+                // Handle upload failure
+                //echo "Error uploading file.";
             }
-        }
-
-        if (empty($error)) {
-            $sql = "INSERT INTO banner (k1, k2, k3, fpath, link) VALUES ('$k1', '$k2', '$k3', '$store', '$link')";
-            if (mysqli_query($con, $sql)) {
-                $_SESSION['flash_success'] = 'Banner added successfully!';
-                header('Location: ' . basename($_SERVER['PHP_SELF'])); exit;
-            } else {
-                $error = 'Database error: ' . mysqli_error($con);
-            }
-        }
+        } 
+    
+                          
+	$mql = "INSERT INTO banner VALUES(null,'".$_POST['c_name']."','".$_POST['k1']."','".$_POST['k2']."','" . $store . "','".$_POST['k3']."')";
+	mysqli_query($con, $mql);
+			$success = 	'<div class="alert alert-success alert-dismissible fade show">
+																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+																<strong>Congrats!</strong> New Banner Added Successfully.</br></div>';
+	
     }
-}
+	}
 
-require_once('header.php');
+
 ?>
-<section class="content-header">
-    <div class="content-header-left">
-        <h1>Banners & Promotional Ads</h1>
-    </div>
-</section>
+<?php include "head.php"; ?>
 
-<section class="content">
-    <div class="row">
-        <!-- Add Banner Form -->
-        <div class="col-md-5">
-            <?php if (!empty($error)): ?>
-                <div class="alert alert-danger alert-dismissible" style="border-radius: 8px;">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <i class="icon fa fa-ban"></i> <?php echo htmlspecialchars($error); ?>
-                </div>
-            <?php endif; ?>
+<body class="fix-header">
 
-            <?php $message = $_SESSION['flash_success'] ?? ''; unset($_SESSION['flash_success']); ?>
-        <?php if (!empty($message)): ?>
-                <div class="alert alert-success alert-dismissible" style="border-radius: 8px;">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <i class="icon fa fa-check"></i> <?php echo htmlspecialchars($message); ?>
-                </div>
-            <?php endif; ?>
+    <div id="main-wrapper">
+        <!-- header header  -->
+        <?php include "navbar.php"; ?>
 
-            <div class="box box-info" style="border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 15px;">
-                <div class="box-header with-border">
-                    <h3 class="box-title" style="font-weight: 600; font-size: 16px;">Add New Banner</h3>
-                </div>
-                <form action="" method="post" enctype="multipart/form-data">
-                    <div class="box-body" style="padding-top: 15px;">
-                        <div class="form-group">
-                            <label>Banner Title (Heading) <span>*</span></label>
-                            <input type="text" class="form-control" name="k1" placeholder="e.g. Next-Gen Gaming Laptops" required>
+        <?php include "sidebar1.php"; ?>
+        <!-- End Left Sidebar  -->
+        <!-- Page wrapper  -->
+        <div class="page-wrapper" style="height:1200px;">
+            <!-- Bread crumb -->
+
+            <!-- End Bread crumb -->
+            <!-- Container fluid  -->
+            <div class="container-fluid">
+                <!-- Start Page Content -->
+
+                <div class="row">
+
+                    <div class="container-fluid">
+                        <!-- Start Page Content -->
+
+
+                        <?php  
+									        echo $error;
+									        echo $success; ?>
+
+
+
+
+                        <div class="col-lg-12">
+                            <div class="card card-outline-primary">
+                                <div class="card-header">
+                                    <h4 class="m-b-0 text-white">Add Banner</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form action='' method='post' enctype='multipart/form-data'>
+                                        <div class="form-body">
+
+                                            <hr>
+                                            <div class="row p-t-20">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Title</label>
+                                                        <input type="text" name="c_name" class="form-control"
+                                                            placeholder="Enter Title" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Heading</label>
+                                                        <input type="text" name="k1" class="form-control"
+                                                            placeholder="Enter Heading" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Slogan</label>
+                                                        <input type="text" name="k2" class="form-control"
+                                                            placeholder="Enter Slogan" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Link</label>
+                                                        <input type="text" name="k3" class="form-control"
+                                                            placeholder="Link" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Upload Image</label>
+                                                        <input type="file" name="images" class="form-control"
+                                                            placeholder="images" required>
+                                                    </div>
+                                                </div>
+
+
+                                                <!--/span-->
+
+                                            </div>
+                                            <div class="form-actions">
+                                                <input type="submit" name="submit" class="btn btn-success" value="Save">
+                                                <a href="dashboard.php" class="btn btn-inverse">Cancel</a>
+                                            </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>Subheading</label>
-                            <input type="text" class="form-control" name="k2" placeholder="e.g. RTX 40 Series & OLED Displays">
-                        </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label>Description / Tagline</label>
-                            <textarea class="form-control" name="k3" rows="2" placeholder="Experience ultra-fast gaming with latest tech..."></textarea>
-                        </div>
+                    <div class="col-12">
 
-                        <div class="form-group">
-                            <label>Target URL / Link</label>
-                            <input type="text" class="form-control" name="link" placeholder="e.g. category_list.php?search=gaming">
-                        </div>
 
-                        <div class="form-group">
-                            <label>Banner Image <span>*</span></label>
-                            <input type="file" class="form-control" name="images" accept="image/*" required>
-                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Listed Banner</h4>
 
-                        <div style="margin-top: 15px;">
-                            <button type="submit" name="submit" class="btn btn-success btn-block" style="border-radius: 6px; font-weight: 600; padding: 10px;">
-                                <i class="fa fa-plus"></i> Upload Banner
-                            </button>
+                                <div class="table-responsive m-t-40">
+                                    <table id="example23" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID#</th>
+                                                <th>Title</th>
+                                                <th>Heading</th>
+                                                <th>Slogan</th>
+                                                <th>image</th>
+                                                <th>Action</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                            <?php
+												$sql="SELECT * FROM banner order by id desc";
+												$query=mysqli_query($con,$sql);
+												
+													if(!mysqli_num_rows($query) > 0 )
+														{
+															echo '<td colspan="7"><center>No Banner-Data!</center></td>';
+														}
+													else
+														{				
+																	while($rows=mysqli_fetch_array($query))
+																		{
+																					
+																				
+																				
+                                                                            echo '<tr>
+                                                                            <td>' . $rows['id'] . '</td>
+                                                                            <td>' . $rows['k1'] . '</td>
+                                                                            <td>' . $rows['k2'] . '</td>
+                                                                            <td>' . $rows['k3'] . '</td>
+                                                                            <td>
+                                                                                <div class="col-md-3 col-lg-8 m-b-10">
+                                                                                    <center>
+                                                                                        <img src="' . $rows['fpath'] . '" class="img-responsive radius" style="max-height:100px;max-width:150px;" />
+                                                                                    </center>
+                                                                                </div>
+                                                                            </td>
+                                                                           
+                                                                            <td>
+                                                                                <a href="#" onclick="confirmDelete(' . $rows['id'] . ')"
+                                                                                   class="btn btn-danger btn-flat btn-addon btn-xs m-b-10">
+                                                                                    <i class="fa fa-trash-o" style="font-size:16px"></i>
+                                                                                </a>
+                                                                                <a href="update_banner.php?cat_upd=' . $rows['id'] . '" class="btn btn-info btn-flat btn-addon btn-sm m-b-10 m-l-5">
+                                                                                    <i class="ti-settings"></i>
+                                                                                </a>
+                                                                            </td>
+                                                                          </tr>';
+                                                                    
+																					 
+																						
+																						
+																		}	
+														}
+												
+											
+											?>
+
+
+                                            <script>
+                                            function confirmDelete(categoryId) {
+                                                var confirmDelete = confirm(
+                                                    "Are you sure you want to delete this category?");
+                                                if (confirmDelete) {
+                                                    window.location.href = 'delete_banner.php?cat_del=' + categoryId;
+                                                } else {
+                                                    // Do nothing or handle cancellation
+                                                }
+                                            }
+                                            </script>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </form>
-            </div>
-        </div>
 
-        <!-- Banner List Table -->
-        <div class="col-md-7">
-            <div class="box box-info" style="border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 15px;">
-                <div class="box-header with-border">
-                    <h3 class="box-title" style="font-weight: 600; font-size: 16px;">All Active Banners</h3>
+
+
+
+
+
+
                 </div>
-                <div class="box-body table-responsive" style="padding-top: 15px;">
-                    <table id="example1" class="table table-bordered table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <th width="10">#</th>
-                                <th width="80">Image</th>
-                                <th>Title / Details</th>
-                                <th>Target Link</th>
-                                <th width="60">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $i = 0;
-                            $query = mysqli_query($con, "SELECT * FROM banner ORDER BY id DESC");
-                            if ($query && mysqli_num_rows($query) > 0) {
-                                while ($rows = mysqli_fetch_array($query)) {
-                                    $i++;
-                                    $img_src = !empty($rows['fpath']) ? "../" . $rows['fpath'] : "Res_img/no_image.png";
-                                    ?>
-                                    <tr>
-                                        <td><?php echo $i; ?></td>
-                                        <td>
-                                            <img src="<?php echo htmlspecialchars($img_src); ?>" 
-                                                 style="width: 75px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid #e2e8f0;"
-                                                 onerror="this.onerror=null; this.src='Res_img/no_image.png';">
-                                        </td>
-                                        <td>
-                                            <strong><?php echo htmlspecialchars($rows['k1']); ?></strong>
-                                            <?php if (!empty($rows['k2'])): ?>
-                                                <br><small style="color: #64748b;"><?php echo htmlspecialchars($rows['k2']); ?></small>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td>
-                                            <?php if (!empty($rows['link'])): ?>
-                                                <a href="<?php echo htmlspecialchars($rows['link']); ?>" target="_blank" class="btn btn-default btn-xs">
-                                                    <i class="fa fa-external-link"></i> Link
-                                                </a>
-                                            <?php else: ?>
-                                                <span class="text-muted">None</span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-danger btn-xs" data-href="delete_banner.php?cat_del=<?php echo $rows['id']; ?>" data-toggle="modal" data-target="#confirm-delete" title="Delete Banner">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <?php
-                                }
-                            } else {
-                                echo '<tr><td colspan="5" class="text-center">No Banners Found!</td></tr>';
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
+                <!-- End PAge Content -->
             </div>
+            <!-- End Container fluid  -->
+            <!-- footer -->
+            <footer class="footer"> © All rights reserved. </footer>
+            <!-- End footer -->
         </div>
+        <!-- End Page wrapper  -->
     </div>
-</section>
+    <!-- End Wrapper -->
+    <!-- All Jquery -->
+    <script src="js/lib/jquery/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="js/lib/bootstrap/js/popper.min.js"></script>
+    <script src="js/lib/bootstrap/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="js/jquery.slimscroll.js"></script>
+    <!--Menu sidebar -->
+    <script src="js/sidebarmenu.js"></script>
+    <!--stickey kit -->
+    <script src="js/lib/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <!--Custom JavaScript -->
+    <script src="js/custom.min.js"></script>
 
-<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Delete Confirmation</h4>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this banner?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-danger btn-ok">Delete</a>
-            </div>
-        </div>
-    </div>
-</div>
+    <script src="js/lib/datatables/datatables.min.js"></script>
+    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="js/lib/datatables/cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+    <script src="js/lib/datatables/datatables-init.js"></script>
 
-<?php require_once('footer.php'); ?>
+</body>
+
+</html>

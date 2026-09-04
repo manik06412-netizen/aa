@@ -268,8 +268,8 @@ $customers_category = [
         // Add the column header text you want to skip (i.e., the column with the button "View Reviews")
         const skipColumns = ["Action", "Update", "View Reviews"]; // Add "View Reviews" or the actual column name
 
-        // Add AV Herbals as the heading
-        let csvContent = 'AV Herbals\n';
+        // Add Karuda Computers as the heading
+        let csvContent = 'Karuda Computers\n';
 
         // Add subheading for Review Reports
         csvContent += 'Review Reports\n';
@@ -368,7 +368,7 @@ $customers_category = [
     printWindow.document.write('<html><head><title>Print Table</title>');
     printWindow.document.write('<style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 8px; text-align: left; } th { background-color: #f2f2f2; }</style>');
     printWindow.document.write('</head><body>');
-    printWindow.document.write('<h1 style="text-align:center;">AV Herbals</h1>');
+    printWindow.document.write('<h1 style="text-align:center;">Karuda Computers</h1>');
     printWindow.document.write('<h3 style="text-align:center;">Review Reports</h3>');
 
     // Add date range if provided
@@ -428,7 +428,7 @@ $customers_category = [
             pdf.setFontSize(18);
 
             // Adjust the Y-coordinate for margin-top (change from 10 to your desired value)
-            pdf.text('AV Herbals', pdf.internal.pageSize.width / 2, 20, null, null, 'center');
+            pdf.text('Karuda Computers', pdf.internal.pageSize.width / 2, 20, null, null, 'center');
 
 
             pdf.setFontSize(14);

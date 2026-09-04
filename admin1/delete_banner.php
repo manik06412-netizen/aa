@@ -1,16 +1,11 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
-require_once __DIR__ . '/inc/config.php';
-if (!isset($_SESSION["admin1_user"])) {
-    header("Location: login.php");
-    exit;
-}
+include("../config.php");
 error_reporting(0);
+session_start();
 
-if (isset($_GET['cat_del'])) {
-    $id = intval($_GET['cat_del']);
-    mysqli_query($con, "DELETE FROM banner WHERE id = '$id'");
-}
 
-header("Location: banner.php");
-exit;
+// sending query
+mysqli_query($con,"DELETE FROM banner WHERE id = '".$_GET['cat_del']."'");
+header("location:banner.php");  
+
+?>

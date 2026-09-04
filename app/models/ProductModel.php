@@ -94,15 +94,18 @@ class ProductModel extends Model {
             return resolve_image_url($path);
         }
         if (empty($path)) {
-            return 'img/alter_img.jpg';
+            return 'img/products/prod_laptop_1.jpg';
         }
         $clean = preg_replace('#/+#', '/', ltrim(trim($path), './'));
-        if (file_exists('avadmin/' . $clean)) {
-            return './avadmin/' . $clean;
+        if (file_exists(__DIR__ . '/../../' . $clean)) {
+            return $clean;
         }
-        if (file_exists('admin/' . $clean)) {
-            return './admin/' . $clean;
+        if (file_exists(__DIR__ . '/../../avadmin/' . $clean)) {
+            return 'avadmin/' . $clean;
         }
-        return './avadmin/' . $clean;
+        if (file_exists(__DIR__ . '/../../admin/' . $clean)) {
+            return 'admin/' . $clean;
+        }
+        return $clean;
     }
 }

@@ -8,12 +8,13 @@ require ('include/header.php');
     background-color: #f8fafc;
 }
 .kc-category-header {
-    background: radial-gradient(circle at 50% 30%, #1a365d 0%, #0b192c 60%, #060d17 100%);
+    background: linear-gradient(135deg, #001A47 0%, #002566 50%, #003B95 100%) !important;
     padding: 50px 0;
     text-align: center;
     color: white;
     margin-bottom: 35px;
-    border-bottom: 1px solid rgba(0, 188, 212, 0.2);
+    border-bottom: 3px solid #003B95 !important;
+    box-shadow: 0 4px 20px rgba(0, 37, 102, 0.25);
 }
 .kc-category-header h1 {
     font-weight: 800;
@@ -21,10 +22,11 @@ require ('include/header.php');
     font-size: 2.3rem;
     letter-spacing: -0.5px;
     text-transform: uppercase;
+    color: #ffffff;
 }
 .kc-category-header p {
     font-size: 1.05rem;
-    color: #94A3B8;
+    color: #DBEAFE;
     max-width: 600px;
     margin: 0 auto;
 }

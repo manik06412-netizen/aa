@@ -1,16 +1,68 @@
+<style>
+.kc-sec-heading-block {
+    position: relative !important;
+    text-align: center !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 0 0 28px 0 !important;
+}
+.kc-sec-heading-title {
+    text-align: center !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    color: #0F172A !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    font-family: 'Poppins', sans-serif !important;
+    margin: 0 auto !important;
+    display: block !important;
+    width: 100% !important;
+    line-height: 1.3 !important;
+}
+.kc-sec-heading-viewall {
+    position: absolute !important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    color: #003B95 !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    transition: all 0.2s ease !important;
+}
+.kc-sec-heading-viewall:hover {
+    color: #002566 !important;
+    transform: translateY(-50%) translateX(3px) !important;
+}
+@media (max-width: 576px) {
+    .kc-sec-heading-title {
+        font-size: 18px !important;
+    }
+    .kc-sec-heading-viewall {
+        position: static !important;
+        display: inline-block !important;
+        margin-top: 6px !important;
+        transform: none !important;
+    }
+}
+</style>
+
 <!-- ══════════════════════════════════════════════════════════
-     KARUDA COMPUTERS — CLEAN FEATURED PRODUCTS
+     KARUDA COMPUTERS — WIREFRAME FEATURED PRODUCTS (SECTION 5)
 ══════════════════════════════════════════════════════════ -->
-<div class="container">
+<div class="container py-4">
     
-    <!-- Section Header (Sub-text removed) -->
-    <div class="kc-section-header text-center mb-4 mt-5">
-        <span class="kc-badge-pill">
-            <i class="fa fa-fire text-danger"></i> Best Selling Hardware
-        </span>
-        <h2 class="kc-modern-heading">
-            Featured <span class="kc-heading-gradient">Products</span>
+    <!-- Section Header (Centered Title | View All Right) -->
+    <div class="kc-sec-heading-block">
+        <h2 class="kc-sec-heading-title">
+            FEATURED PRODUCTS
         </h2>
+        <a href="allproducts.php" class="kc-sec-heading-viewall">
+            View All &rarr;
+        </a>
     </div>
 
     <div class="kc-prod-grid">
@@ -39,7 +91,7 @@
                 WHERE d.status = 1
                 GROUP BY d.d_id
                 ORDER BY d.d_id DESC
-                LIMIT 8";
+                LIMIT 10";
 
         $prod_query = mysqli_query($con, $sql);
 
@@ -106,23 +158,32 @@
         ?>
     </div>
 
-    <!-- View All Products Action Button -->
-    <div class="text-center mt-2 mb-5">
-        <a href="allproducts.php" class="uls-view-all-products-btn">
-            <span>View All Products</span>
-            <i class="fa-solid fa-arrow-right"></i>
-        </a>
-    </div>
-
     <style>
     /* ══════════════════════════════════════════════════════════
-       COMPACT PRODUCT CARDS STYLING
+       COMPACT PRODUCT CARDS STYLING (WIREFRAME 5-COL GRID)
     ══════════════════════════════════════════════════════════ */
     .kc-prod-grid {
         display: grid !important;
-        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)) !important;
-        gap: 14px !important;
-        margin-bottom: 30px !important;
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 16px !important;
+        margin-bottom: 20px !important;
+    }
+    @media (max-width: 1200px) {
+        .kc-prod-grid {
+            grid-template-columns: repeat(4, 1fr) !important;
+        }
+    }
+    @media (max-width: 991px) {
+        .kc-prod-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 12px !important;
+        }
+    }
+    @media (max-width: 640px) {
+        .kc-prod-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px !important;
+        }
     }
 
     /* View All Products Button */

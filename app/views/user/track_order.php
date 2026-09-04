@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 error_reporting(0);
 include "include/header.php";
@@ -49,20 +49,21 @@ $qty = (int)($order['qty'] ?? 1);
 
 /* Banner */
 .kc-track-banner {
-    background: linear-gradient(135deg, #0B192C 0%, #1A365D 100%) !important;
-    padding: 35px 0 40px 0 !important;
-    border-bottom: 3px solid #00BCD4 !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #001A47 0%, #002566 50%, #003B95 100%) !important;
+    padding: 36px 0 32px 0 !important;
+    border-bottom: 3px solid #003B95 !important;
+    box-shadow: 0 4px 20px rgba(0, 37, 102, 0.35);
 }
 .kc-track-title {
     font-size: 28px !important;
     font-weight: 800 !important;
     color: #ffffff !important;
     margin: 0 !important;
-    letter-spacing: -0.5px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 .kc-track-title span {
-    color: #00BCD4;
+    color: #60A5FA;
 }
 
 .kc-breadcrumb-nav {

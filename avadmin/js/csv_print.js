@@ -19,7 +19,7 @@ document.getElementById('export_table').addEventListener('click', function() {
     const headers = table.querySelectorAll('thead th');
     const headerIndices = [];
     csvContent +=  currentDate + ' -' + currentTime + '\n\n';
-    csvContent += 'AV Herbals\n';
+    csvContent += 'Karuda Computers\n';
     csvContent += sessionTitle + '\n';
     csvContent += 'Order Reports\n';
     const filterTitle = currentFilter ? `${currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1)} Orders` : '';
@@ -104,7 +104,7 @@ document.getElementById('print_table').addEventListener('click', function() {
     printWindow.document.write('<html><head><title>Print Table</title>');
     printWindow.document.write('<style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 4px; text-align: left; font-size: 10px; } th { background-color: #f2f2f2; }</style>');
     printWindow.document.write('</head><body>');
-    printWindow.document.write('<h1 style="text-align: center;">AV Herbals - ' + sessionTitle + '</h1>'); // Insert session title
+    printWindow.document.write('<h1 style="text-align: center;">Karuda Computers - ' + sessionTitle + '</h1>'); // Insert session title
     printWindow.document.write(tableHTML);
     printWindow.document.write('</body></html>');
     printWindow.document.close();
@@ -188,7 +188,7 @@ document.getElementById('download_pdf').addEventListener('click', function () {
 
     // Add titles before the table in the PDF
     doc.setFontSize(18);
-    doc.text('AVHerbals', centerTitlePosition, 20, { align: 'center' });  // Static title "AVHerbals" aligned to center
+    doc.text('Karuda Computers', centerTitlePosition, 20, { align: 'center' });  // Static title "Karuda Computers" aligned to center
 
     // Add session title
     doc.setFontSize(16);

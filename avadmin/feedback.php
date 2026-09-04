@@ -92,7 +92,7 @@ document.getElementById('download_pdf').addEventListener('click', function() {
 
         // Add title and center it
         pdf.setFontSize(18);
-        pdf.text('AV Herbals', pdf.internal.pageSize.width / 2, 20, null, null, 'center');
+        pdf.text('Karuda Computers', pdf.internal.pageSize.width / 2, 20, null, null, 'center');
 
         // Optionally add date range if needed
         const startDate = document.getElementById('startDate') ? document.getElementById('startDate').value : '';

@@ -25,10 +25,25 @@ if ($check && mysqli_num_rows($check) > 0) {
     exit;
 }
 
+// 1. Insert into tbl_subscriber (Admin subscriber management)
 $insert = mysqli_query($con, "INSERT INTO tbl_subscriber (subs_email, dat) VALUES ('$esc_email', '$date')");
 
+// 2. Also insert into newsletter table
+@mysqli_query($con, "INSERT INTO newsletter (emailid) VALUES ('$esc_email')");
+
 if ($insert) {
-    echo json_encode(['success' => true, 'message' => 'Thank you for subscribing to Karuda Computers newsletter!']);
+    // 3. Send Email Notifications to Admin and Subscriber
+    if (file_exists(__DIR__ . '/app/init.php')) {
+        require_once __DIR__ . '/app/init.php';
+        if (class_exists('\\App\\Core\\Mailer')) {
+            \App\Core\Mailer::sendNewsletterNotification($email);
+        }
+    }
+
+    echo json_encode([
+        'success' => true, 
+        'message' => 'Thank you for subscribing to Karuda Computers! A confirmation email has been dispatched.'
+    ]);
 } else {
     echo json_encode(['success' => false, 'message' => 'Subscription failed: ' . mysqli_error($con)]);
 }

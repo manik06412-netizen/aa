@@ -1,4 +1,8 @@
 User-agent: *
-Allow: /
-Sitemap: https://avherbals.in/index.php?sitemap.xml
-Sitemap: https://avherbals.in/savep.php?sitemap.xml
+Disallow: /admin/
+Disallow: /avadmin/
+Disallow: /app/
+Disallow: /cart.php
+Disallow: /checkout.php
+
+Sitemap: http://localhost/karudacom/sitemap.xml

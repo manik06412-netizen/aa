@@ -165,35 +165,34 @@ class CategoryController extends Controller {
 
                 $totalProducts++;
 
-                $html .= '<div class="col-6 col-sm-6 col-md-4 col-lg-3 kc-prod-grid-item mb-3 px-1">';
-                $html .= '  <div class="kc-prod-card h-100">';
-                $html .= '    <span class="kc-discount-badge">-' . $discount . '%</span>';
-                $html .= '    <div class="kc-prod-img-box">';
-                $html .= '      <a href="' . $detailUrl . '">';
-                $html .= '        <img src="' . $p_img . '" alt="' . $p_name . '" onerror="this.src=\'img/products/hp_laptop.jpg\'">';
+                $html .= '<div class="col-xl-3 col-lg-4 col-md-6 col-6 mb-3 px-2">';
+                $html .= '  <div class="uls-compact-card">';
+                $html .= '    <div class="uls-img-slide-wrap">';
+                if ($discount > 0) {
+                    $html .= '      <span class="uls-bright-discount-badge">-' . $discount . '%</span>';
+                }
+                $html .= '      <button type="button" class="kc-prod-wish-btn" onclick="toggle_Wishlist(' . $p_id . ', \'' . htmlspecialchars($imgKey) . '\', \'' . htmlspecialchars($p_name) . '\')" id="heart-icon1-' . $p_id . '" title="Add to Wishlist">';
+                $html .= '        <i class="fa-regular fa-heart"></i>';
+                $html .= '      </button>';
+                $html .= '      <a href="' . $detailUrl . '" class="uls-img-link">';
+                $html .= '        <img src="' . $p_img . '" alt="' . $p_name . '" class="uls-slide-img" onerror="this.src=\'img/products/hp_laptop.jpg\'">';
                 $html .= '      </a>';
                 $html .= '    </div>';
-                $html .= '    <div class="mb-1">';
-                $html .= '      <span class="badge badge-light text-primary" style="font-size:11px;font-weight:600;">' . $catName . '</span>';
-                $html .= '    </div>';
-                $html .= '    <h3 class="kc-prod-title">';
-                $html .= '      <a href="' . $detailUrl . '">' . $p_name . '</a>';
+                $html .= '    <h3 class="uls-compact-title">';
+                $html .= '      <a href="' . $detailUrl . '" title="' . $p_name . '">' . $p_name . '</a>';
                 $html .= '    </h3>';
-                $html .= '    <div class="kc-prod-rating">';
-                for ($st = 1; $st <= 5; $st++) {
-                    $html .= ($st <= $rating) ? '<i class="fa fa-star text-warning"></i>' : '<i class="fa fa-star-o text-muted"></i>';
-                }
-                $html .= '      <span class="text-muted ml-1" style="font-size:11px;">(' . $rating . '.0)</span>';
-                $html .= '    </div>';
-                $html .= '    <div class="kc-prod-price-box">';
-                $html .= '      <span class="kc-price-curr">₹' . number_format($price, 2) . '</span>';
+                $html .= '    <div class="uls-compact-price-row">';
+                $html .= '      <span class="uls-price-main">₹' . number_format($price, 2) . '</span>';
                 if ($oprice > $price) {
-                    $html .= '  <span class="kc-price-old">₹' . number_format($oprice, 2) . '</span>';
+                    $html .= '  <span class="uls-price-strikethrough">₹' . number_format($oprice, 2) . '</span>';
                 }
                 $html .= '    </div>';
-                $html .= '    <div class="kc-card-actions mt-auto">';
-                $html .= '      <button type="button" class="kc-btn-cart-action" onclick="quickAddToCart(' . $p_id . ', this)">';
-                $html .= '        <i class="fa fa-cart-plus"></i> Add to Cart';
+                $html .= '    <div class="uls-compact-bottom-row mt-auto">';
+                $html .= '      <div class="uls-rating-box">';
+                $html .= '        <span class="uls-green-rating-badge">' . number_format($rating, 1) . ' <i class="fa fa-star" style="font-size:8.5px;"></i></span>';
+                $html .= '      </div>';
+                $html .= '      <button type="button" class="uls-white-cart-btn" onclick="quickAddToCart(' . $p_id . ', this)" title="Add to Cart">';
+                $html .= '        <i class="fa fa-cart-plus"></i>';
                 $html .= '      </button>';
                 $html .= '    </div>';
                 $html .= '  </div>';

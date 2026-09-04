@@ -4,13 +4,14 @@
 <style>
 /* ── Global Footer Wrapper ── */
 .kc-ultra-footer {
-    background: #060F1E !important;
+    background: linear-gradient(180deg, #001A47 0%, #002566 45%, #001840 100%) !important;
     color: #94A3B8 !important;
     position: relative !important;
     z-index: 10 !important;
     width: 100% !important;
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    border-top: 3px solid #00BCD4 !important;
+    border-top: 3px solid #003B95 !important;
+    box-shadow: 0 -4px 30px rgba(0, 37, 102, 0.4) !important;
     overflow: hidden;
 }
 
@@ -19,7 +20,7 @@
     content: '';
     position: absolute;
     top: 0; left: 15%; width: 350px; height: 350px;
-    background: radial-gradient(circle, rgba(0, 188, 212, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 59, 149, 0.25) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
 }
@@ -27,7 +28,7 @@
     content: '';
     position: absolute;
     bottom: 0; right: 10%; width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(0, 112, 243, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 37, 102, 0.25) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
 }
@@ -42,18 +43,17 @@
     display: inline-flex !important;
     align-items: center !important;
     gap: 0px !important;
-    background: #02070F !important;
-    border: 1.5px solid #0070F3 !important;
+    background: #001538 !important;
+    border: 1.5px solid #003B95 !important;
     border-radius: 12px !important;
     padding: 8px 16px !important;
     margin-bottom: 20px !important;
-    box-shadow: 0 8px 24px rgba(0, 112, 243, 0.3) !important;
+    box-shadow: 0 8px 24px rgba(0, 37, 102, 0.4) !important;
     transition: all 0.3s ease !important;
 }
 .kc-footer-brand-logo:hover {
-    border-color: #00BCD4 !important;
-    box-shadow: 0 0 25px rgba(0, 188, 212, 0.5) !important;
-    transform: translateY(-2px) !important;
+    border-color: #60A5FA !important;
+    box-shadow: 0 0 25px rgba(0, 59, 149, 0.6) !important;
 }
 .kc-footer-logo-img {
     height: 48px !important;
@@ -67,12 +67,12 @@
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
-    line-height: 0.95 !important;
+    line-height: 0.9 !important;
     margin: 0 !important;
 }
 .kc-footer-title-main {
-    font-family: 'Poppins', 'Outfit', sans-serif !important;
-    font-size: 20px !important;
+    font-family: 'Poppins', 'Montserrat', 'Inter', sans-serif !important;
+    font-size: 24px !important;
     font-weight: 900 !important;
     color: #FFFFFF !important;
     letter-spacing: 0.5px !important;
@@ -80,13 +80,13 @@
     text-shadow: 0 2px 10px rgba(255, 255, 255, 0.4) !important;
 }
 .kc-footer-title-sub {
-    font-family: 'Poppins', 'Outfit', sans-serif !important;
-    font-size: 10px !important;
-    font-weight: 800 !important;
-    color: #00BCD4 !important;
-    letter-spacing: 2px !important;
+    font-family: 'Poppins', 'Montserrat', 'Inter', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    color: #60A5FA !important;
+    letter-spacing: 5px !important;
     text-transform: uppercase !important;
-    margin-top: 1px !important;
+    margin-top: 2px !important;
 }
 .kc-footer-brand-bio {
     font-size: 13.5px;
@@ -109,7 +109,7 @@
     color: #CBD5E1;
 }
 .kc-fcontact-item i {
-    color: #00E5FF;
+    color: #60A5FA;
     font-size: 15px;
     margin-top: 3px;
     flex-shrink: 0;
@@ -120,7 +120,7 @@
     transition: color 0.2s ease;
 }
 .kc-fcontact-item a:hover {
-    color: #00E5FF;
+    color: #93C5FD;
     text-decoration: none;
 }
 
@@ -130,7 +130,7 @@
     font-weight: 800 !important;
     text-transform: uppercase !important;
     letter-spacing: 1.2px !important;
-    color: #00E5FF !important;
+    color: #93C5FD !important;
     margin-bottom: 20px !important;
     position: relative;
     display: inline-block;
@@ -142,7 +142,7 @@
     bottom: -6px;
     width: 24px;
     height: 2px;
-    background: #0070F3;
+    background: #003B95;
     border-radius: 2px;
 }
 
@@ -267,8 +267,8 @@
 
 /* ── Bottom Copyright Bar ── */
 .kc-footer-bottom {
-    background: #030812 !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+    background: #001230 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
     padding: 18px 0 !important;
     font-size: 13px !important;
     color: #94A3B8 !important;
@@ -477,10 +477,10 @@ if (typeof window.quickAddToCart !== 'function') {
                         alert('✅ Item added to your cart!');
                     }
                 } else {
-                    if (typeof toastr !== 'undefined') {
+                    if (typeof window.showKcToast !== 'undefined') {
+                        window.showKcToast('Added to Cart! 🛒', 'Item successfully added to your shopping cart.', 'success');
+                    } else if (typeof toastr !== 'undefined') {
                         toastr.success('✅ Item added to your cart!', 'Success');
-                    } else {
-                        alert('✅ Item added to your cart!');
                     }
                 }
                 if (resp && typeof resp.number_of_cart !== 'undefined') {
@@ -489,8 +489,8 @@ if (typeof window.quickAddToCart !== 'function') {
             },
             error: function() {
                 $btn.prop('disabled', false).html(origHtml);
-                if (typeof toastr !== 'undefined') {
-                    toastr.error('Failed to update cart. Please try again.', 'Error');
+                if (typeof window.showKcToast !== 'undefined') {
+                    window.showKcToast('Cart Error', 'Failed to update cart. Please try again.', 'error');
                 } else {
                     alert('Failed to update cart. Please try again.');
                 }
@@ -501,7 +501,178 @@ if (typeof window.quickAddToCart !== 'function') {
 </script>
 </footer>
 
+<!-- ══════════════════════════════════════════════════════════
+     KARUDA COMPUTERS — MODERN TOAST NOTIFICATION SYSTEM
+══════════════════════════════════════════════════════════ -->
+<div id="kc-toast-container" class="kc-toast-container"></div>
+
+<style>
+.kc-toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 99999999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    width: calc(100vw - 32px);
+    pointer-events: none;
+}
+.kc-toast {
+    pointer-events: auto;
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 12px 35px rgba(0, 37, 102, 0.22), 0 0 0 1px rgba(0, 59, 149, 0.12);
+    border-left: 5px solid #003B95;
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.kc-toast.kc-toast-show {
+    transform: translateX(0);
+    opacity: 1;
+}
+.kc-toast.kc-toast-hide {
+    transform: translateX(120%);
+    opacity: 0;
+}
+.kc-toast-icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #EFF6FF;
+    color: #003B95;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+.kc-toast.kc-toast-success {
+    border-left-color: #10B981;
+}
+.kc-toast.kc-toast-success .kc-toast-icon-wrap {
+    background: #ECFDF5;
+    color: #10B981;
+}
+.kc-toast.kc-toast-error {
+    border-left-color: #EF4444;
+}
+.kc-toast.kc-toast-error .kc-toast-icon-wrap {
+    background: #FEF2F2;
+    color: #EF4444;
+}
+.kc-toast-content {
+    flex: 1;
+    min-width: 0;
+}
+.kc-toast-title {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: #002566;
+    margin: 0 0 3px 0;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.3;
+}
+.kc-toast-message {
+    font-size: 13px;
+    color: #475569;
+    margin: 0;
+    line-height: 1.45;
+    font-family: 'Outfit', sans-serif;
+}
+.kc-toast-close {
+    background: none;
+    border: none;
+    color: #94A3B8;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 6px;
+    transition: color 0.15s;
+}
+.kc-toast-close:hover {
+    color: #0F172A;
+}
+.kc-toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #003B95, #60A5FA);
+    width: 100%;
+    transform-origin: left;
+    animation: kcToastProgress linear forwards;
+}
+.kc-toast.kc-toast-success .kc-toast-progress {
+    background: #10B981;
+}
+@keyframes kcToastProgress {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+</style>
+
 <script>
+window.showKcToast = function(title, message, type, duration) {
+    type = type || 'success';
+    duration = duration || 4500;
+
+    var container = document.getElementById('kc-toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'kc-toast-container';
+        container.className = 'kc-toast-container';
+        document.body.appendChild(container);
+    }
+
+    var toast = document.createElement('div');
+    toast.className = 'kc-toast kc-toast-' + type;
+
+    var iconClass = 'fa-check';
+    if (type === 'error') iconClass = 'fa-triangle-exclamation';
+    else if (type === 'info') iconClass = 'fa-circle-info';
+
+    toast.innerHTML = 
+        '<div class="kc-toast-icon-wrap"><i class="fa-solid ' + iconClass + '"></i></div>' +
+        '<div class="kc-toast-content">' +
+            '<div class="kc-toast-title">' + title + '</div>' +
+            '<div class="kc-toast-message">' + message + '</div>' +
+        '</div>' +
+        '<button type="button" class="kc-toast-close" aria-label="Close">&times;</button>' +
+        '<div class="kc-toast-progress" style="animation-duration: ' + duration + 'ms;"></div>';
+
+    container.appendChild(toast);
+
+    setTimeout(function() {
+        toast.classList.add('kc-toast-show');
+    }, 10);
+
+    var isRemoved = false;
+    function removeToast() {
+        if (isRemoved) return;
+        isRemoved = true;
+        toast.classList.remove('kc-toast-show');
+        toast.classList.add('kc-toast-hide');
+        setTimeout(function() {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 350);
+    }
+
+    toast.querySelector('.kc-toast-close').addEventListener('click', removeToast);
+    setTimeout(removeToast, duration);
+};
+
 function submitUltraNewsletter(e) {
     e.preventDefault();
     var inp = document.getElementById('kc_ultra_email');
@@ -519,14 +690,28 @@ function submitUltraNewsletter(e) {
     .then(function(d) {
         btn.innerHTML = '<i class="fa fa-paper-plane mr-1"></i> Join';
         btn.disabled = false;
-        alert(d.message || 'Thank you for subscribing to Karuda Computers Tech Club!');
+        showKcToast('Subscription Confirmed! 🎉', d.message || 'Thank you for subscribing to Karuda Computers Tech Club!', 'success');
         inp.value = '';
     })
     .catch(function() {
         btn.innerHTML = '<i class="fa fa-paper-plane mr-1"></i> Join';
         btn.disabled = false;
-        alert('Thank you for subscribing to Karuda Computers Tech Club!');
+        showKcToast('Subscription Confirmed! 🎉', 'Thank you for subscribing to Karuda Computers Tech Club!', 'success');
         inp.value = '';
     });
 }
 </script>
+
+<?php if (!empty($_SESSION['flash_toast'])): ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof window.showKcToast !== 'undefined') {
+        window.showKcToast(
+            <?php echo json_encode($_SESSION['flash_toast']['title'] ?? 'Notice'); ?>,
+            <?php echo json_encode($_SESSION['flash_toast']['message'] ?? ''); ?>,
+            <?php echo json_encode($_SESSION['flash_toast']['type'] ?? 'success'); ?>
+        );
+    }
+});
+</script>
+<?php unset($_SESSION['flash_toast']); endif; ?>

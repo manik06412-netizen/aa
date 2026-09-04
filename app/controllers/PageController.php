@@ -6,6 +6,7 @@ use App\Models\ContentModel;
 use App\Models\UserModel;
 use App\Core\Database;
 use App\Core\Csrf;
+use App\Core\Mailer;
 
 class PageController extends Controller {
     public function about() {
@@ -46,13 +47,53 @@ class PageController extends Controller {
         $email = trim($_POST['email'] ?? '');
         $mobile = trim($_POST['mobile'] ?? '');
         $comment = trim($_POST['comment'] ?? '');
-        $date = date('d/m/Y');
+        $date = date('d-m-Y');
         $userId = $_SESSION['uid'] ?? 'Guest';
 
+        $isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') ||
+                  (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+
+        if (empty($name) || empty($email) || empty($comment)) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['status' => 'error', 'message' => 'Please fill in all required fields (Name, Email, Message).']);
+                exit;
+            }
+            $_SESSION['flash_toast'] = [
+                'title' => 'Missing Fields',
+                'message' => 'Please fill in all required fields.',
+                'type' => 'error'
+            ];
+            header('Location: ' . BASE_URL . 'contact.php');
+            exit;
+        }
+
+        // 1. Insert into comment table (Viewed by Admin in avadmin/contact.php)
         $db->execute("INSERT INTO comment (userid, name, email, mobile, comment, date) VALUES (?, ?, ?, ?, ?, ?)", 
                      [$userId, $name, $email, $mobile, $comment, $date]);
-        
-        echo "<script>alert('Thank you for contacting us! We will get back to you soon.');window.location.href='" . BASE_URL . "contact.php';</script>";
+
+        // 2. Also insert into enquiry table
+        $db->execute("INSERT INTO enquiry (name, mob, prd, dat) VALUES (?, ?, ?, ?)",
+                     [$name, $mobile, $comment, $date]);
+
+        // 3. Dispatch Email Notifications to Admin & Customer
+        Mailer::sendContactNotification($name, $email, $mobile, $comment);
+
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Thank you for contacting Karuda Computers! Your inquiry has been submitted and our team will get back to you soon.'
+            ]);
+            exit;
+        }
+
+        $_SESSION['flash_toast'] = [
+            'title' => 'Inquiry Submitted! 🎉',
+            'message' => 'Thank you for contacting Karuda Computers! Your inquiry has been submitted and our team will get back to you soon.',
+            'type' => 'success'
+        ];
+        header('Location: ' . BASE_URL . 'contact.php');
         exit;
     }
 

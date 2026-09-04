@@ -1,326 +1,224 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+require_once __DIR__ . '/inc/config.php';
+if (!isset($_SESSION["admin1_user"])) {
+    header("Location: login.php");
+    exit;
+}
+error_reporting(0);
+?>
 <?php
 include("../config.php");
- error_reporting(0);
-session_start();
-
+error_reporting(0);
 
 if(isset($_POST['submit'] ))
 {
     if(empty($_POST['code']))
-		{
-			$error = '<div class="alert alert-danger alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>field Required!</strong>
-															</div>';
-		}
-	else
-	{
-		
-	$check_cat= mysqli_query($con, "SELECT code FROM promo where code = '".$_POST['code']."' ");
-
-	
-	
-	if(mysqli_num_rows($check_cat) > 0)
-     {
-    	$error = '<div class="alert alert-danger alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>Promocode already exist!</strong>
-															</div>';
-     }
-	else{
-                          
-        $date = date("D M d Y");               
-	$mql = "INSERT INTO promo VALUES(null,'".$_POST['code']."','".$_POST['pur']."','".$_POST['sdat']."','".$_POST['edat']."','".$_POST['dis']."','0','" . $date . "')";
-	mysqli_query($con, $mql);
-			$success = 	'<div class="alert alert-success alert-dismissible fade show">
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																<strong>Congrats!</strong> New Promocode Added Successfully.</br></div>';
-	
+    {
+        $error = '<div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Field Required!</strong>
+                  </div>';
     }
-	}
-
+    else
+    {
+        $check_cat= mysqli_query($con, "SELECT code FROM promo where code = '".$_POST['code']."' ");
+        if(mysqli_num_rows($check_cat) > 0)
+        {
+            $error = '<div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Promocode already exists!</strong>
+                      </div>';
+        }
+        else
+        {
+            $date = date("D M d Y");               
+            $mql = "INSERT INTO promo VALUES(null,'".$_POST['code']."','".$_POST['pur']."','".$_POST['sdat']."','".$_POST['edat']."','".$_POST['dis']."','0','" . $date . "')";
+            if (mysqli_query($con, $mql)) {
+                $_SESSION['flash_success'] = 'New Promocode Added Successfully.';
+                header('Location: ' . basename($_SERVER['PHP_SELF'])); exit;
+            }
+        }
+    }
 }
-
-
 ?>
-<?php include "head.php"; ?>
+<?php require_once('header.php'); ?>
 
-<body class="fix-header">
+<section class="content-header">
+    <div class="content-header-left">
+        <h1>Promo Codes Manager</h1>
+    </div>
+</section>
 
-    <div id="main-wrapper">
-        <!-- header header  -->
-        <?php include "navbar.php"; ?>
-
-        <?php include "sidebar1.php"; ?>
-        <!-- End Left Sidebar  -->
-        <!-- Page wrapper  -->
-        <div class="page-wrapper" style="height:1200px;">
-            <!-- Bread crumb -->
-
-            <!-- End Bread crumb -->
-            <!-- Container fluid  -->
-            <div class="container-fluid">
-                <!-- Start Page Content -->
-
-                <div class="row">
-
-                    <div class="container-fluid">
-                        <!-- Start Page Content -->
-
-
-                        <?php  
-									        echo $error;
-									        echo $success; ?>
-
-
-
-
-                        <div class="col-lg-12">
-                            <div class="card card-outline-primary">
-                                <div class="card-header">
-                                    <h4 class="m-b-0 text-white">Add Promo code</h4>
-                                </div>
-                                <div class="card-body">
-                                    <form action='' method='post' enctype='multipart/form-data'>
-                                        <div class="form-body">
-
-                                            <hr>
-                                            <div class="row p-t-20">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label">Promo Code</label>
-                                                        <input type="text" name="code" id="promoCode" class="form-control" maxlength="8" placeholder="Click To Generate PromoCode">
-
-                                                        <button type="button" class="btn btn-info"
-                                                            onclick="generatePromoCode()">Generate</button>
-                                                    </div>
-                                                </div>
-                                                <script>
-                                                function generatePromoCode() {
-                                                    // Length of the generated code
-                                                    var codeLength = 8;
-
-                                                    // Characters to be used in the code
-                                                    var characters =
-                                                        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-                                                    var generatedCode = '';
-
-                                                    for (var i = 0; i < codeLength; i++) {
-                                                        var randomIndex = Math.floor(Math.random() * characters.length);
-                                                        generatedCode += characters.charAt(randomIndex);
-                                                    }
-
-                                                    // Set the generated code to the input field
-                                                    document.getElementById('promoCode').value = generatedCode;
-                                                }
-                                                </script>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label">Discount%</label>
-
-                                                        <select name="dis" class="form-control" required>
-                                                            <option value="" disabled selected>Select Discount %
-                                                            </option>
-                                                            <option value="5">5</option>
-                                                            <option value="10">10</option>
-                                                            <option value="10">20</option>
-                                                            <option value="10">30</option>
-                                                            <option value="10">40</option>
-                                                            <option value="10">50</option>
-                                                            <!-- Add more options as needed -->
-                                                        </select>
-
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="row p-t-20">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <?php $date=date("Y-m-d"); ?>
-                                                        <label class="control-label">Purpose</label>
-                                                        <textarea name="pur" class="form-control" placeholder="Enter Purpose" required></textarea>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-
-                                                    <div class="form-group">
-                                                        <label class="control-label">Start Date</label>
-                                                        <input type="date" name="sdat" class="form-control"
-                                                        min="<?php echo date('Y-m-d'); ?>" placeholder="Enter Validy days" value="<?php echo $date; ?>">
-                                                    </div>
-
-
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="control-label"> End Date</label>
-                                                        <input type="date" name="edat" class="form-control"
-                                                        min="<?php echo date('Y-m-d'); ?>" placeholder="Enter Validy days" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!--/span-->
-
-                                        </div>
-                                        <div class="form-actions">
-                                            <input type="submit" name="submit" class="btn btn-success" value="save">
-                                            <a href="dashboard.php" class="btn btn-inverse">Cancel</a>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="col-12">
-
-
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Listed Promocode</h4>
-
-                                <div class="table-responsive m-t-40">
-                                    <table id="example23" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>ID#</th>
-                                                <th>PromoCode</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Modify Date</th>
-
-                                                <th>Action</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-
-                                            <?php
-												$sql="SELECT * FROM promo order by id desc";
-												$query=mysqli_query($con,$sql);
-												
-													if(!mysqli_num_rows($query) > 0 )
-														{
-															echo '<td colspan="7"><center>No Promo Code-Data!</center></td>';
-														}
-													else
-														{				
-																	while($rows=mysqli_fetch_array($query))
-																		{
-																					
-																			
-                                                                         
-                                                                            // Assuming $rows['status'] contains the status value (0 or 1)
-                                                                            
-                                                                            $status = $rows['status'];
-                                                                            
-                                                                            if ($status == 0) {
-                                                                                $buttonClass = 'btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5';
-                                                                                $buttonText = 'Activate';
-                                                                                $buttonLink = 'update_status.php?cat_upd=' . $rows['id'] . '&status=1';
-                                                                            } else {
-                                                                                $buttonClass = 'btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5';
-                                                                                $buttonText = 'Inactivate';
-                                                                                $buttonLink = 'update_status.php?cat_upd=' . $rows['id'] . '&status=0';
-                                                                            }
-                                                                            
-                                                                            echo '<tr>
-                                                                                <td>' . htmlspecialchars($rows['id']) . '</td>
-                                                                                <td>' . htmlspecialchars($rows['code']) . '</td>
-                                                                                <td>' . htmlspecialchars($rows['sdat']) . '</td>
-                                                                                <td>' . htmlspecialchars($rows['edat']) . '</td>
-                                                                                <td>' . htmlspecialchars($rows['dat']) . '</td>
-                                                                                <td>
-                                                                                    <a href="#" onclick="confirmDelete(' . $rows['id'] . ')" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10">
-                                                                                        <i class="fa fa-trash-o" style="font-size:16px"></i>
-                                                                                    </a>
-                                                                                    <a href="update_promo.php?cat_upd=' . htmlspecialchars($rows['id']) . '" class="btn btn-info btn-flat btn-addon btn-sm m-b-10 m-l-5">
-                                                                                        <i class="ti-settings"></i>
-                                                                                    </a>
-                                                                                    <a href="' . htmlspecialchars($buttonLink) . '" class="' . htmlspecialchars($buttonClass) . '">
-                                                                                        ' . $buttonText . '
-                                                                                    </a>
-                                                                                </td>
-                                                                            </tr>';
-                                                                        }
-                                                                    }
-                                                                    $current=$rows['sdat'];
-                                                                    $end=$rows['edat'];
-                                                                            ?>
-
-
-
-                                            <script>
-                                            function confirmDelete(categoryId) {
-                                                var confirmDelete = confirm(
-                                                    "Are you sure you want to delete this Promo Code?");
-                                                if (confirmDelete) {
-                                                    window.location.href = 'delete_promo.php?cat_del=' + categoryId;
-                                                } else {
-                                                    // Do nothing or handle cancellation
-                                                }
-                                            }
-                                            </script>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-
-
-
-                </div>
-                <!-- End PAge Content -->
+<section class="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <?php  
+            if(!empty($error)) echo $error;
+            
+            $flash_promo = $_SESSION['flash_success'] ?? '';
+            unset($_SESSION['flash_success']);
+            if (!empty($flash_promo)): ?>
+            <div class="alert alert-success alert-dismissible fade show" style="border-radius:8px;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Congrats!</strong> <?php echo htmlspecialchars($flash_promo); ?>
             </div>
-            <!-- End Container fluid  -->
-            <!-- footer -->
-
-            <!-- End footer -->
+            <?php endif;
+            ?>
         </div>
 
-        <!-- End Page wrapper  -->
+        <div class="col-lg-12">
+            <div class="card card-outline-primary" style="border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.05); border:none; margin-bottom: 30px;">
+                <div class="card-header" style="background:#0b192c; padding:15px 20px; border-radius:12px 12px 0 0; border:none;">
+                    <h4 class="m-b-0 text-white" style="margin:0; font-weight:600; font-size:15px;"><i class="fa fa-tag"></i> Add Promo code</h4>
+                </div>
+                <div class="card-body" style="padding:24px; background:#fff; border-radius:0 0 12px 12px; border:1px solid #e2e8f0; border-top:none;">
+                    <form action='' method='post' enctype='multipart/form-data'>
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" style="font-weight:600; color:#334155; margin-bottom: 8px; display: inline-block;">Promo Code</label>
+                                        <div style="display:flex; width:100%; align-items: stretch;">
+                                            <input type="text" name="code" id="promoCode" class="form-control" maxlength="8" placeholder="Click Generate to create a code" style="border-radius:8px 0 0 8px; height: 38px; flex: 1; min-width: 0; border-right: none;" required>
+                                            <button type="button" class="btn btn-info" onclick="generatePromoCode()" style="border-radius:0 8px 8px 0; height:38px; margin:0 !important; background:#008290; border:1px solid #008290; color:#fff; cursor:pointer; font-weight:600; padding: 0 15px; flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px;"><i class="fa fa-refresh"></i> Generate</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                function generatePromoCode() {
+                                    var codeLength = 8;
+                                    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                                    var generatedCode = '';
+                                    for (var i = 0; i < codeLength; i++) {
+                                        var randomIndex = Math.floor(Math.random() * characters.length);
+                                        generatedCode += characters.charAt(randomIndex);
+                                    }
+                                    document.getElementById('promoCode').value = generatedCode;
+                                }
+                                </script>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" style="font-weight:600; color:#334155; margin-bottom: 8px; display: inline-block;">Discount %</label>
+                                        <select name="dis" class="form-control" style="border-radius:8px; height:38px;" required>
+                                            <option value="" disabled selected>Select Discount %</option>
+                                            <option value="5">5%</option>
+                                            <option value="10">10%</option>
+                                            <option value="20">20%</option>
+                                            <option value="30">30%</option>
+                                            <option value="40">40%</option>
+                                            <option value="50">50%</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top:15px;">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <?php $date=date("Y-m-d"); ?>
+                                        <label class="control-label" style="font-weight:600; color:#334155; margin-bottom: 8px; display: inline-block;">Purpose</label>
+                                        <textarea name="pur" class="form-control" placeholder="Enter Purpose" style="border-radius:8px; min-height:38px; height: 38px;" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label" style="font-weight:600; color:#334155; margin-bottom: 8px; display: inline-block;">Start Date</label>
+                                        <input type="date" name="sdat" class="form-control" style="border-radius:8px; height:38px;"
+                                        min="<?php echo date('Y-m-d'); ?>" placeholder="Enter Start Date" value="<?php echo $date; ?>">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label" style="font-weight:600; color:#334155; margin-bottom: 8px; display: inline-block;">End Date</label>
+                                        <input type="date" name="edat" class="form-control" style="border-radius:8px; height:38px;"
+                                        min="<?php echo date('Y-m-d'); ?>" placeholder="Enter End Date" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions" style="margin-top:25px; display:flex; gap:10px;">
+                            <button type="submit" name="submit" class="btn btn-primary" style="background:#0070F3; border-color:#0070F3; padding:8px 24px; font-weight:600; border-radius:8px; cursor:pointer;"><i class="fa fa-check"></i> Save Code</button>
+                            <a href="dashboard.php" class="btn btn-default" style="padding:8px 24px; font-weight:600; border-radius:8px; border:1px solid #cbd5e1; background:#f8fafc; color:#475569; text-decoration:none; display:inline-flex; align-items:center; height:38px; justify-content: center;">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card" style="border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.05); border:none;">
+                <div class="card-body" style="padding:24px;">
+                    <h4 class="card-title" style="font-weight:700; color:#0b192c; margin-bottom:20px;">Listed Promocode</h4>
+                    <div class="table-responsive">
+                        <table id="example1" class="table table-bordered table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th>ID#</th>
+                                    <th>PromoCode</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Modify Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $sql="SELECT * FROM promo order by id desc";
+                                $query=mysqli_query($con,$sql);
+                                
+                                if(!mysqli_num_rows($query) > 0 )
+                                {
+                                    echo '<tr><td colspan="6"><center>No Promo Code Data!</center></td></tr>';
+                                }
+                                else
+                                {				
+                                    while($rows=mysqli_fetch_array($query))
+                                    {
+                                        $status = $rows['status'];
+                                        
+                                        if ($status == 0) {
+                                            $buttonClass = 'act-status';
+                                            $buttonText = 'Activate';
+                                            $buttonLink = 'update_status.php?cat_upd=' . $rows['id'] . '&status=1';
+                                        } else {
+                                            $buttonClass = 'act-delete';
+                                            $buttonText = 'Inactivate';
+                                            $buttonLink = 'update_status.php?cat_upd=' . $rows['id'] . '&status=0';
+                                        }
+                                        
+                                        echo '<tr>
+                                            <td style="vertical-align: middle;">' . htmlspecialchars($rows['id']) . '</td>
+                                            <td style="vertical-align: middle;"><b>' . htmlspecialchars($rows['code']) . '</b></td>
+                                            <td style="vertical-align: middle;">' . htmlspecialchars($rows['sdat']) . '</td>
+                                            <td style="vertical-align: middle;">' . htmlspecialchars($rows['edat']) . '</td>
+                                            <td style="vertical-align: middle;">' . htmlspecialchars($rows['dat']) . '</td>
+                                            <td style="vertical-align: middle;">
+                                                <div class="action-btn-group" style="max-width: 140px; margin: 0 auto; justify-content: center;">
+                                                    <a href="update_promo.php?cat_upd=' . htmlspecialchars($rows['id']) . '" class="act-btn act-edit" title="Settings"><i class="fa fa-cog"></i></a>
+                                                    <a href="' . htmlspecialchars($buttonLink) . '" class="act-btn ' . $buttonClass . '" title="' . $buttonText . '"><i class="fa fa-power-off"></i></a>
+                                                    <a href="#" onclick="confirmDelete(' . $rows['id'] . ')" class="act-btn act-delete" title="Delete Promo"><i class="fa fa-trash-o"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>';
+                                    }
+                                }
+                                ?>
+                                 <script>
+                                 function confirmDelete(categoryId) {
+                                     var confirmDelete = confirm("Are you sure you want to delete this Promo Code?");
+                                     if (confirmDelete) {
+                                         window.location.href = 'delete_promo.php?cat_del=' + categoryId;
+                                     }
+                                 }
+                                 </script>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <footer class="footer"> © All rights reserved. </footer>
-    </div>
-    <!-- End Wrapper -->
-    <!-- All Jquery -->
-    <script src="js/lib/jquery/jquery.min.js"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="js/lib/bootstrap/js/popper.min.js"></script>
-    <script src="js/lib/bootstrap/js/bootstrap.min.js"></script>
-    <!-- slimscrollbar scrollbar JavaScript -->
-    <script src="js/jquery.slimscroll.js"></script>
-    <!--Menu sidebar -->
-    <script src="js/sidebarmenu.js"></script>
-    <!--stickey kit -->
-    <script src="js/lib/sticky-kit-master/dist/sticky-kit.min.js"></script>
-    <!--Custom JavaScript -->
-    <script src="js/custom.min.js"></script>
+</section>
 
-    <script src="js/lib/datatables/datatables.min.js"></script>
-    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
-    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
-    <script src="js/lib/datatables/cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-    <script src="js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-    <script src="js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
-    <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
-    <script src="js/lib/datatables/datatables-init.js"></script>
-
-</body>
-
-</html>
+<?php require_once('footer.php'); ?>

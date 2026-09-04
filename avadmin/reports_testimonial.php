@@ -370,7 +370,7 @@ function redirectToPage(radio) {
         printWindow.document.write('<html><head><title>Print Table</title>');
         printWindow.document.write('<style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 8px; text-align: left; } th { background-color: #f2f2f2; }</style>');
         printWindow.document.write('</head><body>');
-        printWindow.document.write('<h1 style="text-align:center;">AV Herbals</h1>');
+        printWindow.document.write('<h1 style="text-align:center;">Karuda Computers</h1>');
         printWindow.document.write('<h3 style="text-align:center;">Testimonial Reports</h3>');
 
         // Add date range if provided
@@ -405,7 +405,7 @@ function redirectToPage(radio) {
 
             pdf.setFontSize(18);
 
-            pdf.text('AV Herbals', pdf.internal.pageSize.width / 2, 20, null, null, 'center');
+            pdf.text('Karuda Computers', pdf.internal.pageSize.width / 2, 20, null, null, 'center');
 
 
             pdf.setFontSize(14);

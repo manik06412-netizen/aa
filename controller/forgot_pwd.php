@@ -32,12 +32,13 @@ $mail = new PHPMailer(true);
     
     //Content
     $mail->isHTML(true);                                  
-    $mail->Subject = 'Karuda Computers';
-    $content="<div style='text-align:center;height:400px; box-shadow: 5px 5px 5px rgba(176, 176, 176, 0.5);'>
-    <a href='http://avherbals.in/index.php'></a>
-     <h3 style='font-weight:bold;'>Please take a second to make sure we've got your Email.!</h3>
-     <h6 style='font-size:15px;color:black;'>Please Click & Verify In Your Email</h6>
-     <a href='http://avherbals.in/forgot_2.php?gee=$email' style='background:red;color:white;padding:20px 30px;border-radius:20px;text-decartion:none;text-decoration: none;'><b>Confirom your Email.</b></a>
+    $mail->Subject = 'Karuda Computers - Account Password Reset';
+    $content="<div style='text-align:center;padding:40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-family:sans-serif;'>
+     <h3 style='font-weight:bold; color:#0B192C;'>Karuda Computers Password Reset</h3>
+     <h6 style='font-size:15px;color:#475569;'>Please click the button below to verify your email and reset your password.</h6>
+     <div style='margin-top:25px;'>
+         <a href='forgot_2.php?gee=$email' style='background:#0070F3;color:white;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:bold;display:inline-block;'>Verify Email & Reset Password</a>
+     </div>
      </div>";
     $mail->Body=$content ;
     $mail->send();   

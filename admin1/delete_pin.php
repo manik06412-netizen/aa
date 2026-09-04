@@ -1,16 +1,11 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
-require_once __DIR__ . '/inc/config.php';
-if (!isset($_SESSION["admin1_user"])) {
-    header("Location: login.php");
-    exit;
-}
+include("../dbconnect.php");
 error_reporting(0);
+session_start();
 
-if (isset($_GET['id'])) {
-    $id = intval($_GET['id']);
-    mysqli_query($con, "DELETE FROM pin WHERE id = '$id'");
-}
 
-header("Location: pin1.php");
-exit;
+// sending query
+mysqli_query($con,"DELETE FROM pinamount WHERE id = '".$_GET['cat_del']."'");
+header("location:pinsave.php");  
+
+?>

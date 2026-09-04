@@ -33,7 +33,7 @@ require_once APP_ROOT . '/views/layouts/header.php';
                                 </div>
                             </div>
 
-                            <form action="contact1.php" method="POST">
+                            <form id="kcContactForm" action="contact1.php" method="POST" onsubmit="submitKcContactForm(event, this)">
                                 <?php echo \App\Core\Csrf::field(); ?>
                                 
                                 <div class="row">
@@ -75,7 +75,7 @@ require_once APP_ROOT . '/views/layouts/header.php';
                                     <textarea class="form-control" name="comment" rows="5" placeholder="Specify your requirements (e.g. custom PC specs, quotation request, order inquiry)..." required style="font-size:14px;border-radius:10px;"></textarea>
                                 </div>
 
-                                <button type="submit" name="subt" class="btn btn-primary btn-block py-3" style="background:linear-gradient(135deg, #0D47A1, #1976D2);border:none;border-radius:10px;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;box-shadow:0 4px 14px rgba(13,71,161,0.3);">
+                                <button type="submit" name="subt" class="btn btn-primary btn-block py-3" style="background:linear-gradient(135deg, #003B95, #002566);border:none;border-radius:10px;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;box-shadow:0 4px 14px rgba(0,37,102,0.35);transition:all 0.2s ease;">
                                     <i class="fa fa-paper-plane mr-2"></i> Submit Inquiry
                                 </button>
                             </form>
@@ -86,14 +86,14 @@ require_once APP_ROOT . '/views/layouts/header.php';
                     <div class="col-lg-5">
                         
                         <!-- Card 1: Phone Support -->
-                        <div class="box_contacts mb-3" style="border-left: 4px solid #0D47A1 !important;">
+                        <div class="box_contacts mb-3" style="border-left: 4px solid #003B95 !important;">
                             <div class="d-flex align-items-center">
-                                <div style="width:48px;height:48px;border-radius:12px;background:#EFF6FF;color:#0D47A1;display:flex;align-items:center;justify-content:center;font-size:22px;margin-right:16px;">
+                                <div style="width:48px;height:48px;border-radius:12px;background:#EFF6FF;color:#003B95;display:flex;align-items:center;justify-content:center;font-size:22px;margin-right:16px;">
                                     <i class="fa fa-headset"></i>
                                 </div>
                                 <div>
                                     <h3 style="font-size:15px;font-weight:800;color:#0B192C;margin:0 0 4px;">Phone & WhatsApp</h3>
-                                    <a href="tel:<?php echo $CON_CONTACT_PHONE ?: '+919876543210'; ?>" style="color:#0D47A1;font-size:15px;font-weight:700;text-decoration:none;">
+                                    <a href="tel:<?php echo $CON_CONTACT_PHONE ?: '+919876543210'; ?>" style="color:#003B95;font-size:15px;font-weight:700;text-decoration:none;">
                                         <?php echo $CON_CONTACT_PHONE ?: '+91 98765 43210'; ?>
                                     </a>
                                 </div>
@@ -157,5 +157,55 @@ require_once APP_ROOT . '/views/layouts/header.php';
     </div>
 
     <?php require APP_ROOT . '/views/layouts/sign_footer.php'; ?>
+
+    <script>
+    function submitKcContactForm(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button[type="submit"]');
+        var originalBtnText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> Sending...';
+
+        var formData = new FormData(form);
+
+        fetch('contact1.php', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: formData
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            if (data && data.status === 'success') {
+                if (typeof window.showKcToast === 'function') {
+                    window.showKcToast('Inquiry Submitted! 🎉', data.message, 'success', 6000);
+                } else {
+                    alert(data.message);
+                }
+                form.reset();
+            } else {
+                var msg = (data && data.message) ? data.message : 'Please check your inputs and try again.';
+                if (typeof window.showKcToast === 'function') {
+                    window.showKcToast('Notice', msg, 'error');
+                } else {
+                    alert(msg);
+                }
+            }
+        })
+        .catch(function(err) {
+            console.error('Contact form error:', err);
+            if (typeof window.showKcToast === 'function') {
+                window.showKcToast('Error', 'Failed to submit form. Please check your connection.', 'error');
+            } else {
+                alert('Failed to submit form. Please check your connection.');
+            }
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.innerHTML = originalBtnText;
+        });
+    }
+    </script>
 </body>
 </html>
