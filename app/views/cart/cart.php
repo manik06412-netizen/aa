@@ -36,6 +36,12 @@ if (empty($user_id)) {
         }
     }
 }
+// ── CRITICAL: Ensure session uid matches our resolved user_id ────
+// This prevents header.php from overwriting $user_id with a wrong/empty value
+if (!empty($user_id) && (empty($_SESSION['uid']) || $_SESSION['uid'] !== $user_id)) {
+    $_SESSION['uid'] = $user_id;
+}
+$_cart_user_id = $user_id; // Save before header.php overwrites it
 
 // ── Load header (HTML <head> + CSS) ──────────────────────────────
 $_headerFile = defined('APP_ROOT') ? dirname(APP_ROOT) . '/include/header.php' : __DIR__ . '/../../../include/header.php';
@@ -52,7 +58,15 @@ if (file_exists($_headerFile)) {
     echo '<link href="'.$base.'css/style.css" rel="stylesheet">';
     echo '</head>';
 }
+// ── CRITICAL: Restore user_id after header.php may have overwritten it ──
+// header.php does $user_id = $_SESSION['uid'] which could overwrite controller value
+if (!empty($_cart_user_id)) {
+    $user_id = $_cart_user_id;
+} elseif (!empty($_SESSION['uid'])) {
+    $user_id = $_SESSION['uid'];
+}
 ?>
+
 <style>
 .margin_60 {
     padding-top: 0px !important;
