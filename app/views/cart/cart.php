@@ -1,8 +1,58 @@
 <?php 
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
-   error_reporting(0);
-   require(defined('APP_ROOT') ? dirname(APP_ROOT) . '/include/header.php' : __DIR__ . '/../../../include/header.php');
-   ?>
+error_reporting(0);
+
+// ── Ensure DB connection ──────────────────────────────────────────
+if (!isset($con) || !$con) {
+    if (class_exists('\\App\\Core\\Database')) {
+        $con = \App\Core\Database::getInstance()->getConnection();
+    } elseif (file_exists(defined('APP_ROOT') ? dirname(APP_ROOT) . '/dbconnect.php' : __DIR__ . '/../../../dbconnect.php')) {
+        require_once(defined('APP_ROOT') ? dirname(APP_ROOT) . '/dbconnect.php' : __DIR__ . '/../../../dbconnect.php');
+    }
+}
+
+// ── Ensure user_id is available (multi-fallback) ─────────────────
+if (empty($user_id)) {
+    // 1. From session directly
+    if (!empty($_SESSION['uid'])) {
+        $user_id = $_SESSION['uid'];
+    }
+    // 2. From UserModel (creates guest if needed)
+    elseif (class_exists('\\App\\Models\\UserModel')) {
+        $user_id = \App\Models\UserModel::getOrCreateSessionUser();
+    }
+    // 3. Absolute fallback - create guest via raw SQL
+    elseif (isset($con) && $con) {
+        $tmpid = mysqli_query($con, "SELECT max(id) as tmpid FROM user");
+        $rtem  = mysqli_fetch_array($tmpid);
+        $tid   = $rtem ? (int)$rtem['tmpid'] : 0;
+        $tpuser = rand(100,200) . '' . (time() + $tid);
+        $_SESSION['uid'] = $tpuser;
+        $user_id = $tpuser;
+        $date = date('d/m/Y');
+        $intemp = mysqli_query($con, "INSERT INTO user values(null,'$tpuser','Guest','Guest','-','-','-','$date','1')");
+        if (!$intemp) {
+            mysqli_query($con, "INSERT INTO user (user_id,fname,lname,email,pwd,mobile,date,status) VALUES('$tpuser','Guest','Guest','-','-','-','$date','1')");
+        }
+    }
+}
+
+// ── Load header (HTML <head> + CSS) ──────────────────────────────
+$_headerFile = defined('APP_ROOT') ? dirname(APP_ROOT) . '/include/header.php' : __DIR__ . '/../../../include/header.php';
+if (file_exists($_headerFile)) {
+    require $_headerFile;
+} else {
+    // Minimal fallback header
+    echo '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Shopping Cart - Karuda Computers</title>';
+    echo '<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">';
+    echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>';
+    echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>';
+    $base = defined('BASE_URL') ? BASE_URL : '/';
+    echo '<link href="'.$base.'css/bootstrap.min.css" rel="stylesheet">';
+    echo '<link href="'.$base.'css/style.css" rel="stylesheet">';
+    echo '</head>';
+}
+?>
 <style>
 .margin_60 {
     padding-top: 0px !important;
@@ -157,16 +207,23 @@ unset($_SESSION['shopping_remove']);
                 <div class="shopping-cart-container ">
                     <form id="form_of">
                         <div class="row">
-                            <?php 
+                            <?php
+                        // ── Fetch cart items with table-name fallback ──────────────
                         $tblCard = 'card';
-                        $fetch = mysqli_query($con, "SELECT * FROM card where userid='$user_id' and status='0'");
-                        if (!$fetch) {
+                        $fetch   = (isset($con) && $con && !empty($user_id))
+                                   ? mysqli_query($con, "SELECT * FROM card WHERE userid='" . mysqli_real_escape_string($con, (string)$user_id) . "' AND status='0'")
+                                   : false;
+                        if (!$fetch || mysqli_errno($con)) {
+                            // Try capital-C table (some servers)
                             $tblCard = 'Card';
-                            $fetch = mysqli_query($con, "SELECT * FROM Card where userid='$user_id' and status='0'");
+                            $fetch   = (isset($con) && $con && !empty($user_id))
+                                       ? mysqli_query($con, "SELECT * FROM Card WHERE userid='" . mysqli_real_escape_string($con, (string)$user_id) . "' AND status='0'")
+                                       : false;
+                            if (!$fetch) $tblCard = 'card';
                         }
-                        if ($fetch && mysqli_num_rows($fetch)) { 
-                        $count = mysqli_query($con, "SELECT sum(qty) as qty_count FROM $tblCard where userid='$user_id' and status='0'");
-                        $value_of = mysqli_fetch_array($count);
+                        if ($fetch && mysqli_num_rows($fetch) > 0) { 
+                        $count     = mysqli_query($con, "SELECT sum(qty) as qty_count FROM $tblCard WHERE userid='" . mysqli_real_escape_string($con, (string)$user_id) . "' AND status='0'");
+                        $value_of  = $count ? mysqli_fetch_array($count) : ['qty_count' => 0];
                         ?>
                             <!-- left start -->
                             <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 ">
