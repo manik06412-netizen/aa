@@ -22,6 +22,11 @@ if (!isset($_SESSION['uid'])) {
 
 $user_id = $_SESSION['uid'] ?? '';
 $base = defined('BASE_URL') ? BASE_URL : '';
+
+global $CON_FEVICON, $CON_LOGO;
+if (empty($CON_FEVICON) && file_exists(dirname(__DIR__) . '/app/core/general.php')) {
+    include_once dirname(__DIR__) . '/app/core/general.php';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,8 +39,8 @@ $base = defined('BASE_URL') ? BASE_URL : '';
     <meta name="author" content="Karuda Computers">
     <title><?php echo isset($title) ? htmlspecialchars($title) : 'Karuda Computers — Premium Computers, Laptops & Accessories'; ?></title>
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="<?php echo $base; ?>img/karuda_logo.png">
+    <!-- Favicon — dynamically fetched from admin panel (Admin > Web Settings > Favicon) -->
+    <link rel="icon" type="image/webp" href="<?php echo htmlspecialchars($CON_FEVICON ?? $base . 'img/karuda_logo.webp'); ?>">
 
     <!-- Google Font: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,6 +51,7 @@ $base = defined('BASE_URL') ? BASE_URL : '';
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="<?php echo $base; ?>js/karuda-toast.js?v=<?php echo time(); ?>"></script>
 
     <!-- Font Awesome 6 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
