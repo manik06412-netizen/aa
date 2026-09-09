@@ -1,7 +1,7 @@
 <?php 
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
    error_reporting(0);
-   require('include/header.php');
+   require(defined('APP_ROOT') ? dirname(APP_ROOT) . '/include/header.php' : __DIR__ . '/../../../include/header.php');
    ?>
 <style>
 .margin_60 {
@@ -143,7 +143,8 @@ unset($_SESSION['shopping_remove']);
         </div>
         <main>
             <?php 
-            include("dbconnect.php");
+            // DB already connected via MVC init - skip redundant dbconnect.php
+            // include("dbconnect.php"); // Not needed - $con available via Controller
             ?>
             <div class="container-fluid margin_60">
                 <nav aria-label="breadcrumb">
@@ -157,11 +158,14 @@ unset($_SESSION['shopping_remove']);
                     <form id="form_of">
                         <div class="row">
                             <?php 
-                        $user_id = $_SESSION['uid'];
-                        include("dbconnect.php");
-                        $fetch=mysqli_query($con,"SELECT * FROM card where userid='$user_id' and status='0'");
-                        if(mysqli_num_rows($fetch)){ 
-                        $count=mysqli_query($con,"SELECT sum(qty) as qty_count FROM card where userid='$user_id' and status='0'");
+                        $tblCard = 'card';
+                        $fetch = mysqli_query($con, "SELECT * FROM card where userid='$user_id' and status='0'");
+                        if (!$fetch) {
+                            $tblCard = 'Card';
+                            $fetch = mysqli_query($con, "SELECT * FROM Card where userid='$user_id' and status='0'");
+                        }
+                        if ($fetch && mysqli_num_rows($fetch)) { 
+                        $count = mysqli_query($con, "SELECT sum(qty) as qty_count FROM $tblCard where userid='$user_id' and status='0'");
                         $value_of = mysqli_fetch_array($count);
                         ?>
                             <!-- left start -->
@@ -272,21 +276,33 @@ unset($_SESSION['shopping_remove']);
                                 <input type="hidden" name="get_per[]" value="<?=$cgst; ?>" id="get_per<?=$uniq_id; ?>">
                                 <input type="hidden" name="pro_name[]" value="<?php echo $title; ?>">
                                 <input type="hidden" name="old_Price[]" value="<?=$oprice; ?>">
+                                <?php $detailUrl = 'details.php?id=' . urlencode($cprid ?: $product_id); ?>
                                 <div class="card border mt-3">
                                     <div class="card-body pt-3 pb-3 ml-2 mr-2 mt-2 mb-2">
                                         <div class="row">
 
                                             <div class="col-lg-3 col-12 text-center">
-                                                <img class="w-100 img-thumbnail" style="height:140px; object-fit:contain; background:#f8fafc;"
-                                                    src="<?php echo resolve_image_url($img); ?>" alt="<?php echo htmlspecialchars($title); ?>"
-                                                    onerror="this.src='img/products/hp_laptop.jpg'">
+                                                <a href="<?php echo $detailUrl; ?>" style="display: block; text-decoration: none;" title="View <?php echo htmlspecialchars($title); ?> details">
+                                                    <img class="w-100 img-thumbnail" style="height:140px; object-fit:contain; background:#f8fafc; cursor: pointer; transition: transform 0.2s;"
+                                                        src="<?php echo resolve_image_url($img); ?>" alt="<?php echo htmlspecialchars($title); ?>"
+                                                        onerror="this.src='img/products/hp_laptop.jpg'"
+                                                        onmouseover="this.style.transform='scale(1.04)'"
+                                                        onmouseout="this.style.transform='scale(1)'">
+                                                </a>
                                             </div>
                                             <div class="col-lg-6 col-12 ">
                                                 <div class="pb-2">
 
                                                     <div class="row">
                                                         <div class="col-12">
-                                                            <h5><?=$title; ?></h5>
+                                                            <h5>
+                                                                <a href="<?php echo $detailUrl; ?>" style="color: #0f172a; text-decoration: none; font-weight: 700; transition: color 0.2s;"
+                                                                   onmouseover="this.style.color='#0284c7'"
+                                                                   onmouseout="this.style.color='#0f172a'"
+                                                                   title="View <?php echo htmlspecialchars($title); ?> details">
+                                                                    <?=$title; ?>
+                                                                </a>
+                                                            </h5>
                                                         </div>
                                                         <div class="col-md-6 col-12">
                                                             <small class="font-weight-bold">Product code:</small>
@@ -501,7 +517,7 @@ unset($_SESSION['shopping_remove']);
                             <!-- right end -->
                             <?php }else{ ?>
                             <div class="col-12 text-center">
-                                <img src="./img/no_datas.png" class="img-fluid h-50" alt="">
+                                <img src="./img/no_datas.webp" class="img-fluid h-50" alt="">
                             </div>
                             <?php } ?>
                         </div>
@@ -509,9 +525,9 @@ unset($_SESSION['shopping_remove']);
                 </div>
                 <div class="loading" id="loading_spinner" style="display:none;">Loading&#8230;</div>
         </main>
-        <?php include('include/footer.php'); ?>
+        <?php include(defined('APP_ROOT') ? dirname(APP_ROOT) . '/include/footer.php' : __DIR__ . '/../../../include/footer.php'); ?>
     </div>
-    <?php include('include/sign_footer.php'); ?>
+    <?php include(defined('APP_ROOT') ? dirname(APP_ROOT) . '/include/sign_footer.php' : __DIR__ . '/../../../include/sign_footer.php'); ?>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
